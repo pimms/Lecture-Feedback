@@ -15,17 +15,6 @@
         android:layout_marginTop="15dp"
         android:text="-" />
 
-    <TextView
-        android:id="@+id/rating_text_view_attribute"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/button1"
-        android:layout_alignBottom="@+id/button1"
-        android:layout_centerHorizontal="true"
-        android:gravity="center"
-        android:text="Overall"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
     <Button
         android:id="@+id/rating_button_positive"
         style="?android:attr/buttonStyleSmall"
@@ -37,5 +26,16 @@
         android:layout_marginRight="15dp"
         android:layout_marginTop="15dp"
         android:text="+" />
+
+    <TextView
+        android:id="@+id/rating_text_view_attribute"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/rating_button_negative"
+        android:layout_alignBottom="@+id/rating_button_negative"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:text="Overall"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
 </RelativeLayout>

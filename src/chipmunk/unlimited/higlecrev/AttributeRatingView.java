@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 /**
  * @class AttributeRatingView
@@ -15,6 +16,8 @@ import android.widget.LinearLayout;
  */
 public class AttributeRatingView extends LinearLayout implements OnClickListener {
 	private String mAttribute = "_default_ (none)";
+	
+	private TextView mAttributeName;
 	private Button mButtonNegative;
 	private Button mButtonPositive;
 	
@@ -36,6 +39,8 @@ public class AttributeRatingView extends LinearLayout implements OnClickListener
 	
 	private void initialize() {
 		LayoutInflater.from(getContext()).inflate(R.layout.lecture_rating_element, this);
+		
+		mAttributeName = (TextView)findViewById(R.id.rating_text_view_attribute);
 		
 		mButtonNegative = (Button)findViewById(R.id.rating_button_negative);
 		mButtonPositive = (Button)findViewById(R.id.rating_button_positive);
