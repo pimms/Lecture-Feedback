@@ -25,11 +25,15 @@
 	        android:text="Frode Haug - 10:15-13:00, K105"/>
 	    
     
-    	<include layout="@layout/lecture_rating_element" />
-    	<include layout="@layout/lecture_rating_element" />
-    	<include layout="@layout/lecture_rating_element" />
-    	<include layout="@layout/lecture_rating_element" />
-    	<include layout="@layout/lecture_rating_element" />
+    	<!-- The AttributeRatingViews will be programmatically
+    	 	 placed into this layout at run-time. -->
+    	<LinearLayout 
+    	    android:id="@+id/rating_attribute_wrapper"
+    	    android:layout_width="wrap_content"
+    	    android:layout_height="wrap_content"
+    	    android:orientation="vertical">
+    	    
+    	</LinearLayout>
 
     	<EditText
     	    android:id="@+id/rating_edit_text_comments"
