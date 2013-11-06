@@ -43,7 +43,6 @@
     	    android:ems="10"
     	    android:hint="Comments..."
     	    android:inputType="textMultiLine" >
-    	    <requestFocus />
     	</EditText>
 
     	<Button

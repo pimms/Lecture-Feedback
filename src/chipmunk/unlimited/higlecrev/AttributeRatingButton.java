@@ -46,6 +46,15 @@ public class AttributeRatingButton extends Button {
 	}
 	
 	
+	public int getType() {
+		return mType;
+	}
+	
+	public int getState() {
+		return mState;
+	}
+	
+	
 	/**
 	 * Set the background of the button based on the TYPE and STATE 
 	 * of the button.
