@@ -39,8 +39,13 @@ public class TimeEditParser extends AsyncHttpResponseHandler {
 		if (mContentType == CONTENT_TIMETABLE) {
 			String[][] res = parseTimeTable(response);
 			Log.d("ITEM", res.length + " items.");
-			for (String[] arr : res) {
-				Log.d("ITEM ("+arr.length+")", "[0]="+arr[0] + "[1]=" + arr[1] + "[2]=" + arr[2] + "[3]=" + arr[3] + "[4]=" + arr[4]);
+			for (int i=1; i<res.length; i++) {
+				String[] arr = res[i];
+				
+				LectureItem item = new LectureItem(arr[0], arr[1], arr[2], arr[3], arr[4]);
+				if (item != null) {
+					Log.d("ITEM", item.toString());
+				}
 			}
 		}
 	}
@@ -51,6 +56,17 @@ public class TimeEditParser extends AsyncHttpResponseHandler {
 	}
 	
 	
+	/**
+	 * Parse the HTML to retrieve time-table information.
+	 * 
+	 * @param html
+	 * TimeEdit page containing the time-table.
+	 * 
+	 * @return
+	 * Array on the form:
+	 * 	{ 	item0: [date, time, course name, room, lecturer], 
+	 * 		item1: [...], ...., itemN: [...] }
+	 */
 	public static String[][] parseTimeTable(String html){
         String[] split1 = html
                 .replaceAll("<span class=\"tesprite tesprite-floatright tesprite-new\"></span>", "")
@@ -170,8 +186,20 @@ public class TimeEditParser extends AsyncHttpResponseHandler {
     }
 
     private static String[][] dimensionalPortal(ArrayList<ArrayList<String>> arraylist){
+    	/* TobbenTM is doing some weird stuff with empty
+    	 * strings to indicate a new date. 
+    	 * Filter out these here. 
+    	 */
+    	for (int i=0; i<arraylist.size(); i++) {
+	    	if (arraylist.get(i).get(2).length() >= 9 &&
+	    		arraylist.get(i).get(2).substring(0, 9).equals("HIGREADER")) {
+	    		arraylist.remove(i--);
+	    	}
+    	}
+    	
         final int size = arraylist.size();
         String[][] sarr = new String[size][];
+        
         for(int i = 0; i < size; i++) {
             ArrayList<String> innerlist = arraylist.get(i);
             final int innerSize = innerlist.size();
