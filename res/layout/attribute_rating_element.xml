@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="horizontal" >
 
-    <Button
+    <chipmunk.unlimited.higlecrev.AttributeRatingButton
         android:id="@+id/rating_button_negative"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="35dp"
@@ -15,7 +15,7 @@
         android:layout_marginTop="15dp"
         android:text="-" />
 
-    <Button
+    <chipmunk.unlimited.higlecrev.AttributeRatingButton
         android:id="@+id/rating_button_positive"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="35dp"

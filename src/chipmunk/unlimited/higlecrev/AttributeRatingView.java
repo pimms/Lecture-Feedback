@@ -18,8 +18,8 @@ public class AttributeRatingView extends LinearLayout implements OnClickListener
 	private String mAttribute = "_default_ (none)";
 	
 	private TextView mAttributeName;
-	private Button mButtonNegative;
-	private Button mButtonPositive;
+	private AttributeRatingButton mButtonNegative;
+	private AttributeRatingButton mButtonPositive;
 	
 	
 	public AttributeRatingView(Context context) {
@@ -38,15 +38,21 @@ public class AttributeRatingView extends LinearLayout implements OnClickListener
 	}
 	
 	private void initialize() {
-		LayoutInflater.from(getContext()).inflate(R.layout.lecture_rating_element, this);
+		LayoutInflater.from(getContext()).inflate(R.layout.attribute_rating_element, this);
 		
 		mAttributeName = (TextView)findViewById(R.id.rating_text_view_attribute);
 		
-		mButtonNegative = (Button)findViewById(R.id.rating_button_negative);
-		mButtonPositive = (Button)findViewById(R.id.rating_button_positive);
+		mButtonNegative = (AttributeRatingButton)findViewById(R.id.rating_button_negative);
+		mButtonPositive = (AttributeRatingButton)findViewById(R.id.rating_button_positive);
 		
 		mButtonNegative.setOnClickListener(this);
 		mButtonPositive.setOnClickListener(this);
+		
+		mButtonNegative.setType(AttributeRatingButton.NEGATIVE);
+		mButtonNegative.setState(AttributeRatingButton.INACTIVE);
+		
+		mButtonPositive.setType(AttributeRatingButton.POSITIVE);
+		mButtonPositive.setState(AttributeRatingButton.INACTIVE);
 	}
 	
 	
@@ -61,6 +67,12 @@ public class AttributeRatingView extends LinearLayout implements OnClickListener
 	 */
 	@Override
 	public void onClick(View view) {
-		
+		AttributeRatingButton btnPress = (AttributeRatingButton)view;
+		AttributeRatingButton btnOther = (btnPress == mButtonNegative)
+											? (mButtonPositive)
+											: (mButtonNegative);
+											
+		btnPress.setState(AttributeRatingButton.ACTIVE);
+		btnOther.setState(AttributeRatingButton.INACTIVE);
 	}
 }
