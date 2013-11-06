@@ -126,54 +126,6 @@ public class TimeEditParser extends AsyncHttpResponseHandler {
 	}
 	
 	
-	/**
-	 * Comment lines in the HTML.
-	 * 
-	 * @param html
-	 * The webpage to be cleaned up.
-	 * 
-	 * @param firstLine
-	 * 0-based index of the first line to be commented
-	 * 
-	 * @param lastLine
-	 * 0-based index of the last line to be commented. Should
-	 * be larger than firstLine.
-	 * 
-	 * @return
-	 * The cleaned up webpage.
-	 */
-	private String commentHtmlLines(String html, int firstLine, int lastLine) {
-		if (lastLine <= firstLine) {
-			return html;
-		}
-		
-		StringBuilder builder = new StringBuilder(html);
-		int index = 0;
-		int line = 0;
-		
-		while (index < builder.length()) {
-			char[] ch = new char[1];
-			builder.getChars(index, index+1, ch, 0);
-			index++;
-			
-			if (ch[0] == '\n') {
-				line++;
-			}
-			
-			if (line == firstLine) {
-				builder.insert(index, "<!-- ");
-				firstLine = -1;
-			}
-			
-			if (line + 1 == lastLine) {
-				builder.insert(index, " --> ");
-				break;
-			}
-		}
-		
-		return builder.toString();
-	}
-	
 	private String getNodeAttribute(Node node, String attribute) {
 		Node attr = node.getAttributes().getNamedItem(attribute);
 		
