@@ -14,6 +14,11 @@ public class SubscriptionItem {
 	private String mName;
 	
 	
+	public SubscriptionItem(String itemId, String name) {
+		mItemId = itemId;
+		mName = name;
+	}
+	
 	public String getItemId() {
 		return mItemId;
 	}

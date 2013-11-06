@@ -5,6 +5,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import android.util.Log;
+
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
@@ -42,6 +44,7 @@ public class TimeEditHTTP {
 		String webUrl = getTimeEditTimeTableURL(subscriptions, startDate, endDate);
 		
 		/* Retrieve the web content */
+		Log.d("HTTP", "TimeEdit URL: " + webUrl);
 		new AsyncHttpClient().get(webUrl, callback);
 	}
 	
