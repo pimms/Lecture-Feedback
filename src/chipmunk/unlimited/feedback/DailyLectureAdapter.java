@@ -2,6 +2,7 @@ package chipmunk.unlimited.feedback;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import android.content.Context;
@@ -92,10 +93,9 @@ public class DailyLectureAdapter extends BaseAdapter {
 			Date startTime = lecture.getStartTime();
 			Date endTime = lecture.getEndTime();
 			
-			if ( (startTime.after(lowerBounds) || endTime.after(lowerBounds)) &&
-				 (startTime.before(upperBounds) || endTime.before(upperBounds))) {
-				// It's legit
-			} else {
+			Log.d(TAG, "Lecture: " + startTime + ", " + endTime);
+			
+			if (!endTime.after(lowerBounds) || !startTime.before(upperBounds)) {
 				mLectureItems.remove(i--);
 			}
 		}

@@ -35,9 +35,15 @@ public class TimeEditHTTP {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyMMdd", Locale.getDefault());
 		Calendar calendar = Calendar.getInstance();
 		
+		// TobbenTM's parser doesn't include TODAY, so we need to set our
+		// upper bound to TOMMORROW.
+		calendar.add(Calendar.DAY_OF_YEAR, 1);
+		
 		/* Calculate the bounding dates */
 		String endDate = dateFormat.format(calendar.getTime());
-		calendar.add(Calendar.DAY_OF_YEAR, -100);
+		
+		// Subtract 2 as we added 1 earlier
+		calendar.add(Calendar.DAY_OF_YEAR, -2);
 		String startDate = dateFormat.format(calendar.getTime());
 		
 		/* Get the TimeEdit URL */

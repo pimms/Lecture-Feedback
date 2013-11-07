@@ -72,12 +72,12 @@ public class LectureItem {
 		String timeStart = time.substring(0, 5);
 		String timeEnd = time.substring(8, 13);
 		
-		GregorianCalendar cal = new GregorianCalendar();
+		Calendar cal = Calendar.getInstance();
 		
 		// Set the date
-		cal.set(parseInt(dateArr[0]), 
-				parseInt(dateArr[1]), 
-				parseInt(dateArr[2]));
+		cal.set(parseInt(dateArr[0]), 		// year is 1 based
+				parseInt(dateArr[1]) - 1,	// month 0 based 
+				parseInt(dateArr[2]));		// day is 1 based
 		
 		// Set the start time
 		String[] hhmm = timeStart.split(":");
