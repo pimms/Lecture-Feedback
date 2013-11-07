@@ -63,7 +63,7 @@ public class AttributeRatingView extends LinearLayout implements OnClickListener
 	}
 	
 	private void initialize() {
-		LayoutInflater.from(getContext()).inflate(R.layout.attribute_rating_element, this);
+		LayoutInflater.from(getContext()).inflate(R.layout.rating_list_item_attribute, this);
 		
 		mTextViewAttributeName = (TextView)findViewById(R.id.rating_text_view_attribute);
 		mButtonNegative = (AttributeRatingButton)findViewById(R.id.rating_button_negative);

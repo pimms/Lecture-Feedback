@@ -36,9 +36,9 @@ public class TimeEditHTTP {
 		Calendar calendar = Calendar.getInstance();
 		
 		/* Calculate the bounding dates */
-		String startDate = dateFormat.format(calendar.getTime());
-		calendar.add(Calendar.DAY_OF_YEAR, 14);
 		String endDate = dateFormat.format(calendar.getTime());
+		calendar.add(Calendar.DAY_OF_YEAR, -100);
+		String startDate = dateFormat.format(calendar.getTime());
 		
 		/* Get the TimeEdit URL */
 		String webUrl = getTimeEditTimeTableURL(subscriptions, startDate, endDate);

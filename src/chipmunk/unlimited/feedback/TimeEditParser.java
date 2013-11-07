@@ -17,7 +17,15 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
  * of a TimeEdit parser. The TimeEdit HTML is full of invalid
  * HTML, causing the w3c.dom-parser to fail. 
  */
-public class TimeEditParser extends AsyncHttpResponseHandler {
+public class TimeEditParser extends AsyncHttpResponseHandler {	
+	/**
+	 * Callback interface for the TimeEditParser class.
+	 */
+	public interface OnParseCompleteListener {
+		public void onTimeTableComplete(List<LectureItem> items);
+	}
+	
+	
 	/* The constants defines how the parser interprets
 	 * the received HTML.  
 	 */
@@ -28,24 +36,33 @@ public class TimeEditParser extends AsyncHttpResponseHandler {
 	
 	private int mContentType = 1;
 	
+	private OnParseCompleteListener mCallback;
+	
 	
 	public TimeEditParser(int contentType) {
 		mContentType = contentType;
 	}
 	
+	public void setOnParseCompleteListener(OnParseCompleteListener callback) {
+		mCallback = callback;
+	}
 	
 	@Override 
 	public void onSuccess(String response) {
 		if (mContentType == CONTENT_TIMETABLE) {
+			List<LectureItem> list = new ArrayList<LectureItem>();
+			
 			String[][] res = parseTimeTable(response);
 			Log.d("ITEM", res.length + " items.");
 			for (int i=1; i<res.length; i++) {
 				String[] arr = res[i];
 				
 				LectureItem item = new LectureItem(arr[0], arr[1], arr[2], arr[3], arr[4]);
-				if (item != null) {
-					Log.d("ITEM", item.toString());
-				}
+				list.add(item);
+			}
+			
+			if (mCallback != null) {
+				mCallback.onTimeTableComplete(list);
 			}
 		}
 	}

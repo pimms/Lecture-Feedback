@@ -28,6 +28,35 @@ public class LectureItem {
 	
 	
 	/**
+	 * @return
+	 * String on the form: "[HH:mm] - [HH:mm]"
+	 */
+	public String getTimeString() {
+		return getTimeString(mStartTime) + " - " + getTimeString(mEndTime);
+	}
+	
+	public Date getStartTime() {
+		return mStartTime;
+	}
+	
+	public Date getEndTime() {
+		return mEndTime;
+	}
+	
+	public String getRoom() {
+		return mRoom;
+	}
+	
+	public String getLecturer() {
+		return mLecturer;
+	}
+	
+	public String getCourseName() {
+		return mCourseName;
+	}
+	
+	
+	/**
 	 * Set mStartTime and mEndTime based on "date" and "time".
 	 * 
 	 * @param date
@@ -87,6 +116,22 @@ public class LectureItem {
 		return 0;
 	}
 	
+	
+	private String getTimeString(Date date) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		
+		int hours = cal.get(Calendar.HOUR_OF_DAY);
+		int minutes = cal.get(Calendar.MINUTE);
+		
+		StringBuilder builder = new StringBuilder();
+		
+		builder.append( ((hours < 10) ? "0" : "") + hours );
+		builder.append(":");
+		builder.append( ((minutes < 10) ? "0" : "") + minutes );
+		
+		return builder.toString();
+	}
 	
 	@Override
 	public String toString() {
