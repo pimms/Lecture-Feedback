@@ -3,16 +3,20 @@ package chipmunk.unlimited.feedback;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import chipmunk.unlimited.feedback.TimeEditParser.OnParseCompleteListener;
 
-public class TodayFragment extends Fragment implements OnParseCompleteListener {
+public class TodayFragment extends Fragment implements 	OnParseCompleteListener,
+														OnItemClickListener {
 	private DailyLectureAdapter mListAdapter;
 	private ListView mListView;
 	
@@ -23,6 +27,7 @@ public class TodayFragment extends Fragment implements OnParseCompleteListener {
 		mListAdapter = new DailyLectureAdapter(rootView.getContext());
 		mListView = (ListView)rootView.findViewById(R.id.today_list_view);
 		mListView.setAdapter(mListAdapter);
+		mListView.setOnItemClickListener(this);
 		refreshItems();
 			
 		return rootView;
@@ -46,5 +51,11 @@ public class TodayFragment extends Fragment implements OnParseCompleteListener {
 		Log.d("REFRESH COMPLETE", "YYOYOYOYOOY");
 		mListAdapter.setLectureItems(items);
 		mListAdapter.notifyDataSetChanged();
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
+		Intent i = new Intent(view.getContext(), LectureRatingActivity.class);
+		startActivity(i);
 	}
 }
