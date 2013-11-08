@@ -89,13 +89,14 @@ public class TimeEditHTTP {
 	 * items.
 	 * 			
 	 * @return 	
-	 * The filter content of a TimeEdit query URL.
+	 * The filter segment of a TimeEdit query URL.
 	 */
 	private static String getSubscriptionFilter(List<SubscriptionItem> subscriptions) {
 		String filter = "";
 		
 		for (int i=0; i<subscriptions.size(); i++) {
 			if (i > 0) {
+				// Add an "OR" separator to get ALL desired subscriptions.
 				filter += ",-1,";
 			}
 			
