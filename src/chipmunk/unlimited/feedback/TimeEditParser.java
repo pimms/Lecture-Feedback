@@ -22,7 +22,7 @@ public class TimeEditParser extends AsyncHttpResponseHandler {
 	 * Callback interface for the TimeEditParser class.
 	 */
 	public interface OnParseCompleteListener {
-		public void onTimeTableComplete(List<LectureItem> items);
+		public void onTimeTableParsingComplete(List<LectureItem> items);
 	}
 	
 	
@@ -62,7 +62,7 @@ public class TimeEditParser extends AsyncHttpResponseHandler {
 			}
 			
 			if (mCallback != null) {
-				mCallback.onTimeTableComplete(list);
+				mCallback.onTimeTableParsingComplete(list);
 			}
 		}
 	}

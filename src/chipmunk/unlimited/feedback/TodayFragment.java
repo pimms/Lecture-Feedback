@@ -47,8 +47,7 @@ public class TodayFragment extends Fragment implements 	OnParseCompleteListener,
 
 	
 	@Override
-	public void onTimeTableComplete(List<LectureItem> items) {
-		Log.d("REFRESH COMPLETE", "YYOYOYOYOOY");
+	public void onTimeTableParsingComplete(List<LectureItem> items) {
 		mListAdapter.setLectureItems(items);
 		mListAdapter.notifyDataSetChanged();
 	}
