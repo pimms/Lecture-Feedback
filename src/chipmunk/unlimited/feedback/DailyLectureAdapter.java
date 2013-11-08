@@ -34,7 +34,6 @@ public class DailyLectureAdapter extends BaseAdapter {
 	@Override
 	public int getCount() {
 		if (mLectureItems != null) {
-			Log.d("ITEMS===", "WE HAVE " + mLectureItems.size());
 			return mLectureItems.size();
 		}
 		

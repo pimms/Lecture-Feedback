@@ -59,6 +59,7 @@ public class TimeEditParser extends AsyncHttpResponseHandler {
 				
 				LectureItem item = new LectureItem(arr[0], arr[1], arr[2], arr[3], arr[4]);
 				list.add(item);
+				//Log.d("parser", item.toString());
 			}
 			
 			if (mCallback != null) {
@@ -208,8 +209,7 @@ public class TimeEditParser extends AsyncHttpResponseHandler {
     	 * Filter out these here. 
     	 */
     	for (int i=0; i<arraylist.size(); i++) {
-	    	if (arraylist.get(i).get(2).length() >= 9 &&
-	    		arraylist.get(i).get(2).substring(0, 9).equals("HIGREADER")) {
+	    	if (arraylist.get(i).get(2).length() >= 9 && arraylist.get(i).get(2).substring(0, 9).equals("HIGREADER")) {
 	    		arraylist.remove(i--);
 	    	}
     	}
