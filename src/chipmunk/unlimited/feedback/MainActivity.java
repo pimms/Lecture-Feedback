@@ -188,19 +188,22 @@ public class MainActivity extends FragmentActivity implements
 		mTodayFragment.refreshItems();
 	}
 	
+	
+	private void showSubscriptionFragment() {
+		mSubscriptionFragment = new SubscriptionFragment();
+		mSubscriptionFragment.setSubscriptionsChangedListener(this);
+		mSubscriptionFragment.show(getFragmentManager(), "fragment_subscription");
+	}
+	
 	public void showAddSubscriptionFragment(View view) {
 		mSubscriptionFragment.dismiss();
-		mSubscriptionFragment = null;
 		
 		mAddSubscriptionFragment = new AddSubscriptionFragment();
 		mAddSubscriptionFragment.setSubscriptionsChangedListener(this);
 		mAddSubscriptionFragment.show(getFragmentManager(), "add_subscription_fragment");
 	}
 	
-	
-	private void showSubscriptionFragment() {
-		mSubscriptionFragment = new SubscriptionFragment();
-		mSubscriptionFragment.setSubscriptionsChangedListener(this);
-		mSubscriptionFragment.show(getFragmentManager(), "fragment_subscription");
+	public void dismissAddSubscriptionFragment() {
+		mAddSubscriptionFragment.dismiss();
 	}
 }

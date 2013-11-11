@@ -106,7 +106,7 @@ public class SubscriptionDBHelper extends SQLiteOpenHelper {
 	}
 	
 	
-	public void addSubscription(String name, String code) {
+	public void addSubscription(String code, String name) {
 		open();
 		
 		final ContentValues values = new ContentValues();
