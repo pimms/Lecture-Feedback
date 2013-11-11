@@ -188,7 +188,7 @@ public class MainActivity extends FragmentActivity implements
 	
 	@Override
 	public void onSubscriptionsChanged() {
-		// Update certain fragments yo
+		mTodayFragment.refreshItems();
 	}
 	
 	public void showAddSubscriptionFragment(View view) {
