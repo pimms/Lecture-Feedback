@@ -38,10 +38,14 @@ public class MainActivity extends FragmentActivity implements
 	 */
 	ViewPager mViewPager;
 	
-	/* The SubscriptionFragment. Only !null when the fragment or
-	 * any of it's spawned fragments are visible. */
+	/* Fragments related to subscription management */
 	private SubscriptionFragment mSubscriptionFragment;
 	private AddSubscriptionFragment mAddSubscriptionFragment;
+	
+	/* Fragments included in the pane-view */
+	private FeedFragment mFeedFragment;
+	private TodayFragment mTodayFragment;
+	private StatisticsFragment mStatsFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -138,13 +142,16 @@ public class MainActivity extends FragmentActivity implements
 			
 			switch (position) {
 			case 0:
-				fragment = new FeedFragment();
+				mFeedFragment = new FeedFragment();
+				fragment = mFeedFragment;
 				break;
 			case 1:
-				fragment = new TodayFragment();
+				mTodayFragment = new TodayFragment();
+				fragment = mTodayFragment;
 				break;
 			case 2:
-				fragment = new StatisticsFragment();
+				mStatsFragment = new StatisticsFragment();
+				fragment = mStatsFragment;
 				break;
 			default:
 				/* TODO: Handle error */
