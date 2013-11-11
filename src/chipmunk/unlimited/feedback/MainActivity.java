@@ -20,7 +20,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 public class MainActivity extends FragmentActivity implements
-		ActionBar.TabListener {
+		ActionBar.TabListener,
+		SubscriptionsChangedListener {
 
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -36,6 +37,11 @@ public class MainActivity extends FragmentActivity implements
 	 * The {@link ViewPager} that will host the section contents.
 	 */
 	ViewPager mViewPager;
+	
+	/* The SubscriptionFragment. Only !null when the fragment or
+	 * any of it's spawned fragments are visible. */
+	private SubscriptionFragment mSubscriptionFragment;
+	private AddSubscriptionFragment mAddSubscriptionFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +90,17 @@ public class MainActivity extends FragmentActivity implements
 		return true;
 	}
 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.action_subscriptions:
+			showSubscriptionFragment();
+			break;
+		}
+		
+		return true;
+	}
+	
 	@Override
 	public void onTabSelected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {
@@ -159,5 +176,27 @@ public class MainActivity extends FragmentActivity implements
 			}
 			return null;
 		}
+	}
+
+	
+	@Override
+	public void onSubscriptionsChanged() {
+		// Update certain fragments yo
+	}
+	
+	public void showAddSubscriptionFragment(View view) {
+		mSubscriptionFragment.dismiss();
+		mSubscriptionFragment = null;
+		
+		mAddSubscriptionFragment = new AddSubscriptionFragment();
+		mAddSubscriptionFragment.setSubscriptionsChangedListener(this);
+		mAddSubscriptionFragment.show(getFragmentManager(), "add_subscription_fragment");
+	}
+	
+	
+	private void showSubscriptionFragment() {
+		mSubscriptionFragment = new SubscriptionFragment();
+		mSubscriptionFragment.setSubscriptionsChangedListener(this);
+		mSubscriptionFragment.show(getFragmentManager(), "fragment_subscription");
 	}
 }

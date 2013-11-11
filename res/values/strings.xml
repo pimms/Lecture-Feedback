@@ -6,5 +6,13 @@
     <string name="title_section1">Section 1</string>
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
+    
+    
+    <string-array name="search_array">
+        <item>Class</item>
+        <item>Course</item>
+        <item>Lecturer</item>
+        <item>Room</item>
+    </string-array>
 
 </resources>

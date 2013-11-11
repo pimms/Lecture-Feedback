@@ -1,5 +1,7 @@
 package chipmunk.unlimited.feedback;
 
+import android.widget.Toast;
+
 
 /**
  * @class SubscriptionItem
