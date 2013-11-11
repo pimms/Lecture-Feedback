@@ -59,7 +59,7 @@ public class SubscriptionAdapter extends CursorAdapter {
         ds.open();
 
         ds.deleteSubscription(id);
-        this.changeCursor(ds.getAllSubscriptions());
+        this.changeCursor(ds.getSubscriptionCursor());
         ds.close();
         this.notifyDataSetChanged();
     }

@@ -69,7 +69,7 @@ public class SubscriptionFragment extends DialogFragment {
         SubscriptionDBHelper datasource = new SubscriptionDBHelper(getActivity());
         datasource.open();
 
-        adapter = new SubscriptionAdapter(getActivity(), datasource.getAllSubscriptions(), 0);
+        adapter = new SubscriptionAdapter(getActivity(), datasource.getSubscriptionCursor(), 0);
         list.setAdapter(adapter);
         datasource.close();
     }
