@@ -33,7 +33,7 @@ public class SubscriptionFragment extends DialogFragment {
 
     @Override
     public void onDismiss(DialogInterface dialog){
-        if(adapter.update() && mListener != null) {
+        if(mListener != null) {
             mListener.onSubscriptionsChanged();
         }
         

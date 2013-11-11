@@ -29,6 +29,9 @@ public class TimeEditHTTP {
 	 */
 	public static void getTimeTable(List<SubscriptionItem> subscriptions, AsyncHttpResponseHandler callback) {
 		if (subscriptions.size() == 0 || callback == null) {
+			if (callback != null) {
+				callback.onSuccess(null);
+			}
 			return;
 		}
 		

@@ -47,19 +47,26 @@ public class TimeEditParser extends AsyncHttpResponseHandler {
 		mCallback = callback;
 	}
 	
+	
+	/**
+	 * The callback for successful HTTP requests.
+	 * @param response 	The contents of the webpage. Can be null.
+	 */
 	@Override 
 	public void onSuccess(String response) {
 		if (mContentType == CONTENT_TIMETABLE) {
 			List<LectureItem> list = new ArrayList<LectureItem>();
 			
-			String[][] res = parseTimeTable(response);
-			Log.d("ITEM", res.length + " items.");
-			for (int i=1; i<res.length; i++) {
-				String[] arr = res[i];
-				
-				LectureItem item = new LectureItem(arr[0], arr[1], arr[2], arr[3], arr[4]);
-				list.add(item);
-				//Log.d("parser", item.toString());
+			if (response != null) {
+				String[][] res = parseTimeTable(response);
+				Log.d("ITEM", res.length + " items.");
+				for (int i=1; i<res.length; i++) {
+					String[] arr = res[i];
+					
+					LectureItem item = new LectureItem(arr[0], arr[1], arr[2], arr[3], arr[4]);
+					list.add(item);
+					//Log.d("parser", item.toString());
+				}
 			}
 			
 			if (mCallback != null) {

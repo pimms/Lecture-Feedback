@@ -17,6 +17,8 @@ import chipmunk.unlimited.feedback.TimeEditParser.OnParseCompleteListener;
 
 public class TodayFragment extends Fragment implements 	OnParseCompleteListener,
 														OnItemClickListener {
+	private static final String TAG = "TodayFragment";
+	
 	private DailyLectureAdapter mListAdapter;
 	private ListView mListView;
 	

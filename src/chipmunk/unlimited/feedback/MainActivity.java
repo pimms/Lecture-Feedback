@@ -203,7 +203,7 @@ public class MainActivity extends FragmentActivity implements
 		mAddSubscriptionFragment.show(getFragmentManager(), "add_subscription_fragment");
 	}
 	
-	public void dismissAddSubscriptionFragment() {
+	public void dismissAddSubscriptionFragment(View view) {
 		mAddSubscriptionFragment.dismiss();
 	}
 }
