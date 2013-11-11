@@ -93,7 +93,8 @@ public class SubscriptionDBHelper extends SQLiteOpenHelper {
 		while (!cursor.isAfterLast()) {
 			String code = cursor.getString(codeIndex);
 			String name = cursor.getString(nameIndex);
-			
+			cursor.moveToNext();
+		
 			SubscriptionItem item = new SubscriptionItem(code, name);
 			list.add(item);
 		}
