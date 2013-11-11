@@ -36,9 +36,9 @@ public class TodayFragment extends Fragment implements 	OnParseCompleteListener,
 	/**
 	 * Reload the list view with updated lectures.
 	 */
-	private void refreshItems() {
-		List<SubscriptionItem> subs = new ArrayList<SubscriptionItem>();
-		subs.add(new SubscriptionItem("161571.182", "dunno"));
+	public void refreshItems() {
+		SubscriptionDBHelper db = new SubscriptionDBHelper(getActivity());
+		List<SubscriptionItem> subs = db.getSubscriptionList();
 		
 		TimeEditParser parser = new TimeEditParser(TimeEditParser.CONTENT_TIMETABLE);
 		parser.setOnParseCompleteListener(this);
