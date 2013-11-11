@@ -1,5 +1,8 @@
 package chipmunk.unlimited.feedback;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -72,9 +75,33 @@ public class SubscriptionDBHelper extends SQLiteOpenHelper {
 	}
 	
 	
-	public Cursor getAllSubscriptions() {
+	public Cursor getSubscriptionCursor() {
 		return mDatabase.query(TABLE_NAME, ALL_COLUMNS, 
 							null, null, null, null, null);
+	}
+	
+	public List<SubscriptionItem> getSubscriptionList() {
+		open();
+		
+		List<SubscriptionItem> list = new ArrayList<SubscriptionItem>();
+		Cursor cursor = getSubscriptionCursor();
+		cursor.moveToFirst();
+		
+		int codeIndex = cursor.getColumnIndex(COLUMN_CODE);
+		int nameIndex = cursor.getColumnIndex(COLUMN_NAME);
+		
+		while (!cursor.isAfterLast()) {
+			String code = cursor.getString(codeIndex);
+			String name = cursor.getString(nameIndex);
+			
+			SubscriptionItem item = new SubscriptionItem(code, name);
+			list.add(item);
+		}
+		
+		cursor.close();
+		close();
+		
+		return list;
 	}
 	
 	
