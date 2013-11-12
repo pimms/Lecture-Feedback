@@ -40,6 +40,7 @@ public class FeedFragment extends Fragment implements OnItemClickListener {
 		intent.putExtra(LectureRatingActivity.PARAM_TIME, "sometime");
 		intent.putExtra(LectureRatingActivity.PARAM_ROOM, "somewhere");
 		intent.putExtra(LectureRatingActivity.PARAM_RATINGS, new boolean[] { false, false, true, true, false} );
+		intent.putExtra(LectureRatingActivity.PARAM_COMMENT, "This was a great lecture.\nThe prof cursed at me a little.\n\n10/10, would attend again.");
 		startActivity(intent);
 	}
 }
