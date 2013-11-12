@@ -31,7 +31,11 @@ public class FeedFragment extends Fragment implements OnItemClickListener {
 	
 	@Override
 	public void onItemClick(AdapterView<?> adapter, View item, int position, long id) {
-		Intent i = new Intent(item.getContext(), LectureRatingActivity.class);
-		startActivity(i);
+		Intent intent = new Intent(item.getContext(), LectureRatingActivity.class);
+		intent.putExtra(LectureRatingActivity.PARAM_COURSE_NAME, "Placeholder");
+		intent.putExtra(LectureRatingActivity.PARAM_LECTURER_NAME, "someone");
+		intent.putExtra(LectureRatingActivity.PARAM_TIME, "sometime");
+		intent.putExtra(LectureRatingActivity.PARAM_ROOM, "somewhere");
+		startActivity(intent);
 	}
 }

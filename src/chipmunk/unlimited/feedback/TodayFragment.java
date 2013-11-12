@@ -56,7 +56,13 @@ public class TodayFragment extends Fragment implements 	OnParseCompleteListener,
 
 	@Override
 	public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
-		Intent i = new Intent(view.getContext(), LectureRatingActivity.class);
-		startActivity(i);
+		LectureItem lecture = (LectureItem)mListAdapter.getItem(position);
+		
+		Intent intent = new Intent(view.getContext(), LectureRatingActivity.class);
+		intent.putExtra(LectureRatingActivity.PARAM_COURSE_NAME, lecture.getCourseName());
+		intent.putExtra(LectureRatingActivity.PARAM_LECTURER_NAME, lecture.getLecturer());
+		intent.putExtra(LectureRatingActivity.PARAM_TIME, lecture.getTimeString());
+		intent.putExtra(LectureRatingActivity.PARAM_ROOM, lecture.getRoom());
+		startActivity(intent);
 	}
 }
