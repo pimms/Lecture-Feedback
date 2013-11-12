@@ -6,6 +6,7 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -13,6 +14,26 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import chipmunk.unlimited.feedback.AttributeRatingView.OnRatingChangeListener;
 
+
+/**
+ * @class LectureRatingActivity
+ * Activity for displaying and submitting a review of a lecture.
+ * 
+ * The activity has two different states: read-only and write. The state
+ * of the activity depends on the parameters passed via the Intent.
+ * 
+ * Parameter list:
+ * 	 +---------------------------+--------------------------+-----------+---------+
+ *   |	Parameter name			 |	Description 			| Required  | Type	  |
+ *   +---------------------------+--------------------------+-----------+---------+
+ *   |	PARAM_COURSE_NAME 		 | The course name 			| YES 		| String  |
+ *   |	PARAM_LECTURER_NAME 	 | The name of the lecturer | YES 		| String  |
+ *   |  PARAM_TIME 				 | The time of the lecture  | YES 		| String  |
+ *   | 	PARAM_ROOM 				 | The room of the lecture  | YES       | String  |
+ *   | 	PARAM_RATINGS			 | The ratings of all the   |			|  		  | 
+ *   |							 | lecture attribtues 		| NO 		| bool[5] |
+ *   +---------------------------+--------------------------+-----------+---------+
+ */
 public class LectureRatingActivity extends Activity implements OnRatingChangeListener {
 	/** 
 	 * The keys through which values will be set through the Intent 
@@ -21,6 +42,9 @@ public class LectureRatingActivity extends Activity implements OnRatingChangeLis
 	public static final String PARAM_LECTURER_NAME = "param_lecturer_name";
 	public static final String PARAM_TIME = "param_time";
 	public static final String PARAM_ROOM = "param_room";
+	public static final String PARAM_RATINGS = "param_ratings";
+	
+	private static final String TAG = "LectureRatingActivity";
 	
 	private List<AttributeRatingView> mAttributeViews;
 	
@@ -32,7 +56,7 @@ public class LectureRatingActivity extends Activity implements OnRatingChangeLis
 	    setContentView(R.layout.activity_lecture_rating);
 	    
 	    createAttributeRatingViews();
-	    setIntentParameters();
+	    handleIntentParameters();
 	    
 	    
 	    Button button = (Button)findViewById(R.id.rating_button_submit);
@@ -60,10 +84,13 @@ public class LectureRatingActivity extends Activity implements OnRatingChangeLis
 		}
 	}
 	
-	/**
-	 * Set attributes based on values from the creating Intent.
-	 */
-	private void setIntentParameters() {
+	
+	private void handleIntentParameters() {
+		handleTextViewParameters();
+		handleRatingParameters();
+	}
+	
+	private void handleTextViewParameters() {
 		Intent intent = getIntent();
 		
 		String courseName = intent.getStringExtra(PARAM_COURSE_NAME);
@@ -71,7 +98,35 @@ public class LectureRatingActivity extends Activity implements OnRatingChangeLis
 		String time = intent.getStringExtra(PARAM_TIME);
 		String room = intent.getStringExtra(PARAM_ROOM);
 		
+		if (courseName == null || lecturer == null || time == null || room == null) {
+			Log.e(TAG, "Not all required parameters are set");
+			return;
+		}
+		
 		setLabelTexts(courseName, lecturer, time + ", " + room);
+	}
+	
+	/**
+	 * Set the state of the Attribute Rating Views. The rating
+	 * views are also set to be read only.
+	 */
+	private void handleRatingParameters() {
+		Intent intent = getIntent();
+		
+		boolean[] ratings = intent.getBooleanArrayExtra(PARAM_RATINGS);
+		if (ratings != null) {
+			for (int i=0; i<mAttributeViews.size(); i++) {
+				int state = AttributeRatingView.STATE_UNDEFINED;
+				if (ratings[i]) {
+					state = AttributeRatingView.STATE_POSITIVE;
+				} else {
+					state = AttributeRatingView.STATE_NEGATIVE;
+				}
+				
+				mAttributeViews.get(i).setState(state);
+				mAttributeViews.get(i).setReadOnly(true);
+			}
+		}
 	}
 	
 	private void setLabelTexts(String courseName, String lecturerName, String timeAndPlace) {	
