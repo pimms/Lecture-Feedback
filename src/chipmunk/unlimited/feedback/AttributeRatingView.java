@@ -39,6 +39,7 @@ public class AttributeRatingView extends LinearLayout implements OnClickListener
 	
 	private String mAttributeName = "_default_ (none)";
 	private int mState = STATE_UNDEFINED;
+	private boolean mReadOnly = false;
 	
 	private OnRatingChangeListener mCallback;
 	
@@ -121,12 +122,20 @@ public class AttributeRatingView extends LinearLayout implements OnClickListener
 		}
 	}
 	
+	public void setReadOnly(boolean readOnly) {
+		mReadOnly = readOnly;
+	}
+	
 	
 	/**
 	 * Register and respond to clicks on the positive / negative buttons
 	 */
 	@Override
 	public void onClick(View view) {
+		if (mReadOnly == true) {
+			return;
+		}
+		
 		int state = STATE_UNDEFINED;
 		
 		if (view == mButtonNegative) {
