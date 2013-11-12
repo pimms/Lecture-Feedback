@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import chipmunk.unlimited.feedback.AttributeRatingView.OnRatingChangeListener;
@@ -32,6 +33,7 @@ import chipmunk.unlimited.feedback.AttributeRatingView.OnRatingChangeListener;
  *   | 	PARAM_ROOM 				 | The room of the lecture  | YES       | String  |
  *   | 	PARAM_RATINGS			 | The ratings of all the   |			|  		  | 
  *   |							 | lecture attribtues 		| NO 		| bool[5] |
+ *   | 	PARAM_COMMENT 			 | User comment on lecture  | NO 		| String  |
  *   +---------------------------+--------------------------+-----------+---------+
  */
 public class LectureRatingActivity extends Activity implements OnRatingChangeListener {
@@ -43,6 +45,7 @@ public class LectureRatingActivity extends Activity implements OnRatingChangeLis
 	public static final String PARAM_TIME = "param_time";
 	public static final String PARAM_ROOM = "param_room";
 	public static final String PARAM_RATINGS = "param_ratings";
+	public static final String PARAM_COMMENT = "param_comment";
 	
 	private static final String TAG = "LectureRatingActivity";
 	
@@ -86,24 +89,37 @@ public class LectureRatingActivity extends Activity implements OnRatingChangeLis
 	
 	
 	private void handleIntentParameters() {
+		/* Required parameter handling */
 		handleTextViewParameters();
+		
+		/* Optional parameter handling */
 		handleRatingParameters();
+		handleCommentParameter();
 	}
 	
 	private void handleTextViewParameters() {
 		Intent intent = getIntent();
 		
+		/* Get the parameters */
 		String courseName = intent.getStringExtra(PARAM_COURSE_NAME);
 		String lecturer = intent.getStringExtra(PARAM_LECTURER_NAME);
 		String time = intent.getStringExtra(PARAM_TIME);
 		String room = intent.getStringExtra(PARAM_ROOM);
 		
+		/* Ensure required parameters are set */
 		if (courseName == null || lecturer == null || time == null || room == null) {
 			Log.e(TAG, "Not all required parameters are set");
 			return;
 		}
 		
-		setLabelTexts(courseName, lecturer, time + ", " + room);
+		/* Set the text */
+		TextView tvCourse = (TextView)findViewById(R.id.rating_text_view_course);
+		TextView tvLecturer = (TextView)findViewById(R.id.rating_text_view_lecturer);
+		TextView tvTimeroom = (TextView)findViewById(R.id.rating_text_view_time_room);
+		
+		tvCourse.setText(courseName);
+		tvLecturer.setText(lecturer);
+		tvTimeroom.setText(time + ", " + room);
 	}
 	
 	/**
@@ -115,6 +131,7 @@ public class LectureRatingActivity extends Activity implements OnRatingChangeLis
 		
 		boolean[] ratings = intent.getBooleanArrayExtra(PARAM_RATINGS);
 		if (ratings != null) {
+			/* Set the ratings of the views and toggle them readonly */
 			for (int i=0; i<mAttributeViews.size(); i++) {
 				int state = AttributeRatingView.STATE_UNDEFINED;
 				if (ratings[i]) {
@@ -129,15 +146,17 @@ public class LectureRatingActivity extends Activity implements OnRatingChangeLis
 		}
 	}
 	
-	private void setLabelTexts(String courseName, String lecturerName, String timeAndPlace) {	
-		TextView tvCourse = (TextView)findViewById(R.id.rating_text_view_course);
-		TextView tvLecturer = (TextView)findViewById(R.id.rating_text_view_lecturer);
-		TextView tvTimeroom = (TextView)findViewById(R.id.rating_text_view_time_room);
+	private void handleCommentParameter() {
+		String comment = getIntent().getStringExtra(PARAM_COMMENT);
 		
-		tvCourse.setText(courseName);
-		tvLecturer.setText(lecturerName);
-		tvTimeroom.setText(timeAndPlace);
+		if (comment != null) {
+			EditText editText = (EditText)findViewById(R.id.rating_edit_text_comments);
+			editText.setText(comment);
+			editText.setEnabled(false);
+			editText.setFocusable(false);
+		}
 	}
+
 
 	
 	@Override 
