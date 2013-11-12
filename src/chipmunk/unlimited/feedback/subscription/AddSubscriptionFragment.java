@@ -1,4 +1,4 @@
-package chipmunk.unlimited.feedback;
+package chipmunk.unlimited.feedback.subscription;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -25,8 +25,12 @@ import android.widget.Toast;
 
 import java.sql.SQLException;
 
-import chipmunk.unlimited.feedback.subscription.SubscriptionDBHelper;
-import chipmunk.unlimited.feedback.subscription.SubscriptionsChangedListener;
+import chipmunk.unlimited.feedback.R;
+import chipmunk.unlimited.feedback.TimeEditHTTP;
+import chipmunk.unlimited.feedback.TimeEditParser;
+import chipmunk.unlimited.feedback.R.array;
+import chipmunk.unlimited.feedback.R.id;
+import chipmunk.unlimited.feedback.R.layout;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
 

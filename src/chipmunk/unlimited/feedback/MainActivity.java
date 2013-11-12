@@ -2,6 +2,7 @@ package chipmunk.unlimited.feedback;
 
 import java.util.Locale;
 
+import chipmunk.unlimited.feedback.subscription.AddSubscriptionFragment;
 import chipmunk.unlimited.feedback.subscription.SubscriptionFragment;
 import chipmunk.unlimited.feedback.subscription.SubscriptionsChangedListener;
 
