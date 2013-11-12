@@ -152,8 +152,11 @@ public class LectureRatingActivity extends Activity implements OnRatingChangeLis
 		if (comment != null) {
 			EditText editText = (EditText)findViewById(R.id.rating_edit_text_comments);
 			editText.setText(comment);
-			editText.setEnabled(false);
+			//editText.setEnabled(false);
 			editText.setFocusable(false);
+			
+			Button submitButton = (Button)findViewById(R.id.rating_button_submit);
+			submitButton.setVisibility(View.INVISIBLE);
 		}
 	}
 
