@@ -29,6 +29,9 @@ public class FeedFragment extends Fragment implements OnItemClickListener {
 	}
 
 	
+	/**
+	 * Start an instance of the LectureRatingActivity in a read-only state.
+	 */
 	@Override
 	public void onItemClick(AdapterView<?> adapter, View item, int position, long id) {
 		Intent intent = new Intent(item.getContext(), LectureRatingActivity.class);
@@ -36,6 +39,7 @@ public class FeedFragment extends Fragment implements OnItemClickListener {
 		intent.putExtra(LectureRatingActivity.PARAM_LECTURER_NAME, "someone");
 		intent.putExtra(LectureRatingActivity.PARAM_TIME, "sometime");
 		intent.putExtra(LectureRatingActivity.PARAM_ROOM, "somewhere");
+		intent.putExtra(LectureRatingActivity.PARAM_RATINGS, new boolean[] { false, false, true, true, false} );
 		startActivity(intent);
 	}
 }
