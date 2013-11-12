@@ -2,6 +2,9 @@ package chipmunk.unlimited.feedback;
 
 import java.util.Locale;
 
+import chipmunk.unlimited.feedback.subscription.SubscriptionFragment;
+import chipmunk.unlimited.feedback.subscription.SubscriptionsChangedListener;
+
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.os.Bundle;

@@ -7,6 +7,8 @@ import java.util.Locale;
 
 import android.util.Log;
 
+import chipmunk.unlimited.feedback.subscription.SubscriptionItem;
+
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 

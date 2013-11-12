@@ -25,6 +25,9 @@ import android.widget.Toast;
 
 import java.sql.SQLException;
 
+import chipmunk.unlimited.feedback.subscription.SubscriptionDBHelper;
+import chipmunk.unlimited.feedback.subscription.SubscriptionsChangedListener;
+
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
 /**

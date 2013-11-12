@@ -92,7 +92,7 @@ public class DailyLectureAdapter extends BaseAdapter {
 			Date startTime = lecture.getStartTime();
 			Date endTime = lecture.getEndTime();
 			
-			Log.d(TAG, "Lecture: " + startTime + ", " + endTime);
+			//Log.d(TAG, "Lecture: " + startTime + ", " + endTime);
 			
 			if (!endTime.after(lowerBounds) || !startTime.before(upperBounds)) {
 				mLectureItems.remove(i--);

@@ -1,4 +1,4 @@
-package chipmunk.unlimited.feedback;
+package chipmunk.unlimited.feedback.subscription;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -12,6 +12,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.sql.SQLException;
+
+import chipmunk.unlimited.feedback.R;
+import chipmunk.unlimited.feedback.R.drawable;
+import chipmunk.unlimited.feedback.R.id;
+import chipmunk.unlimited.feedback.R.layout;
 
 /**
  * Created by Tobias on 02.09.13, forked by Joakim on 11.11.2013

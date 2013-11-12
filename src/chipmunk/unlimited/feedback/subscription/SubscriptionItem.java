@@ -1,4 +1,4 @@
-package chipmunk.unlimited.feedback;
+package chipmunk.unlimited.feedback.subscription;
 
 import android.widget.Toast;
 

@@ -1,4 +1,4 @@
-package chipmunk.unlimited.feedback;
+package chipmunk.unlimited.feedback.subscription;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -15,6 +15,10 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
 import java.sql.SQLException;
+
+import chipmunk.unlimited.feedback.R;
+import chipmunk.unlimited.feedback.R.id;
+import chipmunk.unlimited.feedback.R.layout;
 
 /**
  * Created by Tobias on 31.08.13, forked by Joakim on 11.11.2013

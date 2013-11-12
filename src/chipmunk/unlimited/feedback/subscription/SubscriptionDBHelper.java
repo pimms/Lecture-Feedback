@@ -1,4 +1,4 @@
-package chipmunk.unlimited.feedback;
+package chipmunk.unlimited.feedback.subscription;
 
 import java.util.ArrayList;
 import java.util.List;
