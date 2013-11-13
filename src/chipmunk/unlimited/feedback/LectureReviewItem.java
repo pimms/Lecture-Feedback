@@ -62,4 +62,8 @@ public class LectureReviewItem extends LectureItem {
 	public int getId() {
 		return mId;
 	}
+	
+	public Date getReviewDate() {
+		return mReviewDate;
+	}
 }
