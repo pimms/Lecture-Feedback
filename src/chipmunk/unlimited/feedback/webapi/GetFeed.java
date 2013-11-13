@@ -1,6 +1,7 @@
 package chipmunk.unlimited.feedback.webapi;
 
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -153,7 +154,7 @@ public class GetFeed extends WebAPICall {
 		String comment = jsonObject.getString("comment");
 		String strReviewTime = jsonObject.getString("review_time");
 		
-		Date reviewDate = new Date(strReviewTime);
+		Date reviewDate = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(strReviewTime);
 		
 		boolean[] ratings = new boolean[5];
 		
