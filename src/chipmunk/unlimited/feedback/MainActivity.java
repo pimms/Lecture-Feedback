@@ -190,6 +190,7 @@ public class MainActivity extends FragmentActivity implements
 	@Override
 	public void onSubscriptionsChanged() {
 		mTodayFragment.refreshItems();
+		mFeedFragment.refreshItems();
 	}
 	
 	

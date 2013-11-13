@@ -17,7 +17,22 @@ public class LectureItem {
 	private String mLecturer;
 	private String mCourseName;
 	
-	
+	/**
+	 * @param date
+	 * The date on the form "yyyy-MM-dd".
+	 * 
+	 * @param time
+	 * The time of the lecture, on the form "HH:mm - HH:mm".
+	 * 
+	 * @param name
+	 * The name of the course.
+	 * 
+	 * @param room
+	 * The room in which the lecture is held.
+	 * 
+	 * @param lecturer
+	 * The lecturer(s) giving the lecture.
+	 */
 	public LectureItem(String date, String time, String name, String room, String lecturer) {
 		setTimes(date, time);
 		

@@ -1,16 +1,18 @@
 package chipmunk.unlimited.feedback.webapi;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.http.Header;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import com.loopj.android.http.AsyncHttpClient;
 
 import android.util.Log;
 import chipmunk.unlimited.feedback.LectureReviewItem;
 import chipmunk.unlimited.feedback.subscription.SubscriptionItem;
+
+import com.loopj.android.http.AsyncHttpClient;
 
 /**
  * Class managing the web API call "getFeed".
@@ -59,6 +61,8 @@ public class GetFeed extends WebAPICall {
 		baseUrl += "filter=" + createFilterString(subscriptions);
 		baseUrl += "&first=" + first;
 		baseUrl += "&count=" + count;
+
+		Log.d(TAG, baseUrl);
 		
 		new AsyncHttpClient().get(baseUrl, this);
 	}
@@ -79,7 +83,16 @@ public class GetFeed extends WebAPICall {
 	
 	
 	@Override
-	public void onSuccess(String response) {
+	public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+		String response;
+		
+		try {
+			response = new String(responseBody, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			mCallback.onGetFeedFailure("Returned content is not UTF-8 encoded");
+			return;
+		}
+		
 		List<LectureReviewItem> list = parseResultJson(response);
 		if (list != null) {
 			mCallback.onGetFeedSuccess(list);
@@ -89,8 +102,20 @@ public class GetFeed extends WebAPICall {
 	}
 	
 	@Override 
-	public void onFailure(Throwable throwable, String eMsg) {
-		mCallback.onGetFeedFailure(eMsg);
+	public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+		String bodyString;
+		String errorMessage = "HTTP Error with code " + statusCode;
+		
+		try {
+			if (responseBody != null) {
+				bodyString = new String(responseBody, "UTF-8");
+				errorMessage += " (" + bodyString + ")";
+			}
+		} catch (UnsupportedEncodingException e) {
+			mCallback.onGetFeedFailure("HTTP error with code " + statusCode);
+		}
+		
+		mCallback.onGetFeedFailure(errorMessage);
 	}
 	
 	
