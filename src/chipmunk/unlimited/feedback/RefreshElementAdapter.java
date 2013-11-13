@@ -39,6 +39,9 @@ public class RefreshElementAdapter extends BaseAdapter {
 			view = sInflater.inflate(R.layout.list_item_loading, null);
 		}
 		
+		view.setEnabled(false);
+		view.setFocusable(false);
+		
 		return view;
 	}
 
