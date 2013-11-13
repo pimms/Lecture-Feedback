@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -99,7 +100,7 @@ public class LectureRatingActivity extends Activity implements OnRatingChangeLis
 			handleRequiredParameters();	
 		} catch (InvalidParameterException ex) {
 			Log.e(TAG, "Missing REQUIRED parameter definitions: " + ex.getMessage());
-			
+			displayErrorDialog(ex.getMessage());
 		}
 		
 		/* Optional parameter handling */
@@ -107,6 +108,7 @@ public class LectureRatingActivity extends Activity implements OnRatingChangeLis
 			handleOptionalParameters();
 		} catch (InvalidParameterException ex) {
 			Log.e(TAG, "Mission OPTIONAL parameter definitions: " + ex.getMessage());
+			displayErrorDialog(ex.getMessage());
 		}
 	}
 	
@@ -204,4 +206,10 @@ public class LectureRatingActivity extends Activity implements OnRatingChangeLis
 		}
 	}
 
+	private void displayErrorDialog(String message) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder	.setMessage(message)
+				.setTitle("Error")
+				.create().show();
+	}
 }
