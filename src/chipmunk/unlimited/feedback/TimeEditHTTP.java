@@ -108,7 +108,7 @@ public class TimeEditHTTP {
 			filter += subscriptions.get(i).getItemId();
 		}
 		
-		filter += ",-1,1.182";
+		filter += ",-1,1.183";
 		return filter;
 	}
 	
