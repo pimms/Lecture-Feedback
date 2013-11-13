@@ -25,6 +25,7 @@ import chipmunk.unlimited.feedback.AttributeRatingView.OnRatingChangeListener;
  * 
  * The activity has two different states: read-only and write. The state
  * of the activity depends on the parameters passed via the Intent.
+ * Parameters are passed via the intent using the "putExtra" interface.
  * 
  * Parameter list:
  * 	 +---------------------------+--------------------------+-----------+---------+
@@ -159,6 +160,8 @@ public class LectureRatingActivity extends Activity implements OnRatingChangeLis
 		boolean[] ratings = intent.getBooleanArrayExtra(PARAM_RATINGS);
 		if (ratings == null) {
 			throw new InvalidParameterException("Parameter 'PARAM_RATINGS' cannot be null!");
+		} else if (ratings.length < 5) {
+			throw new InvalidParameterException("5 ratings expected, " + ratings.length + " ratings received!");
 		}
 		
 		/* Set the ratings of the views and toggle them readonly */
