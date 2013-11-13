@@ -26,16 +26,16 @@ public class FeedFragment extends Fragment implements OnItemClickListener,
 	private static final String TAG = "FeedFragment";
 	
 	private FeedAdapter mFeedAdapter;
+	private ListView mListView;
 	
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {		
 		View rootView = inflater.inflate(R.layout.fragment_main_feed, container, false);
 		
-		ListView list = (ListView)rootView.findViewById(R.id.feed_list_view);
+		mListView = (ListView)rootView.findViewById(R.id.feed_list_view);
 		mFeedAdapter = new FeedAdapter(container.getContext());
-		list.setAdapter(mFeedAdapter);
-		list.setOnItemClickListener(this);
+		mListView.setOnItemClickListener(this);
 		
 		refreshItems();
 		
@@ -46,6 +46,8 @@ public class FeedFragment extends Fragment implements OnItemClickListener,
 	 * Refresh the list of items via the WebAPI's getFeed call.
 	 */
 	public void refreshItems() {
+		mListView.setAdapter(new RefreshElementAdapter(getActivity()));
+		
 		SubscriptionDBHelper subDb = new SubscriptionDBHelper(getActivity());
 		
 		WebAPI webApi = new WebAPI();
@@ -58,6 +60,10 @@ public class FeedFragment extends Fragment implements OnItemClickListener,
 	 */
 	@Override
 	public void onItemClick(AdapterView<?> adapter, View item, int position, long id) {
+		if (mListView.getAdapter() != mFeedAdapter) {
+			return;
+		}
+		
 		Intent intent = new Intent(item.getContext(), LectureRatingActivity.class);
 		
 		LectureReviewItem reviewItem = (LectureReviewItem)mFeedAdapter.getItem(position);
@@ -79,6 +85,7 @@ public class FeedFragment extends Fragment implements OnItemClickListener,
 
 	@Override
 	public void onGetFeedSuccess(List<LectureReviewItem> items) {
+		mListView.setAdapter(mFeedAdapter);
 		mFeedAdapter.setReviewItems(items);
 		mFeedAdapter.notifyDataSetChanged();
 	}
@@ -86,5 +93,7 @@ public class FeedFragment extends Fragment implements OnItemClickListener,
 	@Override
 	public void onGetFeedFailure(String errorMessage) {
 		Log.e(TAG, "GetFeed failed: " + errorMessage);
+		mListView.setAdapter(mFeedAdapter);
+		mFeedAdapter.setReviewItems(null);
 	}
 }

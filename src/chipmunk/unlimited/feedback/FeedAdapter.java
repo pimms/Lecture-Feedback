@@ -15,13 +15,13 @@ import android.widget.TextView;
  * for display in a ListView.
  */
 public class FeedAdapter extends BaseAdapter {
-	private static LayoutInflater mInflater;
+	private static LayoutInflater sInflater;
 	
 	private List<LectureReviewItem> mReviewItems;
 	
 	
 	public FeedAdapter(Context context) {
-		mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		sInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 	
 	
@@ -55,8 +55,9 @@ public class FeedAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View vi = convertView;
+		
 		if (vi == null) {
-			vi = mInflater.inflate(R.layout.feed_review_item, null);
+			vi = sInflater.inflate(R.layout.feed_review_item, null);
 		}
 		
 		TextView tvCourse = (TextView)vi.findViewById(R.id.feed_item_text_view_course);
@@ -79,6 +80,7 @@ public class FeedAdapter extends BaseAdapter {
 		}
 		ratingText += "    ]";
 		tvAttributes.setText(ratingText);
+		
 		
 		return vi;
 	}
