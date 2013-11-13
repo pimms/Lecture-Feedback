@@ -42,7 +42,9 @@ import chipmunk.unlimited.feedback.AttributeRatingView.OnRatingChangeListener;
  *   +---------------------------+--------------------------+-----------+---------+
  *   *) Required parameter if "PARAM_READ_ONLY" is true
  */
-public class LectureRatingActivity extends Activity implements OnRatingChangeListener {
+public class LectureRatingActivity extends Activity 
+	   implements OnRatingChangeListener,
+	   			  OnClickListener {
 	/** 
 	 * The keys through which values will be set through the Intent 
 	 */
@@ -70,13 +72,38 @@ public class LectureRatingActivity extends Activity implements OnRatingChangeLis
 	    
 	    
 	    Button button = (Button)findViewById(R.id.rating_button_submit);
-	    button.setOnClickListener(new OnClickListener() {
-	    	@Override
-	    	public void onClick(View v) {
-	    		/* Submit yo */
-	    	}
-	    });
+	    button.setOnClickListener(this);
 	}
+
+	@Override 
+	public void onRatingStateChange(AttributeRatingView ratingView, int state) {
+		/* Let the overall rating (index 0) determine all undefined attributes */
+		if (ratingView == mAttributeViews.get(0)) {
+			for (int i=1; i<mAttributeViews.size(); i++) {
+				AttributeRatingView attributeView = mAttributeViews.get(i);
+				if (attributeView.getState() == AttributeRatingView.STATE_UNDEFINED) {
+					attributeView.setState(state);
+				}
+			}
+		}
+	}
+	
+	@Override 
+	public void onClick(View view) {
+		if (view.getId() == R.id.rating_button_submit) {
+			// Ensure all rating views have a value
+			for (int i=0; i<mAttributeViews.size(); i++) {
+				if (mAttributeViews.get(i).getState() == AttributeRatingView.STATE_UNDEFINED) {
+					// TODO: Localize
+					displayErrorDialog("All fields must be rated"); 
+					return;
+				}
+			}
+			
+			displayErrorDialog("Dummysubmit");
+		}
+	}
+	
 	
 	private void createAttributeRatingViews() {
 		LinearLayout wrapper = (LinearLayout)findViewById(R.id.rating_attribute_wrapper);
@@ -195,24 +222,11 @@ public class LectureRatingActivity extends Activity implements OnRatingChangeLis
 	}
 
 
-	
-	@Override 
-	public void onRatingStateChange(AttributeRatingView ratingView, int state) {
-		/* Let the overall rating (index 0) determine all undefined attributes */
-		if (ratingView == mAttributeViews.get(0)) {
-			for (int i=1; i<mAttributeViews.size(); i++) {
-				AttributeRatingView attributeView = mAttributeViews.get(i);
-				if (attributeView.getState() == AttributeRatingView.STATE_UNDEFINED) {
-					attributeView.setState(state);
-				}
-			}
-		}
-	}
-
 	private void displayErrorDialog(String message) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder	.setMessage(message)
 				.setTitle("Error")
+				.setPositiveButton("Ok", null)
 				.create().show();
 	}
 }
