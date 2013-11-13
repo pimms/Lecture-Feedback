@@ -1,5 +1,6 @@
 package chipmunk.unlimited.feedback;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Intent;
@@ -38,8 +39,13 @@ public class FeedFragment extends Fragment implements OnItemClickListener,
 		mListView.setOnItemClickListener(this);
 		
 		refreshItems();
-		
+			
 		return rootView;
+	}
+	
+	@Override
+	public void onSaveInstanceState(Bundle savedInstanceState) {
+		super.onSaveInstanceState(savedInstanceState);
 	}
 
 	/**

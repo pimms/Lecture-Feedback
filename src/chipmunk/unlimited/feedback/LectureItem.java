@@ -1,5 +1,6 @@
 package chipmunk.unlimited.feedback;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -11,11 +12,11 @@ import android.util.Log;
  * Representation of a lecture retrieved from TimeEdit.
  */
 public class LectureItem {
-	private Date mStartTime;
-	private Date mEndTime;
-	private String mRoom;
-	private String mLecturer;
-	private String mCourseName;
+	protected Date mStartTime;
+	protected Date mEndTime;
+	protected String mRoom;
+	protected String mLecturer;
+	protected String mCourseName;
 	
 	/**
 	 * @param date

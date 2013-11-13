@@ -1,5 +1,7 @@
 package chipmunk.unlimited.feedback;
 
+import java.util.Date;
+
 /**
  * Holds the data required to define a lecture review
  */
@@ -7,6 +9,7 @@ public class LectureReviewItem extends LectureItem {
 	private boolean[] mRatings;
 	private String mComment;
 	private int mId;
+	private Date mReviewDate;
 	
 	/**
 	 * @param date
@@ -34,13 +37,18 @@ public class LectureReviewItem extends LectureItem {
 	 * 
 	 * @param id
 	 * The unique ID of the review, received from the web API.
+	 * 
+	 * @param reviewDate
+	 * The date the comment was made.
 	 */
 	public LectureReviewItem(String date, String time, String name, String room, 
-							 String lecturer, boolean[] ratings, String comment, int id) {
+							 String lecturer, boolean[] ratings, String comment, 
+							 int id, Date reviewDate) {
 		super(date, time, name, room, lecturer);
 		mRatings = ratings;
 		mComment = comment;
 		mId = id;
+		mReviewDate = reviewDate;
 	}
 	
 	public boolean[] getRatings() {

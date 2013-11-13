@@ -2,6 +2,7 @@ package chipmunk.unlimited.feedback.webapi;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.http.Header;
@@ -143,13 +144,16 @@ public class GetFeed extends WebAPICall {
 	}
 	
 	private LectureReviewItem parseLectureReviewItem(JSONObject jsonObject) throws Exception{
+		int id = jsonObject.getInt("id");
 		String course = jsonObject.getString("course");
 		String lecturer = jsonObject.getString("lecturer");
 		String time = jsonObject.getString("time");
 		String date = jsonObject.getString("date");
 		String room = jsonObject.getString("room");
 		String comment = jsonObject.getString("comment");
-		int id = jsonObject.getInt("id");
+		String strReviewTime = jsonObject.getString("review_time");
+		
+		Date reviewDate = new Date(strReviewTime);
 		
 		boolean[] ratings = new boolean[5];
 		
@@ -161,7 +165,7 @@ public class GetFeed extends WebAPICall {
 		LectureReviewItem reviewItem = new LectureReviewItem(
 				date, time, course, 
 				room, lecturer, ratings, 
-				comment, id);
+				comment, id, reviewDate);
 		return reviewItem;
 	}
 }
