@@ -1,5 +1,7 @@
 package chipmunk.unlimited.feedback;
 
+import java.util.List;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,13 +11,15 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import chipmunk.unlimited.feedback.webapi.GetFeed.GetFeedCallback;
 
 /** 
  * @class FeedFragment
  * Fragment containing a list view which displays 
  * recent reviews.
  */
-public class FeedFragment extends Fragment implements OnItemClickListener {
+public class FeedFragment extends Fragment implements OnItemClickListener, 
+													  GetFeedCallback {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {		
 		View rootView = inflater.inflate(R.layout.fragment_main_feed, container, false);
@@ -48,5 +52,16 @@ public class FeedFragment extends Fragment implements OnItemClickListener {
 		intent.putExtra(LectureRatingActivity.PARAM_COMMENT, "This was a great lecture.\nThe prof cursed at me a little.\n\n10/10, would attend again.");
 		
 		startActivity(intent);
+	}
+
+
+	@Override
+	public void onGetFeedSuccess(List<LectureReviewItem> items) {
+		
+	}
+
+	@Override
+	public void onGetFeedFailure(String errorMessage) {
+		// o snap
 	}
 }

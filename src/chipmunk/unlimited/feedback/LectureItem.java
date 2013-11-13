@@ -102,7 +102,7 @@ public class LectureItem {
 	 * @return
 	 * Integer.parseInt(string)
 	 */
-	private int parseInt(String string) {
+	protected int parseInt(String string) {
 		string = string.trim();
 		
 		while (string.length() != 0 && string.charAt(0) == '0') {
@@ -117,7 +117,7 @@ public class LectureItem {
 	}
 	
 	
-	private String getTimeString(Date date) {
+	protected String getTimeString(Date date) {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
 		
