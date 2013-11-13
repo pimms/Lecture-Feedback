@@ -9,7 +9,13 @@ import chipmunk.unlimited.feedback.subscription.SubscriptionItem;
  * Java interface for communicating with the webAPI
  */
 public class WebAPI {
-	/* Change this to the URL of the actual web API */
+	/**
+	 * The base URL of the web API. 
+	 * When debugging, change this to an address accessible to
+	 * your device where the API is hosted.
+	 * 
+	 * DO NOT ADD "/" AT THE END!
+	 */
 	private static final String API_URL = "192.168.2.63/lfb/api";
 	
 	/**

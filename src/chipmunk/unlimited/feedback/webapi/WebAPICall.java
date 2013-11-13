@@ -15,6 +15,16 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 abstract public class WebAPICall extends AsyncHttpResponseHandler {
 	private static final String TAG = "WebAPICall";
 	
+	
+	/**
+	 * Dummy-placeholdre API call. 
+	 * 
+	 * @param baseUrl
+	 * URL on the form:
+	 * "www.superdomain.com/ourapi"
+	 * Do note that the URL does not contain a trailing "/", 
+	 * nor should it.
+	 */
 	public void apiCall(String baseUrl) {
 		Log.d(TAG, "Dummy webAPI call to " + baseUrl);
 	}

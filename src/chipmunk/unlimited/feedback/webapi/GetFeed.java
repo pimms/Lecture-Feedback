@@ -6,6 +6,8 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.loopj.android.http.AsyncHttpClient;
+
 import android.util.Log;
 import chipmunk.unlimited.feedback.LectureReviewItem;
 import chipmunk.unlimited.feedback.subscription.SubscriptionItem;
@@ -26,14 +28,53 @@ public class GetFeed extends WebAPICall {
 	
 	
 	public GetFeed(GetFeedCallback callback) {
+		assert(callback != null);
 		mCallback = callback;
 	}
 	
+	/**
+	 * 
+	 * @param baseUrl
+	 * The base url containing the root level of the webAPI.
+	 * 
+	 * @param subscriptions
+	 * The subscriptions to be filtered in.
+	 * 
+	 * @param first
+	 * The first item to be returned in the result set.
+	 * 
+	 * @param count
+	 * The maximum number of items to be returned.
+	 */
 	public void apiCall(String baseUrl, 
 						List<SubscriptionItem> subscriptions,
 						int first, int count)
 	{
-		// TODO
+		if (subscriptions.size() == 0) {
+			mCallback.onGetFeedFailure("No subscriptions defined.");
+			return;
+		}
+		
+		baseUrl += "/getFeed.php?";
+		baseUrl += "filter=" + createFilterString(subscriptions);
+		baseUrl += "&first=" + first;
+		baseUrl += "&count=" + count;
+		
+		new AsyncHttpClient().get(baseUrl, this);
+	}
+	
+	private String createFilterString(List<SubscriptionItem> subscriptions) {
+		String result = "";
+		
+		if (subscriptions.size() != 0) {
+			result = subscriptions.get(0).getItemId();
+			
+			for (int i=1; i<subscriptions.size(); i++) {
+				result += "," + subscriptions.get(i).getItemId();
+			}
+		}
+		
+		return result;
 	}
 	
 	
