@@ -23,11 +23,6 @@
         android:visibility="gone"
         android:onClick="dismissAddSubscriptionFragment" />
 
-    <Spinner
-        android:id="@+id/add_spinner"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
-
     <EditText
         android:id="@+id/add_edittext"
         android:layout_height="wrap_content"

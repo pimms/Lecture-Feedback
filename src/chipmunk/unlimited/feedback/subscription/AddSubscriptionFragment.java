@@ -28,7 +28,6 @@ import java.sql.SQLException;
 import chipmunk.unlimited.feedback.R;
 import chipmunk.unlimited.feedback.TimeEditHTTP;
 import chipmunk.unlimited.feedback.TimeEditParser;
-import chipmunk.unlimited.feedback.R.array;
 import chipmunk.unlimited.feedback.R.id;
 import chipmunk.unlimited.feedback.R.layout;
 
@@ -54,11 +53,6 @@ public class AddSubscriptionFragment extends DialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.fragment_add_subscription, null);
 
-        Spinner spinner = (Spinner) view.findViewById(R.id.add_spinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.search_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-
         builder.setView(view)
                 .setTitle("Title, idc")
                 .setNeutralButton("whatevs", new DialogInterface.OnClickListener() {
@@ -77,7 +71,6 @@ public class AddSubscriptionFragment extends DialogFragment {
         AlertDialog dialog = (AlertDialog)getDialog();
 
         final EditText et = (EditText)dialog.findViewById(R.id.add_edittext);
-        final Spinner spinner = (Spinner)dialog.findViewById(R.id.add_spinner);
         final ProgressBar pb = (ProgressBar)dialog.findViewById(R.id.add_progressBar);
         final ListView lv = (ListView)dialog.findViewById(R.id.add_result_list);
         final TextView aerror = (TextView)dialog.findViewById(R.id.aerror_text);
@@ -114,7 +107,6 @@ public class AddSubscriptionFragment extends DialogFragment {
                         imgr.hideSoftInputFromWindow(et.getWindowToken(), 0);
 
                         //Hide old shit, show progressbar, disable search button
-                        spinner.setVisibility(View.GONE);
                         et.setVisibility(View.GONE);
                         pb.setVisibility(View.VISIBLE);
                         neutButton.setEnabled(false);
@@ -123,7 +115,7 @@ public class AddSubscriptionFragment extends DialogFragment {
                         final String term = et.getText().toString();
 
                         //Send to network class
-                        TimeEditHTTP.search(term, spinner.getSelectedItem().toString(), getResources().getStringArray(R.array.search_array), new AsyncHttpResponseHandler(){
+                        TimeEditHTTP.search(term, new AsyncHttpResponseHandler(){
                             @Override
                             public void onSuccess(String response){
                                 Log.d("DIALOG", "onSuccess starting");

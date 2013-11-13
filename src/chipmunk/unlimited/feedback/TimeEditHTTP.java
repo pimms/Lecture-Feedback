@@ -113,23 +113,10 @@ public class TimeEditHTTP {
 	}
 	
 	/**
-	 * This method is completely undocumented, and was copied from TobbenTM's
-	 * application, HiG-TimeEdit Reader. It is only called from "AddSubscriptionFragment".
-	 */
-	 public static void search(String term, String type, String[] searchArray, AsyncHttpResponseHandler handler){
-        final int iType;
-        Log.d("HIG.SEARCH", term + ", " + type + ", " + searchArray.length);
-        if(type.contains(searchArray[0])){
-            iType = 182;    // Class
-        }else if(type.contains(searchArray[1])){
-            iType = 183;    // Course
-        }else if(searchArray.length > 2 && type.contains(searchArray[2])){
-            iType = 184;    // Lecturer
-        }else if(searchArray.length > 2 && type.contains(searchArray[3])){
-            iType = 185;    // Room
-        }else{
-            iType = 0;
-        }
+	 * Only search for courses (183)
+	  */
+	 public static void search(String term, AsyncHttpResponseHandler handler){
+        final int iType = 183;
 
         final String baseURL = "https://web.timeedit.se/hig_no/db1/timeedit/p/open/objects.html?max=15&partajax=t&l=en&sid=3&types=" + iType + "&search_text=";
         //Log.d("HIG.SEARCH", "URL: " + baseURL + term.replaceAll(" ", "%20"));
