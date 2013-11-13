@@ -1,5 +1,6 @@
 package chipmunk.unlimited.feedback;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import chipmunk.unlimited.feedback.AttributeRatingView.OnRatingChangeListener;
+
 
 
 /**
@@ -31,10 +33,12 @@ import chipmunk.unlimited.feedback.AttributeRatingView.OnRatingChangeListener;
  *   |	PARAM_LECTURER_NAME 	 | The name of the lecturer | YES 		| String  |
  *   |  PARAM_TIME 				 | The time of the lecture  | YES 		| String  |
  *   | 	PARAM_ROOM 				 | The room of the lecture  | YES       | String  |
+ *   | 	PARAM_READ_ONLY 		 | Toggle read only? 		| NO 		| bool 	  |
  *   | 	PARAM_RATINGS			 | The ratings of all the   |			|  		  | 
- *   |							 | lecture attribtues 		| NO 		| bool[5] |
- *   | 	PARAM_COMMENT 			 | User comment on lecture  | NO 		| String  |
+ *   |							 | lecture attribtues 		| NO* 		| bool[5] |
+ *   | 	PARAM_COMMENT 			 | User comment on lecture  | NO* 		| String  |
  *   +---------------------------+--------------------------+-----------+---------+
+ *   *) Required parameter if "PARAM_READ_ONLY" is true
  */
 public class LectureRatingActivity extends Activity implements OnRatingChangeListener {
 	/** 
@@ -44,6 +48,7 @@ public class LectureRatingActivity extends Activity implements OnRatingChangeLis
 	public static final String PARAM_LECTURER_NAME = "param_lecturer_name";
 	public static final String PARAM_TIME = "param_time";
 	public static final String PARAM_ROOM = "param_room";
+	public static final String PARAM_READ_ONLY = "param_read_only";
 	public static final String PARAM_RATINGS = "param_ratings";
 	public static final String PARAM_COMMENT = "param_comment";
 	
@@ -90,14 +95,27 @@ public class LectureRatingActivity extends Activity implements OnRatingChangeLis
 	
 	private void handleIntentParameters() {
 		/* Required parameter handling */
-		handleTextViewParameters();
+		try {
+			handleRequiredParameters();	
+		} catch (InvalidParameterException ex) {
+			Log.e(TAG, "Missing REQUIRED parameter definitions: " + ex.getMessage());
+			
+		}
 		
 		/* Optional parameter handling */
-		handleRatingParameters();
-		handleCommentParameter();
+		try {
+			handleOptionalParameters();
+		} catch (InvalidParameterException ex) {
+			Log.e(TAG, "Mission OPTIONAL parameter definitions: " + ex.getMessage());
+		}
 	}
 	
-	private void handleTextViewParameters() {
+	
+	private void handleRequiredParameters() throws InvalidParameterException {
+		handleTextViewParameters();
+	}
+	
+	private void handleTextViewParameters() throws InvalidParameterException {
 		Intent intent = getIntent();
 		
 		/* Get the parameters */
@@ -108,8 +126,7 @@ public class LectureRatingActivity extends Activity implements OnRatingChangeLis
 		
 		/* Ensure required parameters are set */
 		if (courseName == null || lecturer == null || time == null || room == null) {
-			Log.e(TAG, "Not all required parameters are set");
-			return;
+			throw new InvalidParameterException("Not all required parameters are defined");
 		}
 		
 		/* Set the text */
@@ -122,42 +139,54 @@ public class LectureRatingActivity extends Activity implements OnRatingChangeLis
 		tvTimeroom.setText(time + ", " + room);
 	}
 	
+	
+	private void handleOptionalParameters() throws InvalidParameterException {
+		if (getIntent().getBooleanExtra(PARAM_READ_ONLY, false)) {
+			handleRatingParameters();
+			handleCommentParameter();	
+		}
+	}
+	
 	/**
 	 * Set the state of the Attribute Rating Views. The rating
 	 * views are also set to be read only.
 	 */
-	private void handleRatingParameters() {
+	private void handleRatingParameters() throws InvalidParameterException {
 		Intent intent = getIntent();
 		
 		boolean[] ratings = intent.getBooleanArrayExtra(PARAM_RATINGS);
-		if (ratings != null) {
-			/* Set the ratings of the views and toggle them readonly */
-			for (int i=0; i<mAttributeViews.size(); i++) {
-				int state = AttributeRatingView.STATE_UNDEFINED;
-				if (ratings[i]) {
-					state = AttributeRatingView.STATE_POSITIVE;
-				} else {
-					state = AttributeRatingView.STATE_NEGATIVE;
-				}
-				
-				mAttributeViews.get(i).setState(state);
-				mAttributeViews.get(i).setReadOnly(true);
+		if (ratings == null) {
+			throw new InvalidParameterException("Parameter 'PARAM_RATINGS' cannot be null!");
+		}
+		
+		/* Set the ratings of the views and toggle them readonly */
+		for (int i=0; i<mAttributeViews.size(); i++) {
+			int state = AttributeRatingView.STATE_UNDEFINED;
+			if (ratings[i]) {
+				state = AttributeRatingView.STATE_POSITIVE;
+			} else {
+				state = AttributeRatingView.STATE_NEGATIVE;
 			}
+			
+			mAttributeViews.get(i).setState(state);
+			mAttributeViews.get(i).setReadOnly(true);
 		}
 	}
 	
-	private void handleCommentParameter() {
+	private void handleCommentParameter() throws InvalidParameterException {
 		String comment = getIntent().getStringExtra(PARAM_COMMENT);
 		
-		if (comment != null) {
-			EditText editText = (EditText)findViewById(R.id.rating_edit_text_comments);
-			editText.setText(comment);
-			//editText.setEnabled(false);
-			editText.setFocusable(false);
-			
-			Button submitButton = (Button)findViewById(R.id.rating_button_submit);
-			submitButton.setVisibility(View.INVISIBLE);
+		if (comment == null) {
+			throw new InvalidParameterException("Parameter 'PARAM_COMMENT' cannot be null!");
 		}
+		
+		EditText editText = (EditText)findViewById(R.id.rating_edit_text_comments);
+		editText.setText(comment);
+		//editText.setEnabled(false);
+		editText.setFocusable(false);
+		
+		Button submitButton = (Button)findViewById(R.id.rating_button_submit);
+		submitButton.setVisibility(View.INVISIBLE);
 	}
 
 
