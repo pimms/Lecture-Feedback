@@ -3,7 +3,7 @@ package chipmunk.unlimited.feedback;
 import java.util.Date;
 
 /**
- * Holds the data required to define a lecture review
+ * Holds the data required to define a lecture review.
  */
 public class LectureReviewItem extends LectureItem {
 	private boolean[] mRatings;
