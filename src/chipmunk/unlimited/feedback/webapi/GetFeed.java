@@ -73,8 +73,7 @@ public class GetFeed extends WebAPICall {
 		String result = "";
 		
 		if (subscriptions.size() != 0) {
-			result = subscriptions.get(0).getName();
-			result += ",IMTtest,IMTeplefjes";
+			result = subscriptions.get(0).getHigCode();
 			
 			for (int i=1; i<subscriptions.size(); i++) {
 				result += "," + subscriptions.get(i).getName();
@@ -128,18 +127,25 @@ public class GetFeed extends WebAPICall {
 			return null;
 		}
 		
-		List<LectureReviewItem> list = new ArrayList<LectureReviewItem>();
+		List<LectureReviewItem> list = null;
 		
 		try {
-			int count = json.getInt("item_count");
-			JSONArray items = json.getJSONArray("items");
+			if (json.getString("status").equals("ok")) {
+				list = new ArrayList<LectureReviewItem>();
 			
-			for (int i=0; i<count; i++) {
-				JSONObject item = items.getJSONObject(i);
-				list.add(parseLectureReviewItem(item));
+				int count = json.getInt("item_count");
+				JSONArray items = json.getJSONArray("items");
+				
+				for (int i=0; i<count; i++) {
+					JSONObject item = items.getJSONObject(i);
+					list.add(parseLectureReviewItem(item));
+				}
+			} else {
+				Log.e(TAG, "Status = bad returned for getFeed()");
 			}
 		} catch (Exception ex) {
 			Log.e(TAG, "Failed to parse items: " + ex.getMessage());
+			return null;
 		}
 		
 		return list;
@@ -147,7 +153,8 @@ public class GetFeed extends WebAPICall {
 	
 	private LectureReviewItem parseLectureReviewItem(JSONObject jsonObject) throws Exception{
 		int id = jsonObject.getInt("id");
-		String course = jsonObject.getString("course");
+		String courseName = jsonObject.getString("course_name");
+		String courseCode = jsonObject.getString("course_code");
 		String lecturer = jsonObject.getString("lecturer");
 		String time = jsonObject.getString("time");
 		String date = jsonObject.getString("date");
@@ -165,7 +172,7 @@ public class GetFeed extends WebAPICall {
 		}
 		
 		LectureReviewItem reviewItem = new LectureReviewItem(
-				date, time, course, 
+				date, time, courseName, courseCode, 
 				room, lecturer, ratings, 
 				comment, id, reviewDate);
 		return reviewItem;

@@ -17,6 +17,7 @@ public class LectureItem {
 	protected String mRoom;
 	protected String mLecturer;
 	protected String mCourseName;
+	protected String mCourseHigCode;
 	
 	/**
 	 * @param date
@@ -28,16 +29,21 @@ public class LectureItem {
 	 * @param name
 	 * The name of the course.
 	 * 
+	 * @param higCode
+	 * The HiG course code
+	 * 
 	 * @param room
 	 * The room in which the lecture is held.
 	 * 
 	 * @param lecturer
 	 * The lecturer(s) giving the lecture.
 	 */
-	public LectureItem(String date, String time, String name, String room, String lecturer) {
+	public LectureItem(	String date, String time, String name,
+						String higCode, String room, String lecturer) {
 		setTimes(date, time);
 		
 		mCourseName = name;
+		mCourseHigCode = higCode;
 		mRoom = room;
 		mLecturer = lecturer;
 	}
@@ -55,8 +61,16 @@ public class LectureItem {
 		return mStartTime;
 	}
 	
+	public long getStartTimeUNIX() {
+		return mStartTime.getTime() / 1000;
+	}
+	
 	public Date getEndTime() {
 		return mEndTime;
+	}
+	
+	public long getEndTimeUNIX() {
+		return mEndTime.getTime() / 1000;
 	}
 	
 	public String getRoom() {
@@ -69,6 +83,10 @@ public class LectureItem {
 	
 	public String getCourseName() {
 		return mCourseName;
+	}
+	
+	public String getCourseHigCode() {
+		return mCourseHigCode;
 	}
 	
 	

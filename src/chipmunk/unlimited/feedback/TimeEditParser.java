@@ -63,7 +63,15 @@ public class TimeEditParser extends AsyncHttpResponseHandler {
 				for (int i=1; i<res.length; i++) {
 					String[] arr = res[i];
 					
-					LectureItem item = new LectureItem(arr[0], arr[1], arr[2], arr[3], arr[4]);
+					String[] split = arr[2].split(",");
+					String courseCode = split[0];
+					String courseName = split[1];
+					for (int j=2; j<split.length; j++) {
+						courseName += "," + split[j];
+					}
+					
+					// 								   date    time    name        id          room    lecturer
+					LectureItem item = new LectureItem(arr[0], arr[1], courseName, courseCode, arr[3], arr[4]);
 					list.add(item);
 					//Log.d("parser", item.toString());
 				}
@@ -220,6 +228,18 @@ public class TimeEditParser extends AsyncHttpResponseHandler {
 	    		arraylist.remove(i--);
 	    	}
     	}
+    	
+    	/*
+    	 * All valid lectures will be on the form "XXXyyyy, Course Name".
+    	 * If count(split(name, ",")) < 2, the course name is illegal and
+    	 * may be filtered out.
+    	 */
+    	for (int i=0; i<arraylist.size(); i++) {
+    		if (arraylist.get(i).get(2).split(",").length < 2) {
+    			arraylist.remove(i--);
+    		}
+    	}
+    	
     	
         final int size = arraylist.size();
         String[][] sarr = new String[size][];

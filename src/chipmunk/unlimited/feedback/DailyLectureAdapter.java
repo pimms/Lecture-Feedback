@@ -81,7 +81,7 @@ public class DailyLectureAdapter extends BaseAdapter {
 		Calendar cal = Calendar.getInstance();
 		
 		Date upperBounds = cal.getTime();
-		cal.add(Calendar.DAY_OF_YEAR, -1);
+		cal.add(Calendar.DAY_OF_YEAR, -10);
 		Date lowerBounds = cal.getTime();
 		
 		Log.d(TAG, "BOUNDS: " + lowerBounds + ", " + upperBounds);

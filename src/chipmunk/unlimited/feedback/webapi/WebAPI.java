@@ -2,6 +2,7 @@ package chipmunk.unlimited.feedback.webapi;
 
 import java.util.List;
 
+import android.content.Context;
 import chipmunk.unlimited.feedback.LectureReviewItem;
 import chipmunk.unlimited.feedback.subscription.SubscriptionItem;
 import chipmunk.unlimited.feedback.webapi.PostReview.PostReviewCallback;
@@ -47,6 +48,10 @@ public class WebAPI {
 	/**
 	 * Method using the web-API call "postReview.php". 
 	 * 
+	 * @param context
+	 * The context is used to retrieve the ANDROID_ID value when passing
+	 * the clienthash parameter.
+	 * 
 	 * @param callback
 	 * The callback to receive the finish-notifications.
 	 * 
@@ -54,8 +59,8 @@ public class WebAPI {
 	 * LectureReviewItem containing the information to be posted 
 	 * to the web-API.
 	 */
-	public void postReview(PostReviewCallback callback, LectureReviewItem review) {
-		PostReview postReview = new PostReview(callback);
+	public void postReview(Context context, PostReviewCallback callback, LectureReviewItem review) {
+		PostReview postReview = new PostReview(context, callback);
 		postReview.apiCall(API_URL, review);
 	}
 }

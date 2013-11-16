@@ -21,6 +21,9 @@ public class LectureReviewItem extends LectureItem {
 	 * @param name
 	 * See LectureItem.
 	 * 
+	 * @param higCode
+	 * See LectureItem
+	 * 
 	 * @param room
 	 * See LectureItem.
 	 * 
@@ -41,10 +44,10 @@ public class LectureReviewItem extends LectureItem {
 	 * @param reviewDate
 	 * The date the comment was made.
 	 */
-	public LectureReviewItem(String date, String time, String name, String room, 
-							 String lecturer, boolean[] ratings, String comment, 
-							 int id, Date reviewDate) {
-		super(date, time, name, room, lecturer);
+	public LectureReviewItem(String date, String time, String name, String higCode, 
+							String room, String lecturer, boolean[] ratings, 
+							String comment, int id, Date reviewDate) {
+		super(date, time, name, higCode, room, lecturer);
 		mRatings = ratings;
 		mComment = comment;
 		mId = id;
@@ -53,6 +56,19 @@ public class LectureReviewItem extends LectureItem {
 	
 	public boolean[] getRatings() {
 		return mRatings;
+	}
+	
+	public String getRatingString() {
+		StringBuilder sb = new StringBuilder();
+		
+		for (int i=0; i<mRatings.length; i++) {
+			if (i != 0) {
+				sb.append(".");
+			}
+			sb.append( (mRatings[i]) ? "1" : "0" );
+		}
+		
+		return sb.toString();
 	}
 	
 	public String getComment() {
