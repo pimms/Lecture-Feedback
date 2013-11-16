@@ -6,7 +6,9 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -73,6 +75,9 @@ public class LectureRatingActivity extends Activity
 	private List<AttributeRatingView> mAttributeViews;
 	private LectureItem mLectureItem;
 	
+	/** Displayed when submitting */
+	private ProgressDialog mProgressDialog;
+	
 	
 	/** Called when the activity is first created. */
 	@Override
@@ -121,15 +126,19 @@ public class LectureRatingActivity extends Activity
 	private void submitLectureReview() {
 		WebAPI webApi = new WebAPI();
 		webApi.postReview(this, this, getReviewItem());
+		
+		showProgressDialog();
 	}
 	
 	@Override 
 	public void onPostReviewSuccess() { 
+		hideProgressDialog();
 		displayErrorDialog("SUCCCCCCCCCESSSSSSSSSSSSS");
 	}
 	
 	@Override
 	public void onPostReviewFailure(String errorMessage) {
+		hideProgressDialog();
 		displayErrorDialog(errorMessage);
 	}
 	
@@ -156,7 +165,25 @@ public class LectureRatingActivity extends Activity
 	
 	private String getComment() {
 		EditText editText = (EditText)findViewById(R.id.rating_edit_text_comments);
-		return editText.getText().toString();
+		return Uri.encode(editText.getText().toString());
+	}
+	
+	
+	private void showProgressDialog() {
+		hideProgressDialog();
+		
+		// TODO: Localization
+		mProgressDialog = new ProgressDialog(this);
+		mProgressDialog.setTitle("Submitting...");
+		mProgressDialog.setIndeterminate(true);
+		mProgressDialog.show();
+	}
+	
+	private void hideProgressDialog() {
+		if (mProgressDialog != null && mProgressDialog.isShowing()) {
+			mProgressDialog.dismiss();
+			mProgressDialog = null;
+		}
 	}
 	
 	
