@@ -133,9 +133,28 @@ public class LectureRatingActivity extends Activity
 	
 	
 	private LectureReviewItem getReviewItem() {
+		LectureReviewItem item = new LectureReviewItem(
+				mLectureItem,
+				getRatingArray(),
+				getComment(),
+				-1, null);
+		return item;
+	}
+	
+	private boolean[] getRatingArray() {
+		boolean[] ratings = new boolean[mAttributeViews.size()];
 		
+		for (int i=0; i<mAttributeViews.size(); i++) {
+			int state = mAttributeViews.get(i).getState();
+			ratings[i] = (state == AttributeRatingView.STATE_POSITIVE);
+		}
 		
-		return null;
+		return ratings;
+	}
+	
+	private String getComment() {
+		EditText editText = (EditText)findViewById(R.id.rating_edit_text_comments);
+		return editText.getText().toString();
 	}
 	
 	
