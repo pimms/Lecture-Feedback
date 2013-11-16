@@ -14,8 +14,8 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import chipmunk.unlimited.feedback.subscription.SubscriptionDBHelper;
-import chipmunk.unlimited.feedback.webapi.GetFeed.GetFeedCallback;
 import chipmunk.unlimited.feedback.webapi.WebAPI;
+import chipmunk.unlimited.feedback.webapi.WebAPI.GetFeedCallback;
 
 /** 
  * @class FeedFragment

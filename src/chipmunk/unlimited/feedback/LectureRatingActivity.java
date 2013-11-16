@@ -17,7 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import chipmunk.unlimited.feedback.AttributeRatingView.OnRatingChangeListener;
 import chipmunk.unlimited.feedback.webapi.WebAPI;
-import chipmunk.unlimited.feedback.webapi.PostReview.PostReviewCallback;
+import chipmunk.unlimited.feedback.webapi.WebAPI.PostReviewCallback;
 
 
 

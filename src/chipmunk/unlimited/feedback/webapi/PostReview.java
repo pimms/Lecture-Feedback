@@ -8,15 +8,11 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.provider.Settings.Secure;
 import chipmunk.unlimited.feedback.LectureReviewItem;
+import chipmunk.unlimited.feedback.webapi.WebAPI.PostReviewCallback;
 
 import com.loopj.android.http.AsyncHttpClient;
 
-public class PostReview extends WebAPICall {
-	public interface PostReviewCallback {
-		public void onPostReviewSuccess();
-		public void onPostReviewFailure(String errorMessage);
-	}
-	
+class PostReview extends WebAPICall {
 	private static final String CLIENT_HASH_SALT = "SpiceGurls";
 	
 	private Context mContext;

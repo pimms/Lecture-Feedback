@@ -13,20 +13,15 @@ import org.json.JSONObject;
 import android.util.Log;
 import chipmunk.unlimited.feedback.LectureReviewItem;
 import chipmunk.unlimited.feedback.subscription.SubscriptionItem;
+import chipmunk.unlimited.feedback.webapi.WebAPI.GetFeedCallback;
 
 import com.loopj.android.http.AsyncHttpClient;
 
 /**
  * Class managing the web API call "getFeed".
  */
-public class GetFeed extends WebAPICall {
-	private static final String TAG = "GetFeed";
-	
-	public interface GetFeedCallback {
-		public void onGetFeedSuccess(List<LectureReviewItem> reviewItems);
-		public void onGetFeedFailure(String errorMessage);
-	}
-	
+class GetFeed extends WebAPICall {
+	private static final String TAG = "GetFeed";	
 	
 	private GetFeedCallback mCallback;
 	

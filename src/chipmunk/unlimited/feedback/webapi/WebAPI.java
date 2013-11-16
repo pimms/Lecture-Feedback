@@ -5,13 +5,29 @@ import java.util.List;
 import android.content.Context;
 import chipmunk.unlimited.feedback.LectureReviewItem;
 import chipmunk.unlimited.feedback.subscription.SubscriptionItem;
-import chipmunk.unlimited.feedback.webapi.PostReview.PostReviewCallback;
 
 /**
  * @class WebAPI
  * Java interface for communicating with the webAPI
  */
 public class WebAPI {
+	
+	/**
+	 * Callback interface for the API-call getFeed
+	 */
+	public interface GetFeedCallback {
+		public void onGetFeedSuccess(List<LectureReviewItem> reviewItems);
+		public void onGetFeedFailure(String errorMessage);
+	}
+	
+	/**
+	 * Callback interface for the API-call postReview
+	 */
+	public interface PostReviewCallback {
+		public void onPostReviewSuccess();
+		public void onPostReviewFailure(String errorMessage);
+	}
+	
 	/**
 	 * The base URL of the web API. 
 	 * When debugging, change this to an address accessible to
@@ -37,7 +53,7 @@ public class WebAPI {
 	 * @param count
 	 * The maximum number of items to be returned.
 	 */
-	public void getFeed(GetFeed.GetFeedCallback callback, 
+	public void getFeed(GetFeedCallback callback, 
 						List<SubscriptionItem> subscriptions, 
 						int first, int count) 
 	{
@@ -59,7 +75,9 @@ public class WebAPI {
 	 * LectureReviewItem containing the information to be posted 
 	 * to the web-API.
 	 */
-	public void postReview(Context context, PostReviewCallback callback, LectureReviewItem review) {
+	public void postReview(	Context context, 
+							PostReviewCallback callback, 
+							LectureReviewItem review) {
 		PostReview postReview = new PostReview(context, callback);
 		postReview.apiCall(API_URL, review);
 	}
