@@ -105,7 +105,7 @@ public class TimeEditHTTP {
 				filter += ",-1,";
 			}
 			
-			filter += subscriptions.get(i).getItemId();
+			filter += subscriptions.get(i).getTimeEditCode();
 		}
 		
 		filter += ",-1,1.183";

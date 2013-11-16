@@ -143,7 +143,7 @@ public class AddSubscriptionFragment extends DialogFragment {
                                         datasource = new SubscriptionDBHelper(getActivity());
                                         datasource.open();
                                         
-                                        datasource.addSubscription(results[position][0], results[position][1]);
+                                        datasource.addSubscription(results[position][0], "", results[position][1]);
                                         datasource.close();
                                         mListener.onSubscriptionsChanged();
                                         dismiss();

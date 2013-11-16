@@ -16,7 +16,7 @@ public class WebAPI {
 	 * 
 	 * DO NOT ADD "/" AT THE END!
 	 */
-	private static final String API_URL = "http://192.168.2.63/lfb/api";
+	private static final String API_URL = "http://home.knutremi.com:8080/~lecture-feedback/lfb/htdocs/api";
 	
 	/**
 	 * Method using the web-API call "getFeed.php". The returned set of

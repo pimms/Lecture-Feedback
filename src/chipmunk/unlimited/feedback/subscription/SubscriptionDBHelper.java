@@ -25,14 +25,17 @@ public class SubscriptionDBHelper extends SQLiteOpenHelper {
 	public static final String COLUMN_ID 	= "_id";
 	
 	/* TimeEdit's unique identification of the object */
-	public static final String COLUMN_CODE  = "code";
+	public static final String COLUMN_TE_CODE  = "timeedit_code";
+	
+	/* HiG's unique identification of the object */
+	public static final String COLUMN_HIG_CODE = "hig_code";
 	
 	/* The actual name of the course or class */
 	public static final String COLUMN_NAME  = "name";
 	
 	/* All columns */
 	public static final String[] ALL_COLUMNS = {
-		COLUMN_ID, COLUMN_CODE, COLUMN_NAME
+		COLUMN_ID, COLUMN_TE_CODE, COLUMN_HIG_CODE, COLUMN_NAME
 	};
 	
 	private static final String DB_NAME = "LectureReview";
@@ -42,7 +45,8 @@ public class SubscriptionDBHelper extends SQLiteOpenHelper {
 			"CREATE TABLE IF NOT EXISTS "
 			+ TABLE_NAME + " ( "
 			+ COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-			+ COLUMN_CODE + " VARCHAR(16) NOT NULL, "
+			+ COLUMN_TE_CODE + " VARCHAR(16) NOT NULL, "
+			+ COLUMN_HIG_CODE + " VARCHAR(16) NOT NULL, "
 			+ COLUMN_NAME + " TEXT NOT NULL "
 			+ ");";
 
@@ -87,15 +91,17 @@ public class SubscriptionDBHelper extends SQLiteOpenHelper {
 		Cursor cursor = getSubscriptionCursor();
 		cursor.moveToFirst();
 		
-		int codeIndex = cursor.getColumnIndex(COLUMN_CODE);
+		int teCodeIndex = cursor.getColumnIndex(COLUMN_TE_CODE);
+		int higCodeIndex = cursor.getColumnIndex(COLUMN_HIG_CODE);
 		int nameIndex = cursor.getColumnIndex(COLUMN_NAME);
 		
 		while (!cursor.isAfterLast()) {
-			String code = cursor.getString(codeIndex);
+			String teCode = cursor.getString(teCodeIndex);
+			String higCode = cursor.getString(higCodeIndex);
 			String name = cursor.getString(nameIndex);
 			cursor.moveToNext();
 		
-			SubscriptionItem item = new SubscriptionItem(code, name);
+			SubscriptionItem item = new SubscriptionItem(teCode, higCode, name);
 			list.add(item);
 		}
 		
@@ -106,12 +112,13 @@ public class SubscriptionDBHelper extends SQLiteOpenHelper {
 	}
 	
 	
-	public void addSubscription(String code, String name) {
+	public void addSubscription(String timeEditCode, String higCode, String name) {
 		open();
 		
 		final ContentValues values = new ContentValues();
 		values.put(COLUMN_NAME, name);
-		values.put(COLUMN_CODE, code);
+		values.put(COLUMN_TE_CODE, timeEditCode);
+		values.put(COLUMN_HIG_CODE, higCode);
 		
 		long insertId = mDatabase.insert(TABLE_NAME, null, values);
 		mDatabase.close();

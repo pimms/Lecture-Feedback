@@ -73,10 +73,11 @@ public class GetFeed extends WebAPICall {
 		String result = "";
 		
 		if (subscriptions.size() != 0) {
-			result = subscriptions.get(0).getItemId();
+			result = subscriptions.get(0).getName();
+			result += ",IMTtest,IMTeplefjes";
 			
 			for (int i=1; i<subscriptions.size(); i++) {
-				result += "," + subscriptions.get(i).getItemId();
+				result += "," + subscriptions.get(i).getName();
 			}
 		}
 		
