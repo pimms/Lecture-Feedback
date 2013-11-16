@@ -9,6 +9,8 @@ import android.content.Context;
 import android.provider.Settings.Secure;
 import chipmunk.unlimited.feedback.LectureReviewItem;
 
+import com.loopj.android.http.AsyncHttpClient;
+
 public class PostReview extends WebAPICall {
 	public interface PostReviewCallback {
 		public void onPostReviewSuccess();
@@ -42,6 +44,8 @@ public class PostReview extends WebAPICall {
 		if (review.getComment().length() != 0) {
 			baseUrl += "&comment=" + review.getComment();
 		}
+		
+		new AsyncHttpClient().get(baseUrl, this);
 	}
 	
 	

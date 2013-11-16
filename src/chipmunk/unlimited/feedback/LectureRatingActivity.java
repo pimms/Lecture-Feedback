@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import chipmunk.unlimited.feedback.AttributeRatingView.OnRatingChangeListener;
+import chipmunk.unlimited.feedback.webapi.WebAPI;
 import chipmunk.unlimited.feedback.webapi.PostReview.PostReviewCallback;
 
 
@@ -118,17 +119,18 @@ public class LectureRatingActivity extends Activity
 	
 	
 	private void submitLectureReview() {
-		
+		WebAPI webApi = new WebAPI();
+		webApi.postReview(this, this, getReviewItem());
 	}
 	
 	@Override 
 	public void onPostReviewSuccess() { 
-		
+		displayErrorDialog("SUCCCCCCCCCESSSSSSSSSSSSS");
 	}
 	
 	@Override
 	public void onPostReviewFailure(String errorMessage) {
-		
+		displayErrorDialog(errorMessage);
 	}
 	
 	
