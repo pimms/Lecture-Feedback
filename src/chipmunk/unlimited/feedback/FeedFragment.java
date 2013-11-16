@@ -76,8 +76,10 @@ public class FeedFragment extends Fragment implements OnItemClickListener,
 		
 		/* Required parameters */
 		intent.putExtra(LectureRatingActivity.PARAM_COURSE_NAME, reviewItem.getCourseName());
+		intent.putExtra(LectureRatingActivity.PARAM_COURSE_HIG_CODE, reviewItem.getCourseHigCode());
 		intent.putExtra(LectureRatingActivity.PARAM_LECTURER_NAME, reviewItem.getLecturer());
 		intent.putExtra(LectureRatingActivity.PARAM_TIME, reviewItem.getTimeString());
+		intent.putExtra(LectureRatingActivity.PARAM_DATE, reviewItem.getDateString());
 		intent.putExtra(LectureRatingActivity.PARAM_ROOM, reviewItem.getRoom());
 		
 		/* Optional, READ ONLY toggling parameters */
