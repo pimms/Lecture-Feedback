@@ -39,10 +39,12 @@ public class LectureReviewItem extends LectureItem {
 	 * string on no comment.
 	 * 
 	 * @param id
-	 * The unique ID of the review, received from the web API.
+	 * The unique ID of the review, received from the web API. 
+	 * For submit-instances, -1 should be passed.
 	 * 
 	 * @param reviewDate
-	 * The date the comment was made.
+	 * The date the comment was made. Null is a suitable value
+	 * for submit-instances.
 	 */
 	public LectureReviewItem(String date, String time, String name, String higCode, 
 							String room, String lecturer, boolean[] ratings, 
@@ -69,10 +71,12 @@ public class LectureReviewItem extends LectureItem {
 	 * string on no comment.
 	 * 
 	 * @param id
-	 * The unique ID of the review, received from the web API.
+	 * The unique ID of the review, received from the web API. 
+	 * For submit-instances, -1 should be passed.
 	 * 
 	 * @param reviewDate
-	 * The date the comment was made.
+	 * The date the comment was made. Null is a suitable value
+	 * for submit-instances.
 	 */
 	public LectureReviewItem(LectureItem lecture, boolean[] ratings,
 							String comment, int id, Date reviewDate) {
