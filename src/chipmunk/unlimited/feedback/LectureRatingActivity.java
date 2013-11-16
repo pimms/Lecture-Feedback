@@ -70,6 +70,7 @@ public class LectureRatingActivity extends Activity
 	private static final String TAG = "LectureRatingActivity";
 	
 	private List<AttributeRatingView> mAttributeViews;
+	private LectureItem mLectureItem;
 	
 	
 	/** Called when the activity is first created. */
@@ -193,6 +194,9 @@ public class LectureRatingActivity extends Activity
 				courseCode == null || date == null) {
 			throw new InvalidParameterException("Not all required parameters are defined");
 		}
+		
+		/* Create a LectureItem from the parameters */
+		mLectureItem = new LectureItem(date, time, courseName, courseCode, room, lecturer);
 		
 		/* Set the text */
 		TextView tvCourse = (TextView)findViewById(R.id.rating_text_view_course);
