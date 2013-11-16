@@ -1,8 +1,12 @@
 package chipmunk.unlimited.feedback;
 
-import chipmunk.unlimited.feedback.webapi.SHA1;
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+import chipmunk.unlimited.feedback.webapi.SHA1;
 
 /**
  * The ReviewedLectureDatabase serves one purpose:
@@ -15,6 +19,8 @@ import android.database.sqlite.SQLiteDatabase;
  * it.
  */
 public class ReviewedLectureDatabase extends DatabaseWrapper {
+	private static final String TAG = "ReviewedLectureDatabase";
+	
 	public static final String TABLE_NAME = "ReviewedLectures";
 	public static final String COLUMN_ID  = "_id";
 	
@@ -24,7 +30,7 @@ public class ReviewedLectureDatabase extends DatabaseWrapper {
 	private static final String TABLE_CREATE = 
 			"CREATE TABLE IF NOT EXISTS " 
 			+ TABLE_NAME + " ( " 
-			+ COLUMN_ID + " INTEGER PRIMARY KEY, "
+			+ COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
 			+ COLUMN_HASH + " TEXT NOT NULL UNIQUE "
 			+ " );";
 	
@@ -39,8 +45,27 @@ public class ReviewedLectureDatabase extends DatabaseWrapper {
 	}
 	
 	
-	public void insertLectureItem(LectureItem item) {
+	public boolean insertLectureItem(LectureItem item) {
+		ContentValues values = new ContentValues();
+		values.put(COLUMN_HASH, getHash(item));
 		
+		long insertId = mDatabase.insert(TABLE_NAME, null, values);
+		
+		if (insertId == -1) {
+			Log.e(TAG, "Failed to insert: " + item.toString());
+			return false;
+		}
+		
+		return true;
+	}
+	
+	public boolean hasUserReviewed(LectureItem item) {
+		long count = DatabaseUtils.queryNumEntries(
+						mDatabase, 
+						TABLE_NAME, 
+						COLUMN_HASH + " = ?",
+						new String[] { getHash(item) } );
+		return count != 1;
 	}
 	
 	
