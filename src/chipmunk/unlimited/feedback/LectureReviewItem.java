@@ -54,6 +54,38 @@ public class LectureReviewItem extends LectureItem {
 		mReviewDate = reviewDate;
 	}
 	
+	/**
+	 * Create a LectureReviewItem based on a LectureItem.
+	 * 
+	 * @param lecture
+	 * LectureItem to be passed to the super constructor.
+	 * 
+	 * @param ratings
+	 * Array containing five values, where false is
+	 * negative and true is positive.
+	 * 
+	 * @param comment
+	 * The comment of the user. Should not be null, but an empty
+	 * string on no comment.
+	 * 
+	 * @param id
+	 * The unique ID of the review, received from the web API.
+	 * 
+	 * @param reviewDate
+	 * The date the comment was made.
+	 */
+	public LectureReviewItem(LectureItem lecture, boolean[] ratings,
+							String comment, int id, Date reviewDate) {
+		super(lecture.getDateString(), lecture.getTimeString(), 
+			lecture.getCourseName(), lecture.getCourseHigCode(), 
+			lecture.getRoom(), lecture.getLecturer());
+		
+		mRatings = ratings;
+		mComment = comment;
+		mId = id;
+		mReviewDate = reviewDate;
+	}
+	
 	public boolean[] getRatings() {
 		return mRatings;
 	}
