@@ -2,7 +2,9 @@ package chipmunk.unlimited.feedback.webapi;
 
 import java.util.List;
 
+import chipmunk.unlimited.feedback.LectureReviewItem;
 import chipmunk.unlimited.feedback.subscription.SubscriptionItem;
+import chipmunk.unlimited.feedback.webapi.PostReview.PostReviewCallback;
 
 /**
  * @class WebAPI
@@ -40,5 +42,20 @@ public class WebAPI {
 	{
 		GetFeed getFeed = new GetFeed(callback);
 		getFeed.apiCall(API_URL, subscriptions, first, count);
+	}
+	
+	/**
+	 * Method using the web-API call "postReview.php". 
+	 * 
+	 * @param callback
+	 * The callback to receive the finish-notifications.
+	 * 
+	 * @param review
+	 * LectureReviewItem containing the information to be posted 
+	 * to the web-API.
+	 */
+	public void postReview(PostReviewCallback callback, LectureReviewItem review) {
+		PostReview postReview = new PostReview(callback);
+		postReview.apiCall(API_URL, review);
 	}
 }
