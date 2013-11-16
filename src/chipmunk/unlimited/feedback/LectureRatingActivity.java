@@ -133,7 +133,7 @@ public class LectureRatingActivity extends Activity
 	@Override 
 	public void onPostReviewSuccess() { 
 		hideProgressDialog();
-		displayErrorDialog("SUCCCCCCCCCESSSSSSSSSSSSS");
+		finish();
 	}
 	
 	@Override
