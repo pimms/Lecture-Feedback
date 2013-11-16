@@ -28,13 +28,20 @@ import chipmunk.unlimited.feedback.webapi.PostReview.PostReviewCallback;
  * of the activity depends on the parameters passed via the Intent.
  * Parameters are passed via the intent using the "putExtra" interface.
  * 
+ * Note that if any parameter description is ambiguous or unclear, 
+ * all the required parameters map DIRECTLY to get-methods in the 
+ * LectureItem class. A LectureItem instance is created from the required
+ * parameters. 
+ * 
  * Parameter list:
  * 	 +---------------------------+--------------------------+-----------+---------+
  *   |	Parameter name			 |	Description 			| Required  | Type	  |
  *   +---------------------------+--------------------------+-----------+---------+
  *   |	PARAM_COURSE_NAME 		 | The course name 			| YES 		| String  |
+ *   |  PARAM_COURSE_HIG_CODE 	 | The HiG course code		| YES 		| String  |
  *   |	PARAM_LECTURER_NAME 	 | The name of the lecturer | YES 		| String  |
  *   |  PARAM_TIME 				 | The time of the lecture  | YES 		| String  |
+ *   | 	PARAM_DATE 				 | "yyyy-MM-dd" date of lec.| YES 		| String  |
  *   | 	PARAM_ROOM 				 | The room of the lecture  | YES       | String  |
  *   | 	PARAM_READ_ONLY 		 | Toggle read only? 		| NO 		| bool 	  |
  *   | 	PARAM_RATINGS			 | The ratings of all the   |			|  		  | 
@@ -50,13 +57,15 @@ public class LectureRatingActivity extends Activity
 	/** 
 	 * The keys through which values will be set through the Intent 
 	 */
-	public static final String PARAM_COURSE_NAME = "param_course_name";
-	public static final String PARAM_LECTURER_NAME = "param_lecturer_name";
-	public static final String PARAM_TIME = "param_time";
-	public static final String PARAM_ROOM = "param_room";
-	public static final String PARAM_READ_ONLY = "param_read_only";
-	public static final String PARAM_RATINGS = "param_ratings";
-	public static final String PARAM_COMMENT = "param_comment";
+	public static final String PARAM_COURSE_NAME 		= "param_course_name";
+	public static final String PARAM_COURSE_HIG_CODE 	= "param_course_hig_code";
+	public static final String PARAM_LECTURER_NAME 		= "param_lecturer_name";
+	public static final String PARAM_TIME 				= "param_time";
+	public static final String PARAM_DATE 				= "param_date";
+	public static final String PARAM_ROOM 				= "param_room";
+	public static final String PARAM_READ_ONLY 			= "param_read_only";
+	public static final String PARAM_RATINGS 			= "param_ratings";
+	public static final String PARAM_COMMENT 			= "param_comment";
 	
 	private static final String TAG = "LectureRatingActivity";
 	
@@ -122,6 +131,13 @@ public class LectureRatingActivity extends Activity
 	}
 	
 	
+	private LectureReviewItem getReviewItem() {
+		
+		
+		return null;
+	}
+	
+	
 	private void createAttributeRatingViews() {
 		LinearLayout wrapper = (LinearLayout)findViewById(R.id.rating_attribute_wrapper);
 		
@@ -137,7 +153,6 @@ public class LectureRatingActivity extends Activity
 			wrapper.addView(attributeView);
 		}
 	}
-	
 	
 	private void handleIntentParameters() {
 		/* Required parameter handling */

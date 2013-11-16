@@ -14,6 +14,7 @@ import android.util.Log;
 public class LectureItem {
 	protected Date mStartTime;
 	protected Date mEndTime;
+	protected String mDate;
 	protected String mRoom;
 	protected String mLecturer;
 	protected String mCourseName;
@@ -42,12 +43,21 @@ public class LectureItem {
 						String higCode, String room, String lecturer) {
 		setTimes(date, time);
 		
+		mDate = date;
 		mCourseName = name;
 		mCourseHigCode = higCode;
 		mRoom = room;
 		mLecturer = lecturer;
 	}
 	
+	
+	/**
+	 * @return
+	 * The date on the form "yyyy-MM-dd"
+	 */
+	public String getDateString() {
+		return mDate;
+	}
 	
 	/**
 	 * @return
