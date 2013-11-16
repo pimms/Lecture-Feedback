@@ -70,6 +70,17 @@ public class TodayFragment extends Fragment implements 	OnParseCompleteListener,
 		intent.putExtra(LectureRatingActivity.PARAM_DATE, lecture.getDateString());
 		intent.putExtra(LectureRatingActivity.PARAM_ROOM, lecture.getRoom());
 		
+		/* Check if the user has reviewed the lecture */
+		ReviewedLectureDatabase db = new ReviewedLectureDatabase(getActivity());
+		if (db.hasUserReviewed(lecture)) {
+			// Add optional READONLY parameters
+			// TODO:
+			// Figure out what the user ACTUALLY said.
+			intent.putExtra(LectureRatingActivity.PARAM_READ_ONLY, true);
+			intent.putExtra(LectureRatingActivity.PARAM_RATINGS, new boolean[] {false,false,false,true,true});
+			intent.putExtra(LectureRatingActivity.PARAM_COMMENT, "HARD TO SAY, INNIT");
+		}
+		
 		startActivity(intent);
 	}
 }

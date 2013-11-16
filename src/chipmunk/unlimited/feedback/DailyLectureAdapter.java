@@ -6,6 +6,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,9 +22,11 @@ public class DailyLectureAdapter extends BaseAdapter {
 	
 	private LayoutInflater mInflater;
 	private List<LectureItem> mLectureItems;
+	private Context mContext;
 	
 	public DailyLectureAdapter(Context context) {
-		mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		mContext = context;
+		mInflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 	
 	public void setLectureItems(List<LectureItem> items) {
@@ -65,6 +68,12 @@ public class DailyLectureAdapter extends BaseAdapter {
 		tvCourse.setText(item.getCourseName());
 		tvLecturer.setText(item.getLecturer());
 		tvTime.setText(item.getTimeString());
+		
+		/* Change the background slightly if the lecture has been reviewed */
+		ReviewedLectureDatabase db = new ReviewedLectureDatabase(mContext);
+		if (db.hasUserReviewed(item)) {
+			vi.setBackgroundColor(Color.LTGRAY);
+		}
 		
 		return vi;
 	}

@@ -66,7 +66,7 @@ public class ReviewedLectureDatabase extends DatabaseWrapper {
 						new String[] { getHash(item) } );
 		
 		close();
-		return count != 1;
+		return count != 0;
 	}
 	
 	
