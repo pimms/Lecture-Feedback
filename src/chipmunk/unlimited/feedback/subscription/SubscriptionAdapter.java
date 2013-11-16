@@ -41,13 +41,13 @@ public class SubscriptionAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         final Context ctx = context;
-        final String name = cursor.getString(cursor.getColumnIndex(SubscriptionDBHelper.COLUMN_NAME));
-        final int id = cursor.getInt(cursor.getColumnIndex(SubscriptionDBHelper.COLUMN_ID));
+        final String name = cursor.getString(cursor.getColumnIndex(SubscriptionDatabase.COLUMN_NAME));
+        final int id = cursor.getInt(cursor.getColumnIndex(SubscriptionDatabase.COLUMN_ID));
 
         TextView tvName = (TextView) view.findViewById(R.id.sd_textName);
         ImageView img = (ImageView) view.findViewById(R.id.cancel_img);
 
-        tvName.setText(cursor.getString(cursor.getColumnIndex(SubscriptionDBHelper.COLUMN_NAME)));
+        tvName.setText(cursor.getString(cursor.getColumnIndex(SubscriptionDatabase.COLUMN_NAME)));
         img.setImageResource(R.drawable.navigation_cancel);
         img.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,7 +60,7 @@ public class SubscriptionAdapter extends CursorAdapter {
 
     private void deleteSub(int id){
         updated = true;
-        SubscriptionDBHelper ds = new SubscriptionDBHelper(act);
+        SubscriptionDatabase ds = new SubscriptionDatabase(act);
         ds.open();
 
         ds.deleteSubscription(id);

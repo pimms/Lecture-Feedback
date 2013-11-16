@@ -38,7 +38,7 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
  */
 public class AddSubscriptionFragment extends DialogFragment {
 
-    private SubscriptionDBHelper datasource;
+    private SubscriptionDatabase datasource;
     private SubscriptionsChangedListener mListener;
 
     
@@ -140,7 +140,7 @@ public class AddSubscriptionFragment extends DialogFragment {
                                 lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                     @Override
                                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                        datasource = new SubscriptionDBHelper(getActivity());
+                                        datasource = new SubscriptionDatabase(getActivity());
                                         datasource.open();
                                         
                                         String[] split = results[position][1].split(",");
