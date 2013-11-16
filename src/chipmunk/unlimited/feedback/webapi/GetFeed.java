@@ -71,7 +71,7 @@ class GetFeed extends WebAPICall {
 			result = subscriptions.get(0).getHigCode();
 			
 			for (int i=1; i<subscriptions.size(); i++) {
-				result += "," + subscriptions.get(i).getName();
+				result += "," + subscriptions.get(i).getHigCode();
 			}
 		}
 		
