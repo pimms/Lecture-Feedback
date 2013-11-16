@@ -70,7 +70,7 @@ public class SubscriptionFragment extends DialogFragment {
         AlertDialog dialog = (AlertDialog)getDialog();
         ListView list = (ListView)dialog.findViewById(R.id.subs_list);
         
-        SubscriptionDBHelper datasource = new SubscriptionDBHelper(getActivity());
+        SubscriptionDatabase datasource = new SubscriptionDatabase(getActivity());
         datasource.open();
 
         adapter = new SubscriptionAdapter(getActivity(), datasource.getSubscriptionCursor(), 0);

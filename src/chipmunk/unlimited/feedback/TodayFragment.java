@@ -14,7 +14,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import chipmunk.unlimited.feedback.TimeEditParser.OnParseCompleteListener;
-import chipmunk.unlimited.feedback.subscription.SubscriptionDBHelper;
+import chipmunk.unlimited.feedback.subscription.SubscriptionDatabase;
 import chipmunk.unlimited.feedback.subscription.SubscriptionItem;
 
 public class TodayFragment extends Fragment implements 	OnParseCompleteListener,
@@ -41,7 +41,7 @@ public class TodayFragment extends Fragment implements 	OnParseCompleteListener,
 	 * Reload the list view with updated lectures.
 	 */
 	public void refreshItems() {
-		SubscriptionDBHelper db = new SubscriptionDBHelper(getActivity());
+		SubscriptionDatabase db = new SubscriptionDatabase(getActivity());
 		List<SubscriptionItem> subs = db.getSubscriptionList();
 		
 		TimeEditParser parser = new TimeEditParser(TimeEditParser.CONTENT_TIMETABLE);

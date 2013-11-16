@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import chipmunk.unlimited.feedback.subscription.SubscriptionDBHelper;
+import chipmunk.unlimited.feedback.subscription.SubscriptionDatabase;
 import chipmunk.unlimited.feedback.webapi.WebAPI;
 import chipmunk.unlimited.feedback.webapi.WebAPI.GetFeedCallback;
 
@@ -54,7 +54,7 @@ public class FeedFragment extends Fragment implements OnItemClickListener,
 	public void refreshItems() {
 		mListView.setAdapter(new RefreshElementAdapter(getActivity()));
 		
-		SubscriptionDBHelper subDb = new SubscriptionDBHelper(getActivity());
+		SubscriptionDatabase subDb = new SubscriptionDatabase(getActivity());
 		
 		WebAPI webApi = new WebAPI();
 		webApi.getFeed(this, subDb.getSubscriptionList(), 0, 25);
