@@ -127,12 +127,14 @@ public class LectureItem {
 		String[] hhmm = timeStart.split(":");
 		cal.set(Calendar.HOUR_OF_DAY, parseInt(hhmm[0]));
 		cal.set(Calendar.MINUTE, parseInt(hhmm[1]));
+		cal.set(Calendar.SECOND, 0);
 		mStartTime = cal.getTime();
 		
 		// Set the end time
 		hhmm = timeEnd.split(":");
 		cal.set(Calendar.HOUR_OF_DAY, parseInt(hhmm[0]));
 		cal.set(Calendar.MINUTE, parseInt(hhmm[1]));
+		cal.set(Calendar.SECOND, 0);
 		mEndTime = cal.getTime();
 	}
 	

@@ -41,6 +41,7 @@ public class ReviewedLectureDatabase extends DatabaseWrapper {
 	
 	
 	public boolean insertLectureItem(LectureItem item) {
+		Log.d(TAG, "Tohash: " + item.toString());
 		open();
 		
 		ContentValues values = new ContentValues();
@@ -48,6 +49,8 @@ public class ReviewedLectureDatabase extends DatabaseWrapper {
 		
 		long insertId = mDatabase.insert(TABLE_NAME, null, values);
 		close();
+		
+		Log.d(TAG, "Inserting hash: " + getHash(item));
 		
 		if (insertId == -1) {
 			Log.e(TAG, "Failed to insert: " + item.toString());
@@ -71,6 +74,7 @@ public class ReviewedLectureDatabase extends DatabaseWrapper {
 	
 	
 	private String getHash(LectureItem item) {
-		return SHA1.hash(item.toString());
+		String tohash = item.toString();
+		return SHA1.hash(tohash);
 	}
 }

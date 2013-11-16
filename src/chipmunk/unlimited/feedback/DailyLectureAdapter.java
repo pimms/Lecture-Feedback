@@ -72,7 +72,8 @@ public class DailyLectureAdapter extends BaseAdapter {
 		/* Change the background slightly if the lecture has been reviewed */
 		ReviewedLectureDatabase db = new ReviewedLectureDatabase(mContext);
 		if (db.hasUserReviewed(item)) {
-			vi.setBackgroundColor(Color.LTGRAY);
+			vi.setBackgroundColor(Color.RED);
+			Log.e(TAG, "YOLO: " + item);
 		}
 		
 		return vi;
