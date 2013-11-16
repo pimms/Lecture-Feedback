@@ -182,12 +182,15 @@ public class LectureRatingActivity extends Activity
 		
 		/* Get the parameters */
 		String courseName = intent.getStringExtra(PARAM_COURSE_NAME);
+		String courseCode = intent.getStringExtra(PARAM_COURSE_HIG_CODE);
 		String lecturer = intent.getStringExtra(PARAM_LECTURER_NAME);
 		String time = intent.getStringExtra(PARAM_TIME);
+		String date = intent.getStringExtra(PARAM_DATE);
 		String room = intent.getStringExtra(PARAM_ROOM);
 		
 		/* Ensure required parameters are set */
-		if (courseName == null || lecturer == null || time == null || room == null) {
+		if (courseName == null || lecturer == null || time == null || room == null ||
+				courseCode == null || date == null) {
 			throw new InvalidParameterException("Not all required parameters are defined");
 		}
 		
