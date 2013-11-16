@@ -1,5 +1,6 @@
 package chipmunk.unlimited.feedback;
 
+import chipmunk.unlimited.feedback.subscription.SubscriptionDatabase;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -18,8 +19,17 @@ public abstract class DatabaseWrapper extends SQLiteOpenHelper {
 		super(context, DB_NAME, null, DB_VERSION);
 	}
 	
+	/**
+	 * Create all the tables in this database.
+	 * 
+	 * Create your table in a similar manner when adding
+	 * more tables. 
+	 */
 	@Override
-	public abstract void onCreate(SQLiteDatabase database);
+	public final void onCreate(SQLiteDatabase database) {
+		database.execSQL(ReviewedLectureDatabase.TABLE_CREATE);
+		database.execSQL(SubscriptionDatabase.TABLE_CREATE);
+	}
 	
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int old, int n) {

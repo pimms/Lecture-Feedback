@@ -40,7 +40,7 @@ public class SubscriptionDatabase extends DatabaseWrapper {
 		COLUMN_ID, COLUMN_TE_CODE, COLUMN_HIG_CODE, COLUMN_NAME
 	};
 	
-	private static final String TABLE_CREATE = 
+	public static final String TABLE_CREATE = 
 			"CREATE TABLE IF NOT EXISTS "
 			+ TABLE_NAME + " ( "
 			+ COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -52,11 +52,6 @@ public class SubscriptionDatabase extends DatabaseWrapper {
 	
 	public SubscriptionDatabase(Context context) {
 		super(context);
-	}
-
-	@Override
-	public void onCreate(SQLiteDatabase database) {
-		database.execSQL(TABLE_CREATE);
 	}
 
 	

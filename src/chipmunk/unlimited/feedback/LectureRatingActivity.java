@@ -132,7 +132,8 @@ public class LectureRatingActivity extends Activity
 	
 	@Override 
 	public void onPostReviewSuccess() {
-		
+		ReviewedLectureDatabase db = new ReviewedLectureDatabase(this);
+		db.insertLectureItem(mLectureItem);
 		
 		hideProgressDialog();
 		finish();

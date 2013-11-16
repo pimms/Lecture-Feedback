@@ -27,7 +27,7 @@ public class ReviewedLectureDatabase extends DatabaseWrapper {
 	/* The hash of of the reviewed lecture */
 	public static final String COLUMN_HASH = "hash";
 	
-	private static final String TABLE_CREATE = 
+	public static final String TABLE_CREATE = 
 			"CREATE TABLE IF NOT EXISTS " 
 			+ TABLE_NAME + " ( " 
 			+ COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -37,11 +37,6 @@ public class ReviewedLectureDatabase extends DatabaseWrapper {
 	
 	public ReviewedLectureDatabase(Context context) {
 		super(context);
-	}
-	
-	@Override
-	public void onCreate(SQLiteDatabase database) {
-		database.execSQL(TABLE_CREATE);
 	}
 	
 	
