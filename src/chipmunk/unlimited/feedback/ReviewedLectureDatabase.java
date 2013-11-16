@@ -46,10 +46,13 @@ public class ReviewedLectureDatabase extends DatabaseWrapper {
 	
 	
 	public boolean insertLectureItem(LectureItem item) {
+		open();
+		
 		ContentValues values = new ContentValues();
 		values.put(COLUMN_HASH, getHash(item));
 		
 		long insertId = mDatabase.insert(TABLE_NAME, null, values);
+		close();
 		
 		if (insertId == -1) {
 			Log.e(TAG, "Failed to insert: " + item.toString());
@@ -60,11 +63,14 @@ public class ReviewedLectureDatabase extends DatabaseWrapper {
 	}
 	
 	public boolean hasUserReviewed(LectureItem item) {
+		open();
 		long count = DatabaseUtils.queryNumEntries(
 						mDatabase, 
 						TABLE_NAME, 
 						COLUMN_HASH + " = ?",
 						new String[] { getHash(item) } );
+		
+		close();
 		return count != 1;
 	}
 	
