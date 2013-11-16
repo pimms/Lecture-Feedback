@@ -115,6 +115,8 @@ public class SubscriptionDBHelper extends SQLiteOpenHelper {
 	public void addSubscription(String timeEditCode, String higCode, String name) {
 		open();
 		
+		Log.d(TAG, "Adding sub: " + timeEditCode + ", " + higCode + ", " + name);
+		
 		final ContentValues values = new ContentValues();
 		values.put(COLUMN_NAME, name);
 		values.put(COLUMN_TE_CODE, timeEditCode);

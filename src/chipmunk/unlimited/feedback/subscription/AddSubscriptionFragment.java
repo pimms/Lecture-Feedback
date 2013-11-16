@@ -122,7 +122,7 @@ public class AddSubscriptionFragment extends DialogFragment {
 
                                 //Get parsed results from parser
                                 final String[][] results = TimeEditParser.search(response, term);
-                                String[] names = new String[results.length];
+                                final String[] names = new String[results.length];
 
                                 //Create separate (1D) array of names of classes/courses
                                 for(int i = 0; i < results.length; i++){
@@ -143,7 +143,15 @@ public class AddSubscriptionFragment extends DialogFragment {
                                         datasource = new SubscriptionDBHelper(getActivity());
                                         datasource.open();
                                         
-                                        datasource.addSubscription(results[position][0], "", results[position][1]);
+                                        String[] split = results[position][1].split(",");
+                                        String higCode = split[0];
+                                        
+                                        String name = split[1];
+                                        for (int i=2; i<split.length; i++) {
+                                        	name += "," + split[i];
+                                        }
+                                        
+                                        datasource.addSubscription(results[position][0], higCode, name);
                                         datasource.close();
                                         mListener.onSubscriptionsChanged();
                                         dismiss();
