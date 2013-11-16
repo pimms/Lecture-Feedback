@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import chipmunk.unlimited.feedback.AttributeRatingView.OnRatingChangeListener;
+import chipmunk.unlimited.feedback.webapi.PostReview.PostReviewCallback;
 
 
 
@@ -44,7 +45,8 @@ import chipmunk.unlimited.feedback.AttributeRatingView.OnRatingChangeListener;
  */
 public class LectureRatingActivity extends Activity 
 	   implements OnRatingChangeListener,
-	   			  OnClickListener {
+	   			  OnClickListener,
+	   			  PostReviewCallback {
 	/** 
 	 * The keys through which values will be set through the Intent 
 	 */
@@ -100,8 +102,23 @@ public class LectureRatingActivity extends Activity
 				}
 			}
 			
-			displayErrorDialog("Dummysubmit");
+			submitLectureReview();
 		}
+	}
+	
+	
+	private void submitLectureReview() {
+		
+	}
+	
+	@Override 
+	public void onPostReviewSuccess() { 
+		
+	}
+	
+	@Override
+	public void onPostReviewFailure(String errorMessage) {
+		
 	}
 	
 	
