@@ -1,9 +1,9 @@
-package chipmunk.unlimited.feedback.subscription;
+package chipmunk.unlimited.feedback.database;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import chipmunk.unlimited.feedback.DatabaseWrapper;
+import chipmunk.unlimited.feedback.subscription.SubscriptionItem;
 
 import android.content.ContentValues;
 import android.content.Context;

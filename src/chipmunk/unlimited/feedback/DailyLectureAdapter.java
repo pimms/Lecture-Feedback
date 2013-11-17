@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import chipmunk.unlimited.feedback.database.ReviewedLectureDatabase;
+
 import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;

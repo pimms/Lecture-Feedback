@@ -30,6 +30,7 @@ import chipmunk.unlimited.feedback.TimeEditHTTP;
 import chipmunk.unlimited.feedback.TimeEditParser;
 import chipmunk.unlimited.feedback.R.id;
 import chipmunk.unlimited.feedback.R.layout;
+import chipmunk.unlimited.feedback.database.SubscriptionDatabase;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
 

@@ -19,6 +19,7 @@ import java.sql.SQLException;
 import chipmunk.unlimited.feedback.R;
 import chipmunk.unlimited.feedback.R.id;
 import chipmunk.unlimited.feedback.R.layout;
+import chipmunk.unlimited.feedback.database.SubscriptionDatabase;
 
 /**
  * Created by Tobias on 31.08.13, forked by Joakim on 11.11.2013

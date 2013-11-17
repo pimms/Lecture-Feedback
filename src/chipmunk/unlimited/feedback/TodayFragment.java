@@ -14,7 +14,8 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import chipmunk.unlimited.feedback.TimeEditParser.OnParseCompleteListener;
-import chipmunk.unlimited.feedback.subscription.SubscriptionDatabase;
+import chipmunk.unlimited.feedback.database.ReviewedLectureDatabase;
+import chipmunk.unlimited.feedback.database.SubscriptionDatabase;
 import chipmunk.unlimited.feedback.subscription.SubscriptionItem;
 
 public class TodayFragment extends Fragment implements 	OnParseCompleteListener,

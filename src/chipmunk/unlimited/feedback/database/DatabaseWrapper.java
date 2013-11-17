@@ -1,6 +1,5 @@
-package chipmunk.unlimited.feedback;
+package chipmunk.unlimited.feedback.database;
 
-import chipmunk.unlimited.feedback.subscription.SubscriptionDatabase;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
