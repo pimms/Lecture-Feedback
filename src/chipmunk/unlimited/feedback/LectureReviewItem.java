@@ -94,6 +94,12 @@ public class LectureReviewItem extends LectureItem {
 		return mRatings;
 	}
 	
+	/**
+	 * Stringify the rating-array.
+	 * 
+	 * @return
+	 * String on the form:  "0.0.1.1.0"
+	 */
 	public String getRatingString() {
 		StringBuilder sb = new StringBuilder();
 		
