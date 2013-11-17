@@ -160,7 +160,6 @@ class GetFeed extends WebAPICall {
 		Date reviewDate = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(strReviewTime);
 		
 		boolean[] ratings = new boolean[5];
-		
 		JSONArray array = jsonObject.getJSONArray("ratings");
 		for (int i=0; i<5; i++) {
 			ratings[i] = array.getBoolean(i);

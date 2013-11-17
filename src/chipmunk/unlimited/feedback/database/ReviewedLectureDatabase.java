@@ -39,6 +39,10 @@ public class ReviewedLectureDatabase extends DatabaseWrapper {
 	/* The hash of of the reviewed lecture */
 	public static final String COLUMN_HASH = "hash";
 	
+	private static final String[] ALL_COLUMNS = new String[] {
+		COLUMN_ID, COLUMN_RATING, COLUMN_COMMENT, COLUMN_HASH
+	};
+	
 	public static final String TABLE_CREATE = 
 			"CREATE TABLE IF NOT EXISTS " 
 			+ TABLE_NAME + " ( " 
@@ -108,4 +112,58 @@ public class ReviewedLectureDatabase extends DatabaseWrapper {
 		close();
 		return count != 0;
 	}
+	
+	/**
+	 * Get the LectureReviewItem if the user has
+	 * reviewed item.
+	 * 
+	 * @param item
+	 * The lecture the user may have reviewed
+	 * 
+	 * @return
+	 * LectureReviewItem on success, null on failure.
+	 * Null is returned MORE than !null, so check the
+	 * return value.
+	 */
+	public LectureReviewItem getUserReview(LectureItem item) {
+		LectureReviewItem review = null;
+		
+		open();
+		Cursor cursor = mDatabase.query(
+				TABLE_NAME, 
+				new String[] { COLUMN_RATING, COLUMN_COMMENT }, 
+				COLUMN_HASH + " = ?", 
+				new String[] { item.getLectureHash() }, 
+				null, null, null);
+		
+		if (!cursor.isAfterLast()) {
+			int ratingIdx = cursor.getColumnIndex(COLUMN_RATING);
+			int commentIdx = cursor.getColumnIndex(COLUMN_COMMENT);
+			
+			String ratingStr = cursor.getString(ratingIdx);
+			String comment = cursor.getString(commentIdx);
+			
+			boolean[] rating = LectureReviewItem.getRatingArrayFromString(ratingStr);
+			review = new LectureReviewItem(item, rating, comment, -1, null);
+		}
+		
+		return review;
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
