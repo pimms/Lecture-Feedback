@@ -63,6 +63,21 @@ public class LectureItem {
 	
 	/**
 	 * @return
+	 * Date-object with 0 in all non-date related
+	 * fields.
+	 */
+	public Date getDate() {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(mStartTime);
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		
+		return calendar.getTime();
+	}
+	
+	/**
+	 * @return
 	 * String on the form: "[HH:mm] - [HH:mm]"
 	 */
 	public String getTimeString() {
