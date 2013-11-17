@@ -93,17 +93,27 @@ public class MainActivity extends FragmentActivity implements
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
+		/*
+		 * I have truly no idea why the second menu is
+		 * added to the action bar. It just works. 
+		 * 
+		 * TODO:
+		 * Figure out why this works.
+		 */
 		getMenuInflater().inflate(R.menu.main_activity, menu);
+		getMenuInflater().inflate(R.menu.main_actionbar, menu);
 		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.action_subscriptions:
-			showSubscriptionFragment();
-			break;
+			case R.id.action_subscriptions:
+				showSubscriptionFragment();
+				break;
+			case R.id.action_main_refresh:
+				refreshFragments();
+				break;
 		}
 		
 		return true;
@@ -189,6 +199,10 @@ public class MainActivity extends FragmentActivity implements
 	
 	@Override
 	public void onSubscriptionsChanged() {
+		refreshFragments();
+	}
+	
+	private void refreshFragments() {
 		mTodayFragment.refreshItems();
 		mFeedFragment.refreshItems();
 	}
