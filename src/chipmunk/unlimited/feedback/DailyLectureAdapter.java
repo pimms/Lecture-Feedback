@@ -194,18 +194,19 @@ public class DailyLectureAdapter extends BaseAdapter {
 		}
 		
 		Date firstDate = mLectureItems.get(0).getDate();
+		mListItemTypes.add(LIST_ITEM_TYPE_LECTURE);
+		
 		Date prevDate = firstDate;
 		Date curDate = firstDate;
 		
-		for (int i=0; i<mLectureItems.size(); i++) {
+		for (int i=1; i<mLectureItems.size(); i++) {
 			curDate = mLectureItems.get(i).getDate();
 			if (!curDate.equals(prevDate)) {
-				prevDate = curDate;
 				mListItemTypes.add(LIST_ITEM_TYPE_SEPARATOR);
 				mSeparatorStrings.add(getDateString(curDate));
 			}
 			
-			
+			prevDate = curDate;
 			mListItemTypes.add(LIST_ITEM_TYPE_LECTURE);
 		}
 		

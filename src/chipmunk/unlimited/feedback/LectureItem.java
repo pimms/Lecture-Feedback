@@ -66,13 +66,16 @@ public class LectureItem {
 	 * fields.
 	 */
 	public Date getDate() {
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(mStartTime);
-		calendar.set(Calendar.HOUR_OF_DAY, 0);
-		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.SECOND, 0);
+		Calendar original = Calendar.getInstance();
+		original.setTime(mStartTime);
 		
-		return calendar.getTime();
+		Calendar copy = Calendar.getInstance();
+		copy.clear();
+		copy.set(Calendar.YEAR, original.get(Calendar.YEAR));
+		copy.set(Calendar.MONTH, original.get(Calendar.MONTH));
+		copy.set(Calendar.DAY_OF_MONTH, original.get(Calendar.DAY_OF_MONTH));
+		
+		return copy.getTime();
 	}
 	
 	/**
