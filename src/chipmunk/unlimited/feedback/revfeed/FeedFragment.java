@@ -9,7 +9,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView.FindListener;
 import android.widget.AdapterView;
+import android.widget.ProgressBar;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import chipmunk.unlimited.feedback.LectureReviewItem;
@@ -30,6 +32,7 @@ public class FeedFragment extends Fragment implements OnItemClickListener,
 	
 	private FeedAdapter mFeedAdapter;
 	private ListView mListView;
+	private ProgressBar mProgressBar;
 	
 	
 	@Override
@@ -37,6 +40,8 @@ public class FeedFragment extends Fragment implements OnItemClickListener,
 		View rootView = inflater.inflate(R.layout.fragment_main_feed, container, false);
 		
 		mListView = (ListView)rootView.findViewById(R.id.feed_list_view);
+		mProgressBar = (ProgressBar)rootView.findViewById(R.id.feed_progress_bar);
+		
 		mFeedAdapter = new FeedAdapter(container.getContext());
 		mListView.setAdapter(mFeedAdapter);
 		mListView.setOnItemClickListener(this);
@@ -59,6 +64,8 @@ public class FeedFragment extends Fragment implements OnItemClickListener,
 		
 		WebAPI webApi = new WebAPI();
 		webApi.getFeed(this, subDb.getSubscriptionList(), 0, 25);
+		
+		showProgressBar();
 	}
 	
 	
@@ -86,12 +93,14 @@ public class FeedFragment extends Fragment implements OnItemClickListener,
 		
 		startActivity(intent);
 	}
-
+	
 
 	@Override
 	public void onGetFeedSuccess(List<LectureReviewItem> items) {
 		mFeedAdapter.setReviewItems(items);
 		mFeedAdapter.notifyDataSetChanged();
+		
+		hideProgressBar();
 	}
 
 	@Override
@@ -99,5 +108,16 @@ public class FeedFragment extends Fragment implements OnItemClickListener,
 		Log.e(TAG, "GetFeed failed: " + errorMessage);
 		mListView.setAdapter(mFeedAdapter);
 		mFeedAdapter.setReviewItems(null);
+		
+		hideProgressBar();
+	}
+
+	
+	private void showProgressBar() {
+		mProgressBar.setVisibility(View.VISIBLE);
+	}
+	
+	private void hideProgressBar() {
+		mProgressBar.setVisibility(View.GONE);
 	}
 }
