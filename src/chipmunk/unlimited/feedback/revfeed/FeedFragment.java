@@ -1,6 +1,5 @@
 package chipmunk.unlimited.feedback.revfeed;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Intent;
@@ -15,9 +14,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import chipmunk.unlimited.feedback.LectureReviewItem;
 import chipmunk.unlimited.feedback.R;
-import chipmunk.unlimited.feedback.RefreshElementAdapter;
-import chipmunk.unlimited.feedback.R.id;
-import chipmunk.unlimited.feedback.R.layout;
 import chipmunk.unlimited.feedback.database.SubscriptionDatabase;
 import chipmunk.unlimited.feedback.rating.LectureRatingActivity;
 import chipmunk.unlimited.feedback.webapi.WebAPI;
@@ -42,6 +38,7 @@ public class FeedFragment extends Fragment implements OnItemClickListener,
 		
 		mListView = (ListView)rootView.findViewById(R.id.feed_list_view);
 		mFeedAdapter = new FeedAdapter(container.getContext());
+		mListView.setAdapter(mFeedAdapter);
 		mListView.setOnItemClickListener(this);
 		
 		refreshItems();
@@ -58,8 +55,6 @@ public class FeedFragment extends Fragment implements OnItemClickListener,
 	 * Refresh the list of items via the WebAPI's getFeed call.
 	 */
 	public void refreshItems() {
-		mListView.setAdapter(new RefreshElementAdapter(getActivity()));
-		
 		SubscriptionDatabase subDb = new SubscriptionDatabase(getActivity());
 		
 		WebAPI webApi = new WebAPI();
@@ -71,11 +66,7 @@ public class FeedFragment extends Fragment implements OnItemClickListener,
 	 * Start an instance of the LectureRatingActivity in a read-only state.
 	 */
 	@Override
-	public void onItemClick(AdapterView<?> adapter, View item, int position, long id) {
-		if (mListView.getAdapter() != mFeedAdapter) {
-			return;
-		}
-		
+	public void onItemClick(AdapterView<?> adapter, View item, int position, long id) {		
 		Intent intent = new Intent(item.getContext(), LectureRatingActivity.class);
 		
 		LectureReviewItem reviewItem = (LectureReviewItem)mFeedAdapter.getItem(position);
@@ -99,7 +90,6 @@ public class FeedFragment extends Fragment implements OnItemClickListener,
 
 	@Override
 	public void onGetFeedSuccess(List<LectureReviewItem> items) {
-		mListView.setAdapter(mFeedAdapter);
 		mFeedAdapter.setReviewItems(items);
 		mFeedAdapter.notifyDataSetChanged();
 	}

@@ -24,7 +24,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="LectureRatingActivity"></activity>
+        <activity android:name=".rating.LectureRatingActivity"></activity>
     </application>
 
 </manifest>
