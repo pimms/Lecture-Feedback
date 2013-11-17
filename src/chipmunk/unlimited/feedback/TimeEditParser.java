@@ -23,6 +23,7 @@ public class TimeEditParser extends AsyncHttpResponseHandler {
 	 */
 	public interface OnParseCompleteListener {
 		public void onTimeTableParsingComplete(List<LectureItem> items);
+		public void onTimeTableParsingFailed(String errorMessage);
 	}
 	
 	
@@ -88,7 +89,9 @@ public class TimeEditParser extends AsyncHttpResponseHandler {
 	
 	@Override
 	public void onFailure(Throwable throwable, String response) {
-		
+		if (mCallback != null) {
+			mCallback.onTimeTableParsingFailed(response);
+		}
 	}
 	
 	

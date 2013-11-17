@@ -3,6 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
+    
+    <!-- Progress bar displayed when the feed is updating -->
+    <ProgressBar 
+        android:id="@+id/today_progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|top"
+        android:visibility="gone"
+        style="@android:style/Widget.ProgressBar.Large"/>
 
     <ListView
         android:id="@+id/today_list_view"

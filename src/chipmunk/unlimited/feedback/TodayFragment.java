@@ -1,6 +1,5 @@
 package chipmunk.unlimited.feedback;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Intent;
@@ -13,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import chipmunk.unlimited.feedback.TimeEditParser.OnParseCompleteListener;
 import chipmunk.unlimited.feedback.database.ReviewedLectureDatabase;
 import chipmunk.unlimited.feedback.database.SubscriptionDatabase;
@@ -26,15 +26,22 @@ public class TodayFragment extends Fragment implements 	OnParseCompleteListener,
 	private DailyLectureAdapter mListAdapter;
 	private ListView mListView;
 	
+	private ProgressBar mProgressBar;
+	
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_main_today, container, false);
 		
-		mListAdapter = new DailyLectureAdapter(rootView.getContext());
 		mListView = (ListView)rootView.findViewById(R.id.today_list_view);
+		mProgressBar = (ProgressBar)rootView.findViewById(R.id.today_progress_bar);
+		
+		mListAdapter = new DailyLectureAdapter(rootView.getContext());
 		mListView.setAdapter(mListAdapter);
 		mListView.setOnItemClickListener(this);
 		refreshItems();
+		
+		Log.d(TAG, "TodayFragment # onCreateView()");
 			
 		return rootView;
 	}
@@ -43,6 +50,8 @@ public class TodayFragment extends Fragment implements 	OnParseCompleteListener,
 	 * Reload the list view with updated lectures.
 	 */
 	public void refreshItems() {
+		showProgressBar();
+		
 		SubscriptionDatabase db = new SubscriptionDatabase(getActivity());
 		List<SubscriptionItem> subs = db.getSubscriptionList();
 		
@@ -56,8 +65,17 @@ public class TodayFragment extends Fragment implements 	OnParseCompleteListener,
 	public void onTimeTableParsingComplete(List<LectureItem> items) {
 		mListAdapter.setLectureItems(items);
 		mListAdapter.notifyDataSetChanged();
+		
+		hideProgressBar();
 	}
 
+	@Override
+	public void onTimeTableParsingFailed(String errorMessage) {
+		Log.e(TAG, "Failed to get TimeEdit data: " + errorMessage);
+		hideProgressBar();
+	}
+	
+	
 	@Override
 	public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
 		LectureItem lecture = (LectureItem)mListAdapter.getItem(position);
@@ -88,5 +106,14 @@ public class TodayFragment extends Fragment implements 	OnParseCompleteListener,
 		}
 		
 		startActivity(intent);
+	}
+
+	
+	private void showProgressBar() {
+		mProgressBar.setVisibility(View.VISIBLE);
+	}
+	
+	private void hideProgressBar() {
+		mProgressBar.setVisibility(View.GONE);
 	}
 }
