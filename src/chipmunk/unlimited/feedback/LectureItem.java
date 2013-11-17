@@ -24,7 +24,7 @@ public class LectureItem {
 	
 	/**
 	 * @param date
-	 * The date on the form "yyyy-MM-dd".
+	 * The date on the form "DAY yyyy-MM-dd".
 	 * 
 	 * @param time
 	 * The time of the lecture, on the form "HH:mm - HH:mm".
@@ -55,7 +55,7 @@ public class LectureItem {
 	
 	/**
 	 * @return
-	 * The date on the form "yyyy-MM-dd"
+	 * The date on the form "DAY yyyy-MM-dd"
 	 */
 	public String getDateString() {
 		return mDate;
