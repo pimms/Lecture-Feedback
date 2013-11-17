@@ -95,6 +95,7 @@ public class MainActivity extends FragmentActivity implements
 		super.onResume();
 		if (mShouldUpdateFragments) {
 			refreshFragments();	
+			mShouldUpdateFragments = false;
 		}
 	}
 	
