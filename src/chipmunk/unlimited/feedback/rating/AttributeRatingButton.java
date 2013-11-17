@@ -1,14 +1,13 @@
 package chipmunk.unlimited.feedback.rating;
 
-import chipmunk.unlimited.feedback.R;
-import chipmunk.unlimited.feedback.R.drawable;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.widget.Button;
+import android.widget.ImageButton;
+import chipmunk.unlimited.feedback.R;
 
-public class AttributeRatingButton extends Button {
+public class AttributeRatingButton extends ImageButton {
 	private static final String TAG = "AttributeRatingButton";
 	
 	/* Does the button affect positively or negatively? */
