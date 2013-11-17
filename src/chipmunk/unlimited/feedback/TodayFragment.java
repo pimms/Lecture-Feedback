@@ -62,6 +62,11 @@ public class TodayFragment extends Fragment implements 	OnParseCompleteListener,
 	public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
 		LectureItem lecture = (LectureItem)mListAdapter.getItem(position);
 		
+		/* If the view was a separator, lecture will be null */
+		if (lecture == null) {
+			return;
+		}
+		
 		Intent intent = new Intent(view.getContext(), LectureRatingActivity.class);
 		
 		/* TODO: WELL THIS CAN JOLLY WELL BE IMPROVED, INNIT? */
