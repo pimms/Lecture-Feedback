@@ -2,10 +2,6 @@ package chipmunk.unlimited.feedback;
 
 import java.util.Locale;
 
-import chipmunk.unlimited.feedback.subscription.AddSubscriptionFragment;
-import chipmunk.unlimited.feedback.subscription.SubscriptionFragment;
-import chipmunk.unlimited.feedback.subscription.SubscriptionsChangedListener;
-
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
@@ -13,15 +9,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
-import android.view.Gravity;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
+import chipmunk.unlimited.feedback.subscription.AddSubscriptionFragment;
+import chipmunk.unlimited.feedback.subscription.SubscriptionFragment;
+import chipmunk.unlimited.feedback.subscription.SubscriptionsChangedListener;
 
 public class MainActivity extends FragmentActivity implements
 		ActionBar.TabListener,
@@ -50,6 +45,10 @@ public class MainActivity extends FragmentActivity implements
 	private FeedFragment mFeedFragment;
 	private TodayFragment mTodayFragment;
 	private StatisticsFragment mStatsFragment;
+	
+	/* After leaving and returning, the fragments
+	 * should be updated. */
+	private boolean mShouldUpdateFragments = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +90,21 @@ public class MainActivity extends FragmentActivity implements
 		}
 	}
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+		if (mShouldUpdateFragments) {
+			refreshFragments();	
+		}
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		mShouldUpdateFragments = true;
+	}
+	
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		/*
@@ -203,7 +217,7 @@ public class MainActivity extends FragmentActivity implements
 	}
 	
 	private void refreshFragments() {
-		mTodayFragment.refreshItems();
+		mTodayFragment.refreshItems();	
 		mFeedFragment.refreshItems();
 	}
 	
