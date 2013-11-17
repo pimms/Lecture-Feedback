@@ -75,7 +75,8 @@ public class DailyLectureAdapter extends BaseAdapter {
 		ReviewedLectureDatabase db = new ReviewedLectureDatabase(mContext);
 		if (db.hasUserReviewed(item)) {
 			vi.setBackgroundColor(Color.RED);
-			Log.e(TAG, "YOLO: " + item);
+		} else {
+			vi.setBackgroundColor(Color.TRANSPARENT);
 		}
 		
 		return vi;

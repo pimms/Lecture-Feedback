@@ -2,6 +2,7 @@ package chipmunk.unlimited.feedback;
 
 import java.util.Date;
 
+import android.net.Uri;
 import android.util.Log;
 
 /**
@@ -166,6 +167,10 @@ public class LectureReviewItem extends LectureItem {
 	
 	public String getComment() {
 		return mComment;
+	}
+	
+	public String getURIEncodedComment() {
+		return Uri.encode(mComment);
 	}
 	
 	public int getId() {

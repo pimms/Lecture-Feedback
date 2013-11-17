@@ -174,7 +174,7 @@ public class LectureRatingActivity extends Activity
 	
 	private String getComment() {
 		EditText editText = (EditText)findViewById(R.id.rating_edit_text_comments);
-		return Uri.encode(editText.getText().toString());
+		return editText.getText().toString();
 	}
 	
 	

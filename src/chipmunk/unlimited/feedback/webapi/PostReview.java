@@ -37,8 +37,9 @@ class PostReview extends WebAPICall {
 		baseUrl += "&attribute_version_set=1";
 		baseUrl += "&attributes=" 	+ review.getRatingString();
 		
-		if (review.getComment().length() != 0) {
-			baseUrl += "&comment=" + review.getComment();
+		String comment = review.getURIEncodedComment();
+		if (comment.length() != 0) {
+			baseUrl += "&comment=" + comment;
 		}
 		
 		new AsyncHttpClient().get(baseUrl, this);
