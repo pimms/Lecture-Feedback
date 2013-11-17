@@ -9,6 +9,7 @@ import android.util.Log;
  */
 public class LectureReviewItem extends LectureItem {
 	private static final String TAG = "LectureReviewItem";
+	private static final int ATTRIBUTE_COUNT = 5;
 	
 	private boolean[] mRatings;
 	private String mComment;
@@ -27,7 +28,7 @@ public class LectureReviewItem extends LectureItem {
 	 * boolean array containing the same values as ratingString.
 	 */
 	public static boolean[] getRatingArrayFromString(String ratingString) {
-		String[] arr = ratingString.split(".");
+		String[] arr = ratingString.split("\\.");
 		boolean[] rating = new boolean[arr.length];
 		
 		for (int i=0; i<arr.length; i++) {
@@ -39,6 +40,12 @@ public class LectureReviewItem extends LectureItem {
 				Log.e(TAG, "Invalid rating value: " + arr[i] + "(" + ratingString + ")");
 				rating[i] = false;
 			}
+		}
+		
+		if (rating.length != ATTRIBUTE_COUNT) {
+			Log.e(TAG, "Invalid attribute count in geRatingArrayFromString(): " 
+						+ rating.length + " received, " + ATTRIBUTE_COUNT + " expected."
+						+ " Raw string: " + ratingString);
 		}
 		
 		return rating;
@@ -88,6 +95,11 @@ public class LectureReviewItem extends LectureItem {
 		mComment = comment;
 		mId = id;
 		mReviewDate = reviewDate;
+		
+		if (mRatings.length != ATTRIBUTE_COUNT) {
+			Log.e(TAG, "Invalid attribute count in LectureReviewItem(): " 
+					+ mRatings.length + " received, " + ATTRIBUTE_COUNT + " expected.");
+		}
 	}
 	
 	/**
@@ -122,6 +134,11 @@ public class LectureReviewItem extends LectureItem {
 		mComment = comment;
 		mId = id;
 		mReviewDate = reviewDate;
+		
+		if (mRatings.length != ATTRIBUTE_COUNT) {
+			Log.e(TAG, "Invalid attribute count in LectureReviewItem(): " 
+					+ mRatings.length + " received, " + ATTRIBUTE_COUNT + " expected.");
+		}
 	}
 	
 	public boolean[] getRatings() {
