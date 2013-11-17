@@ -5,7 +5,7 @@
     
     <!-- Thanks to TobbenTM for great taste in color -->
     <gradient
-        android:endColor="#3E8BB1"
-        android:startColor="#417690" 
+        android:startColor="@color/actionbar_start" 
+        android:endColor="@color/actionbar_end"
         android:angle="270"/>
 </shape> 

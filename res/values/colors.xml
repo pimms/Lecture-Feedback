@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Action bar gradient colors -->
+    <color name="actionbar_start">		#3e8bb1		</color>
+    <color name="actionbar_end">		#417690		</color>
+    
+    <!-- Separator gradient colors -->
+    <color name="separator_start"> 		#442365BF	</color>
+    <color name="separator_end"> 		#442159A3 	</color>
+    
+    <!-- List items in the TodayFragment -->
+    <color name="reviewed_background"> 	#3300FF00	</color>
+    
+</resources>

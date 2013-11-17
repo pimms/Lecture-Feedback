@@ -9,6 +9,7 @@ import java.util.Locale;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -126,9 +127,9 @@ public class DailyLectureAdapter extends BaseAdapter {
 		/* Change the background slightly if the lecture has been reviewed */
 		ReviewedLectureDatabase db = new ReviewedLectureDatabase(mContext);
 		if (db.hasUserReviewed(item)) {
-			vi.setBackgroundColor(Color.RED);
+			vi.setBackgroundResource(R.drawable.today_item_reviewed);
 		} else {
-			vi.setBackgroundColor(Color.TRANSPARENT);
+			vi.setBackgroundResource(0);
 		}
 		
 		return vi;
