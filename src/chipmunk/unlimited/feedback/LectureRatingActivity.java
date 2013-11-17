@@ -74,7 +74,9 @@ public class LectureRatingActivity extends Activity
 	private static final String TAG = "LectureRatingActivity";
 	
 	private List<AttributeRatingView> mAttributeViews;
+	
 	private LectureItem mLectureItem;
+	private LectureReviewItem mLectureReviewItem;
 	
 	/** Displayed when submitting */
 	private ProgressDialog mProgressDialog;
@@ -134,7 +136,7 @@ public class LectureRatingActivity extends Activity
 	@Override 
 	public void onPostReviewSuccess() {
 		ReviewedLectureDatabase db = new ReviewedLectureDatabase(this);
-		db.insertLectureItem(mLectureItem);
+		db.insertLectureItem(mLectureReviewItem);
 		
 		hideProgressDialog();
 		finish();
@@ -147,13 +149,16 @@ public class LectureRatingActivity extends Activity
 	}
 	
 	
+	/**
+	 * Set and return mLectureReviewItem.
+	 */
 	private LectureReviewItem getReviewItem() {
-		LectureReviewItem item = new LectureReviewItem(
+		mLectureReviewItem = new LectureReviewItem(
 				mLectureItem,
 				getRatingArray(),
 				getComment(),
 				-1, null);
-		return item;
+		return mLectureReviewItem;
 	}
 	
 	private boolean[] getRatingArray() {
