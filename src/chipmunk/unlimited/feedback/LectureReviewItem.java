@@ -2,14 +2,48 @@ package chipmunk.unlimited.feedback;
 
 import java.util.Date;
 
+import android.util.Log;
+
 /**
  * Holds the data required to define a lecture review.
  */
 public class LectureReviewItem extends LectureItem {
+	private static final String TAG = "LectureReviewItem";
+	
 	private boolean[] mRatings;
 	private String mComment;
 	private int mId;
 	private Date mReviewDate;
+	
+	
+	/**
+	 * Convert a string object created by getRatingString()
+	 * into a boolean array.
+	 * 
+	 * @param ratingString
+	 * String on the form specified by getRatingString()
+	 * 
+	 * @return
+	 * boolean array containing the same values as ratingString.
+	 */
+	public static boolean[] getRatingArrayFromString(String ratingString) {
+		String[] arr = ratingString.split(".");
+		boolean[] rating = new boolean[arr.length];
+		
+		for (int i=0; i<arr.length; i++) {
+			if (arr[i].equals("1")) {
+				rating[i] = true;
+			} else if (arr[i].equals("0")) {
+				rating[i] = false;
+			} else {
+				Log.e(TAG, "Invalid rating value: " + arr[i] + "(" + ratingString + ")");
+				rating[i] = false;
+			}
+		}
+		
+		return rating;
+	}
+	
 	
 	/**
 	 * @param date
