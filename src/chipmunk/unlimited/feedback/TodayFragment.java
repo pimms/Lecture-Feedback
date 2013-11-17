@@ -73,13 +73,12 @@ public class TodayFragment extends Fragment implements 	OnParseCompleteListener,
 		
 		/* Check if the user has reviewed the lecture */
 		ReviewedLectureDatabase db = new ReviewedLectureDatabase(getActivity());
-		if (db.hasUserReviewed(lecture)) {
+		LectureReviewItem review = db.getUserReview(lecture);
+		if (review != null) {
 			// Add optional READONLY parameters
-			// TODO:
-			// Figure out what the user ACTUALLY said.
 			intent.putExtra(LectureRatingActivity.PARAM_READ_ONLY, true);
-			intent.putExtra(LectureRatingActivity.PARAM_RATINGS, new boolean[] {false,false,false,true,true});
-			intent.putExtra(LectureRatingActivity.PARAM_COMMENT, "HARD TO SAY, INNIT");
+			intent.putExtra(LectureRatingActivity.PARAM_RATINGS, review.getRatings());
+			intent.putExtra(LectureRatingActivity.PARAM_COMMENT, review.getComment());
 		}
 		
 		startActivity(intent);

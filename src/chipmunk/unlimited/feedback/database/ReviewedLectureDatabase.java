@@ -125,15 +125,15 @@ public class ReviewedLectureDatabase extends DatabaseWrapper {
 		open();
 		Cursor cursor = mDatabase.query(
 				TABLE_NAME, 
-				new String[] { COLUMN_RATING, COLUMN_COMMENT }, 
-				COLUMN_HASH + " = ?", 
-				new String[] { item.getLectureHash() }, 
-				null, null, null);
+				new String[] { COLUMN_RATING, COLUMN_COMMENT, }, 
+				COLUMN_HASH + " = \"" + item.getLectureHash() + "\"", 
+				null, null, null, null);
 		
-		if (!cursor.isAfterLast()) {
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			
 			int ratingIdx = cursor.getColumnIndex(COLUMN_RATING);
 			int commentIdx = cursor.getColumnIndex(COLUMN_COMMENT);
-			
 			String ratingStr = cursor.getString(ratingIdx);
 			String comment = cursor.getString(commentIdx);
 			
