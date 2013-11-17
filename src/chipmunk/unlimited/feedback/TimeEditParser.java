@@ -245,7 +245,11 @@ public class TimeEditParser extends AsyncHttpResponseHandler {
         String[][] sarr = new String[size][];
         
         for(int i = 0; i < size; i++) {
-            ArrayList<String> innerlist = arraylist.get(i);
+        	/* TIME EDIT RETURNS THE LECTURES IN CHRONOLOGICAL
+			 * ORDER. The list is reversed here by retrieving from
+			 * the arrayList in reverse order.
+			 */
+            ArrayList<String> innerlist = arraylist.get(size - i - 1);
             final int innerSize = innerlist.size();
             sarr[i] = new String[innerSize];
             for(int j = 0; j < innerSize; j++) {
