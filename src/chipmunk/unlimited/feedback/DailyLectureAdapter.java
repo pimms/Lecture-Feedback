@@ -1,9 +1,11 @@
 package chipmunk.unlimited.feedback;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -190,16 +192,16 @@ public class DailyLectureAdapter extends BaseAdapter {
 			return;
 		}
 		
-		String firstDate = mLectureItems.get(0).getDateString();
-		String prevDate = firstDate;
-		String curDate = firstDate;
+		Date firstDate = mLectureItems.get(0).getDate();
+		Date prevDate = firstDate;
+		Date curDate = firstDate;
 		
 		for (int i=0; i<mLectureItems.size(); i++) {
-			curDate = mLectureItems.get(i).getDateString();
+			curDate = mLectureItems.get(i).getDate();
 			if (!curDate.equals(prevDate)) {
 				prevDate = curDate;
 				mListItemTypes.add(LIST_ITEM_TYPE_SEPARATOR);
-				mSeparatorStrings.add(curDate);
+				mSeparatorStrings.add(getDateString(curDate));
 			}
 			
 			
@@ -208,8 +210,52 @@ public class DailyLectureAdapter extends BaseAdapter {
 		
 		if (!firstDate.equals(curDate)) {
 			mListItemTypes.add(0, LIST_ITEM_TYPE_SEPARATOR);
-			mSeparatorStrings.add(0, firstDate);
+			mSeparatorStrings.add(0, getDateString(firstDate));
 		}
+	}
+	
+	
+	/**
+	 * Get a suitable title for the date
+	 * 
+	 * TODO: Localize
+	 * 
+	 * @return
+	 * "yyyy-MM-dd" if date is more than 2 days old, otherwise
+	 * "today" or "yesterday".
+	 */
+	private String getDateString(Date someDate) {
+		Calendar compare = Calendar.getInstance();
+		
+		Calendar date = Calendar.getInstance();
+		date.setTime(someDate);
+		
+		// Compare against today
+		if (equalDates(compare, date)) {
+			return "Today";
+		}
+		
+		// Compare against yesterday
+		compare.add(Calendar.DAY_OF_MONTH, -1);
+		if (equalDates(compare, date)) {
+			return "Yesterday";
+		}
+		
+		// Return the date on proper format
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+		return format.format(date.getTime());
+	}
+	
+	/**
+	 * @return
+	 * Whether or not the DATES of the two Date-objects are equal.
+	 */
+	private boolean equalDates(Calendar d1, Calendar d2) {
+		return (
+			d1.get(Calendar.YEAR) == d2.get(Calendar.YEAR) &&
+			d1.get(Calendar.MONTH)== d2.get(Calendar.MONTH) &&
+			d1.get(Calendar.DAY_OF_MONTH) == d2.get(Calendar.DAY_OF_MONTH)
+		);
 	}
 	
 	
