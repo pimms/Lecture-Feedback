@@ -1,13 +1,12 @@
 package chipmunk.unlimited.feedback;
 
-import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
-
-import chipmunk.unlimited.feedback.webapi.SHA1;
+import java.util.Locale;
 
 import android.util.Log;
+import chipmunk.unlimited.feedback.webapi.SHA1;
 
 /**
  * @class LectureItem
@@ -24,7 +23,7 @@ public class LectureItem {
 	
 	/**
 	 * @param date
-	 * The date on the form "DAY yyyy-MM-dd".
+	 * The date on the form "yyyy-MM-dd".
 	 * 
 	 * @param time
 	 * The time of the lecture, on the form "HH:mm - HH:mm".
@@ -55,7 +54,7 @@ public class LectureItem {
 	
 	/**
 	 * @return
-	 * The date on the form "DAY yyyy-MM-dd"
+	 * The date on the form "yyyy-MM-dd"
 	 */
 	public String getDateString() {
 		return mDate;
@@ -121,13 +120,12 @@ public class LectureItem {
 	 * Set mStartTime and mEndTime based on "date" and "time".
 	 * 
 	 * @param date
-	 * The date, on the form: "Day yyyy-MM-dd"
+	 * The date, on the form: "yyyy-MM-dd"
 	 * 
 	 * @param time
 	 * The time, on the form: "HH:mm - HH:mm"
 	 */
 	private void setTimes(String date, String time) {
-		date = date.substring(4);
 		String[] dateArr = date.split("-");
 		
 		String timeStart = time.substring(0, 5);
@@ -181,19 +179,8 @@ public class LectureItem {
 	
 	
 	protected String getTimeString(Date date) {
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(date);
-		
-		int hours = cal.get(Calendar.HOUR_OF_DAY);
-		int minutes = cal.get(Calendar.MINUTE);
-		
-		StringBuilder builder = new StringBuilder();
-		
-		builder.append( ((hours < 10) ? "0" : "") + hours );
-		builder.append(":");
-		builder.append( ((minutes < 10) ? "0" : "") + minutes );
-		
-		return builder.toString();
+		SimpleDateFormat format = new SimpleDateFormat("HH:mm", Locale.getDefault());
+		return format.format(date);
 	}
 	
 	/**

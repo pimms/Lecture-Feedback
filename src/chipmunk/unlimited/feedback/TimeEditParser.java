@@ -70,6 +70,9 @@ public class TimeEditParser extends AsyncHttpResponseHandler {
 						courseName += "," + split[j];
 					}
 					
+					// Remove the "Day " component of the date
+					arr[0] = arr[0].substring(4);
+					
 					// 								   date    time    name        id          room    lecturer
 					LectureItem item = new LectureItem(arr[0], arr[1], courseName, courseCode, arr[3], arr[4]);
 					list.add(item);
