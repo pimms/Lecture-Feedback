@@ -219,8 +219,13 @@ public class MainActivity extends FragmentActivity implements
 	}
 	
 	private void refreshFragments() {
-		mTodayFragment.refreshItems();	
-		mFeedFragment.refreshItems();
+		if (mTodayFragment != null) {
+			mTodayFragment.refreshItems();
+		}
+		
+		if (mFeedFragment != null) {
+			mFeedFragment.refreshItems();
+		}
 	}
 	
 	
