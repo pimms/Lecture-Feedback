@@ -39,10 +39,6 @@ public class ReviewedLectureDatabase extends DatabaseWrapper {
 	/* The hash of of the reviewed lecture */
 	public static final String COLUMN_HASH = "hash";
 	
-	private static final String[] ALL_COLUMNS = new String[] {
-		COLUMN_ID, COLUMN_RATING, COLUMN_COMMENT, COLUMN_HASH
-	};
-	
 	public static final String TABLE_CREATE = 
 			"CREATE TABLE IF NOT EXISTS " 
 			+ TABLE_NAME + " ( " 
