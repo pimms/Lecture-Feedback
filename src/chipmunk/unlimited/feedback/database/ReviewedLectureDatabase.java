@@ -139,8 +139,10 @@ public class ReviewedLectureDatabase extends DatabaseWrapper {
 			
 			boolean[] rating = LectureReviewItem.getRatingArrayFromString(ratingStr);
 			review = new LectureReviewItem(item, rating, comment, -1, null);
+			cursor.close();
 		}
 		
+		close();
 		return review;
 	}
 }
