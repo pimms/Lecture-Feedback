@@ -5,6 +5,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import chipmunk.unlimited.feedback.webapi.SHA1;
+
 import android.util.Log;
 
 /**
@@ -177,6 +179,25 @@ public class LectureItem {
 		builder.append( ((minutes < 10) ? "0" : "") + minutes );
 		
 		return builder.toString();
+	}
+	
+	/**
+	 * Calculate the hash for this lecture.
+	 * 
+	 * @return
+	 * SHA-1 of the LectureItem's uniquely identifying
+	 * values.
+	 */
+	public final String getLectureHash() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(mStartTime.toString());
+		sb.append(mEndTime.toString());
+		sb.append(mCourseName);
+		sb.append(mCourseHigCode);
+		sb.append(mRoom);
+		sb.append(mLecturer);
+		
+		return SHA1.hash(sb.toString());
 	}
 	
 	@Override
