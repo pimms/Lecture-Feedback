@@ -1,6 +1,11 @@
-package chipmunk.unlimited.feedback;
+package chipmunk.unlimited.feedback.revfeed;
 
 import java.util.List;
+
+import chipmunk.unlimited.feedback.LectureReviewItem;
+import chipmunk.unlimited.feedback.R;
+import chipmunk.unlimited.feedback.R.id;
+import chipmunk.unlimited.feedback.R.layout;
 
 import android.content.Context;
 import android.view.LayoutInflater;

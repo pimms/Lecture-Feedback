@@ -1,5 +1,8 @@
-package chipmunk.unlimited.feedback;
+package chipmunk.unlimited.feedback.rating;
 
+import chipmunk.unlimited.feedback.R;
+import chipmunk.unlimited.feedback.R.id;
+import chipmunk.unlimited.feedback.R.layout;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;

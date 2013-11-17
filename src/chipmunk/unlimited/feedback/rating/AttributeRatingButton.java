@@ -1,5 +1,7 @@
-package chipmunk.unlimited.feedback;
+package chipmunk.unlimited.feedback.rating;
 
+import chipmunk.unlimited.feedback.R;
+import chipmunk.unlimited.feedback.R.drawable;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;

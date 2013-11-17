@@ -1,4 +1,4 @@
-package chipmunk.unlimited.feedback;
+package chipmunk.unlimited.feedback.rating;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
@@ -17,8 +17,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import chipmunk.unlimited.feedback.AttributeRatingView.OnRatingChangeListener;
+import chipmunk.unlimited.feedback.LectureItem;
+import chipmunk.unlimited.feedback.LectureReviewItem;
+import chipmunk.unlimited.feedback.R;
+import chipmunk.unlimited.feedback.R.id;
+import chipmunk.unlimited.feedback.R.layout;
 import chipmunk.unlimited.feedback.database.ReviewedLectureDatabase;
+import chipmunk.unlimited.feedback.rating.AttributeRatingView.OnRatingChangeListener;
 import chipmunk.unlimited.feedback.webapi.WebAPI;
 import chipmunk.unlimited.feedback.webapi.WebAPI.PostReviewCallback;
 

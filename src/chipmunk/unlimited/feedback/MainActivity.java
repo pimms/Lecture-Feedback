@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import chipmunk.unlimited.feedback.revfeed.FeedFragment;
 import chipmunk.unlimited.feedback.subscription.AddSubscriptionFragment;
 import chipmunk.unlimited.feedback.subscription.SubscriptionFragment;
 import chipmunk.unlimited.feedback.subscription.SubscriptionsChangedListener;
