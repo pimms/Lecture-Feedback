@@ -244,7 +244,7 @@ public class DailyLectureAdapter extends BaseAdapter {
 		}
 		
 		// Return the date on proper format
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+		SimpleDateFormat format = new SimpleDateFormat("EE, dd MMM", Locale.getDefault());
 		return format.format(date.getTime());
 	}
 	
