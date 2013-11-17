@@ -68,23 +68,28 @@ public class FeedAdapter extends BaseAdapter {
 		TextView tvCourse = (TextView)vi.findViewById(R.id.feed_item_text_view_course);
 		TextView tvTime = (TextView)vi.findViewById(R.id.feed_item_text_view_time);
 		TextView tvLecturer = (TextView)vi.findViewById(R.id.feed_item_text_view_lecturer);
-		TextView tvAttributes = (TextView)vi.findViewById(R.id.feed_item_text_view_attributes);
+		TextView tvPositive = (TextView)vi.findViewById(R.id.feed_item_text_view_positive);
+		TextView tvNegative = (TextView)vi.findViewById(R.id.feed_item_text_view_negative);
 		TextView tvComment = (TextView)vi.findViewById(R.id.feed_item_text_view_comment);
 		
 		LectureReviewItem item = (LectureReviewItem)getItem(position);
 		tvCourse.setText(item.getCourseName());
 		tvTime.setText(item.getTimeString());
-		tvLecturer.setText(item.getLecturer());
+		tvLecturer.setText(item.getLecturer() + ", " + item.getRoom());
 		tvComment.setText(item.getComment());
 		
 		boolean[] ratings = item.getRatings();
-		String ratingText = "[";
+		int negative = 0;
+		int positive = 0;
 		for (int i=0; i<5; i++) {
-			ratingText += "   ";
-			ratingText += (ratings[i]) ? "+" : "-";
+			if (ratings[i]) {
+				positive++;
+			} else {
+				negative++;
+			}
 		}
-		ratingText += "    ]";
-		tvAttributes.setText(ratingText);
+		tvPositive.setText("" + positive);
+		tvNegative.setText("" + negative);
 		
 		
 		return vi;
