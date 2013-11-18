@@ -78,7 +78,7 @@ public class Feed implements WebAPI.GetFeedCallback {
         } else if (mState == STATE_LECTURE) {
             updateWithSingleLecture(first, count);
         } else {
-            Log.e(TAG, "Undefined state: " + mState);
+            onGetFeedFailure("State not supported: " + mState);
         }
     }
 
@@ -98,7 +98,7 @@ public class Feed implements WebAPI.GetFeedCallback {
     }
 
     private void updateWithSingleLecture(int first, int count) {
-
+        onGetFeedFailure("State not supported: " + mState);
     }
 
 
