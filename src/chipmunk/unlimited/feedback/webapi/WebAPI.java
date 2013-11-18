@@ -3,6 +3,8 @@ package chipmunk.unlimited.feedback.webapi;
 import java.util.List;
 
 import android.content.Context;
+
+import chipmunk.unlimited.feedback.LectureItem;
 import chipmunk.unlimited.feedback.LectureReviewItem;
 import chipmunk.unlimited.feedback.subscription.SubscriptionItem;
 
@@ -39,7 +41,8 @@ public class WebAPI {
 	
 	/**
 	 * Method using the web-API call "getFeed.php". The returned set of
-	 * data is a reverse-chronological list of reviews.
+	 * data is a reverse-chronological list of reviews, and is based
+     * on ONE or MULTIPLE courses.
 	 * 
 	 * @param callback
 	 * The object to receive the finish-notifications.
@@ -60,7 +63,32 @@ public class WebAPI {
 		GetFeed getFeed = new GetFeed(callback);
 		getFeed.apiCall(API_URL, subscriptions, first, count);
 	}
-	
+
+    /**
+     * Method using the web-API call "getFeed.php". The returned set of
+     * data is a reverse-chronological list of reviews, and is based
+     * on a SINGLE lecture.
+     *
+     * @param callback
+     * The object to receive the finish-notifications.
+     *
+     * @param lecture
+     * The single lecture from which to receive a feed of reviews.
+     *
+     * @param first
+     * The first item to be returned.
+     *
+     * @param count
+     * The maximum number of items to be returned.
+     */
+    public void getFeed(GetFeedCallback callback,
+                        LectureItem lecture, int first, int count) {
+        GetFeed getFeed = new GetFeed(callback);
+        getFeed.apiCall(API_URL, lecture, first, count);
+    }
+
+
+
 	/**
 	 * Method using the web-API call "postReview.php". 
 	 * 
