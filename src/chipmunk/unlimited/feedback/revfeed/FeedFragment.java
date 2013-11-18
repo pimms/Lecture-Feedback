@@ -41,7 +41,7 @@ public class FeedFragment extends Fragment implements OnItemClickListener,
 	private FeedAdapter mFeedAdapter;
 	private ListView mListView;
 	private ProgressBar mProgressBar;
-	
+
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {		
@@ -54,7 +54,9 @@ public class FeedFragment extends Fragment implements OnItemClickListener,
 		mListView.setAdapter(mFeedAdapter);
 		mListView.setOnItemClickListener(this);
 
-        mFeed = new Feed(getActivity(), this);
+        if (mFeed == null) {
+            mFeed = new Feed(getActivity(), this);
+        }
 
 		refreshContents();
 			
@@ -62,16 +64,8 @@ public class FeedFragment extends Fragment implements OnItemClickListener,
 	}
 
 
-    /**
-     * Return the feed to allow external objects to
-     * modify it.
-     *
-     * @return
-     * OOOOH, IT'S WAFFLE TIME, IT'S WAFFLE TIME - WON'T
-     * YOU HAVE SOME WAFFLES OF MINE?
-     */
-    public Feed getFeed() {
-        return mFeed;
+    public void setFeed(Feed feed) {
+        mFeed = feed;
     }
 
 

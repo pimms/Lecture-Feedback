@@ -97,7 +97,9 @@ public class FeedActivity extends FragmentActivity {
             }
 
             SubscriptionItem subItem = new SubscriptionItem(null, code, name);
-            mFeedFragment.getFeed().setStateCourse(subItem);
+            Feed feed = new Feed(this, mFeedFragment);
+            feed.setStateCourse(subItem);
+            mFeedFragment.setFeed(feed);
         }
     }
 }
