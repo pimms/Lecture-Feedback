@@ -45,7 +45,12 @@ public class Feed implements WebAPI.GetFeedCallback {
 
 
     public Feed(Context context, FeedListener callback) {
+        setFeedListener(callback);
         mContext = context;
+    }
+
+
+    public void setFeedListener(FeedListener callback) {
         mCallback = callback;
     }
 
@@ -85,7 +90,11 @@ public class Feed implements WebAPI.GetFeedCallback {
     }
 
     private void updateWithSingleCourse(int first, int count) {
+        ArrayList<SubscriptionItem> subs = new ArrayList<SubscriptionItem>();
+        subs.add(mSubItem);
 
+        WebAPI webApi = new WebAPI();
+        webApi.getFeed(this, subs, first, count);
     }
 
     private void updateWithSingleLecture(int first, int count) {
@@ -95,12 +104,17 @@ public class Feed implements WebAPI.GetFeedCallback {
 
     @Override
     public void onGetFeedSuccess(List<LectureReviewItem> items) {
-        mCallback.onFeedUpdate(items);
+        if (mCallback != null) {
+            mCallback.onFeedUpdate(items);
+        }
     }
 
     @Override
     public void onGetFeedFailure(String errorMessage) {
         Log.e(TAG, "GetFeed failed: " + errorMessage);
-        mCallback.onFeedUpdate(new ArrayList<LectureReviewItem>());
+
+        if (mCallback != null) {
+            mCallback.onFeedUpdate(new ArrayList<LectureReviewItem>());
+        }
     }
 }

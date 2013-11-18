@@ -66,6 +66,7 @@ public class FeedFragment extends Fragment implements OnItemClickListener,
 
     public void setFeed(Feed feed) {
         mFeed = feed;
+        mFeed.setFeedListener(this);
     }
 
 

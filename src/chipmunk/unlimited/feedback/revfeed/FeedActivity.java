@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 
 import chipmunk.unlimited.feedback.R;
 import chipmunk.unlimited.feedback.subscription.SubscriptionItem;
@@ -70,6 +71,17 @@ public class FeedActivity extends FragmentActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_actionbar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_main_refresh:
+                mFeedFragment.refreshContents();
+                break;
+        }
+
         return true;
     }
 
