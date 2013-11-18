@@ -1,9 +1,6 @@
 package chipmunk.unlimited.feedback.rating;
 
 import java.security.InvalidParameterException;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -11,16 +8,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+
 import chipmunk.unlimited.feedback.LectureItem;
 import chipmunk.unlimited.feedback.LectureReviewItem;
 import chipmunk.unlimited.feedback.R;
 import chipmunk.unlimited.feedback.database.ReviewedLectureDatabase;
-import chipmunk.unlimited.feedback.rating.AttributeRatingView.OnRatingChangeListener;
 import chipmunk.unlimited.feedback.webapi.WebAPI;
 import chipmunk.unlimited.feedback.webapi.WebAPI.PostReviewCallback;
 
@@ -57,9 +52,8 @@ import chipmunk.unlimited.feedback.webapi.WebAPI.PostReviewCallback;
  *   *) Required parameter if "PARAM_READ_ONLY" is true
  */
 public class LectureRatingActivity extends Activity 
-	   implements OnRatingChangeListener,
-	   			  OnClickListener,
-	   			  PostReviewCallback {
+	        implements  PostReviewCallback,
+                        LectureRatingView.RatingListener {
 	/** 
 	 * The keys through which values will be set through the Intent 
 	 */
@@ -74,11 +68,11 @@ public class LectureRatingActivity extends Activity
 	public static final String PARAM_COMMENT 			= "param_comment";
 	
 	private static final String TAG = "LectureRatingActivity";
-	
-	private List<AttributeRatingView> mAttributeViews;
-	
+
+
 	private LectureItem mLectureItem;
 	private LectureReviewItem mLectureReviewItem;
+    private LectureRatingView mLectureRatingView;
 	
 	/** Displayed when submitting */
 	private ProgressDialog mProgressDialog;
@@ -88,52 +82,19 @@ public class LectureRatingActivity extends Activity
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
-	    setContentView(R.layout.lecture_rating_view);
-	    
-	    createAttributeRatingViews();
+	    setContentView(R.layout.activity_rating);
+
+        mLectureRatingView = new LectureRatingView(this);
+        mLectureRatingView.setRatingListener(this);
+
+        addContentView(mLectureRatingView, new LayoutParams(
+                LayoutParams.MATCH_PARENT,
+                LayoutParams.WRAP_CONTENT
+        ));
+
 	    handleIntentParameters();
-	    
-	    
-	    Button button = (Button)findViewById(R.id.rating_button_submit);
-	    button.setOnClickListener(this);
 	}
 
-	@Override 
-	public void onRatingStateChange(AttributeRatingView ratingView, int state) {
-		/* Let the overall rating (index 0) determine all undefined attributes */
-		if (ratingView == mAttributeViews.get(0)) {
-			for (int i=1; i<mAttributeViews.size(); i++) {
-				AttributeRatingView attributeView = mAttributeViews.get(i);
-				if (attributeView.getState() == AttributeRatingView.STATE_UNDEFINED) {
-					attributeView.setState(state);
-				}
-			}
-		}
-	}
-	
-	@Override 
-	public void onClick(View view) {
-		if (view.getId() == R.id.rating_button_submit) {
-			// Ensure all rating views have a value
-			for (int i=0; i<mAttributeViews.size(); i++) {
-				if (mAttributeViews.get(i).getState() == AttributeRatingView.STATE_UNDEFINED) {
-					// TODO: Localize
-					displayErrorDialog("All fields must be rated"); 
-					return;
-				}
-			}
-			
-			submitLectureReview();
-		}
-	}
-	
-	
-	private void submitLectureReview() {
-		WebAPI webApi = new WebAPI();
-		webApi.postReview(this, this, getReviewItem());
-		
-		showProgressDialog();
-	}
 	
 	@Override 
 	public void onPostReviewSuccess() {
@@ -149,7 +110,20 @@ public class LectureRatingActivity extends Activity
 		hideProgressDialog();
 		displayErrorDialog(errorMessage);
 	}
-	
+
+
+    @Override
+    public void onRatingSubmit() {
+        submitLectureReview();
+    }
+
+    private void submitLectureReview() {
+        WebAPI webApi = new WebAPI();
+        webApi.postReview(this, this, getReviewItem());
+
+        showProgressDialog();
+    }
+
 	
 	/**
 	 * Set and return mLectureReviewItem.
@@ -164,19 +138,19 @@ public class LectureRatingActivity extends Activity
 	}
 	
 	private boolean[] getRatingArray() {
-		boolean[] ratings = new boolean[mAttributeViews.size()];
-		
-		for (int i=0; i<mAttributeViews.size(); i++) {
-			int state = mAttributeViews.get(i).getState();
-			ratings[i] = (state == AttributeRatingView.STATE_POSITIVE);
-		}
-		
-		return ratings;
+		if (mLectureRatingView != null) {
+            return mLectureRatingView.getRatingArray();
+        }
+
+        return null;
 	}
 	
 	private String getComment() {
-		EditText editText = (EditText)findViewById(R.id.rating_edit_text_comments);
-		return editText.getText().toString();
+		if (mLectureRatingView != null) {
+            return mLectureRatingView.getComment();
+        }
+
+        return null;
 	}
 	
 	
@@ -196,23 +170,7 @@ public class LectureRatingActivity extends Activity
 			mProgressDialog = null;
 		}
 	}
-	
-	
-	private void createAttributeRatingViews() {
-		LinearLayout wrapper = (LinearLayout)findViewById(R.id.rating_attribute_wrapper);
-		
-		String[] attrs = new String[] { "Overall", "Relevance", "Progression", "something", "something" };
-		mAttributeViews = new ArrayList<AttributeRatingView>();
-		
-		for (int i=0; i<5; i++) {
-			AttributeRatingView attributeView = new AttributeRatingView(this);
-			attributeView.setAttributeName(attrs[i]);
-			attributeView.setOnRatingChangeListener(this);
-			
-			mAttributeViews.add(attributeView);
-			wrapper.addView(attributeView);
-		}
-	}
+
 	
 	private void handleIntentParameters() {
 		/* Required parameter handling */
@@ -258,13 +216,9 @@ public class LectureRatingActivity extends Activity
 		mLectureItem = new LectureItem(date, time, courseName, courseCode, room, lecturer);
 		
 		/* Set the text */
-		TextView tvCourse = (TextView)findViewById(R.id.rating_text_view_course);
-		TextView tvLecturer = (TextView)findViewById(R.id.rating_text_view_lecturer);
-		TextView tvTimeroom = (TextView)findViewById(R.id.rating_text_view_time_room);
-		
-		tvCourse.setText(courseName);
-		tvLecturer.setText(lecturer);
-		tvTimeroom.setText(time + ", " + room);
+		mLectureRatingView.setCourseText(courseName);
+		mLectureRatingView.setLecturerText(lecturer);
+		mLectureRatingView.setRoomAndTimeText(time + ", " + room);
 	}
 	
 	
@@ -274,7 +228,6 @@ public class LectureRatingActivity extends Activity
 			handleCommentParameter();	
 		}
 	}
-	
 	/**
 	 * Set the state of the Attribute Rating Views. The rating
 	 * views are also set to be read only.
@@ -290,16 +243,15 @@ public class LectureRatingActivity extends Activity
 		}
 		
 		/* Set the ratings of the views and toggle them readonly */
-		for (int i=0; i<mAttributeViews.size(); i++) {
-			int state = AttributeRatingView.STATE_UNDEFINED;
+		for (int i=0; i<mLectureRatingView.getAttributeCount(); i++) {
+			int state = AttributeView.STATE_UNDEFINED;
 			if (ratings[i]) {
-				state = AttributeRatingView.STATE_POSITIVE;
+				state = AttributeView.STATE_POSITIVE;
 			} else {
-				state = AttributeRatingView.STATE_NEGATIVE;
+				state = AttributeView.STATE_NEGATIVE;
 			}
 			
-			mAttributeViews.get(i).setState(state);
-			mAttributeViews.get(i).setReadOnly(true);
+            mLectureRatingView.setAttributeViewState(i, state);
 		}
 	}
 	

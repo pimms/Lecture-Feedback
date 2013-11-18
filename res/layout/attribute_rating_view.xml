@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="horizontal" >
 
-    <chipmunk.unlimited.feedback.rating.AttributeRatingButton
+    <chipmunk.unlimited.feedback.rating.AttributeButton
         android:id="@+id/rating_button_negative"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="40dp"
@@ -16,7 +16,7 @@
         android:src="@drawable/thumb_down"
         android:scaleType="fitXY" />
 
-    <chipmunk.unlimited.feedback.rating.AttributeRatingButton
+    <chipmunk.unlimited.feedback.rating.AttributeButton
         android:id="@+id/rating_button_positive"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="40dp"
