@@ -227,6 +227,10 @@ public class MainActivity extends FragmentActivity implements
 		if (mFeedFragment != null) {
 			mFeedFragment.refreshContents();
 		}
+
+        if (mStatsFragment != null) {
+            mStatsFragment.refreshContents();
+        }
 	}
 	
 	
