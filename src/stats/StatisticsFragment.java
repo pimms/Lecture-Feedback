@@ -1,5 +1,7 @@
-package chipmunk.unlimited.feedback;
+package stats;
 
+import chipmunk.unlimited.feedback.R;
+import chipmunk.unlimited.feedback.R.layout;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;

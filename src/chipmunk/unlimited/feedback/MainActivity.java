@@ -2,6 +2,8 @@ package chipmunk.unlimited.feedback;
 
 import java.util.Locale;
 
+import stats.StatisticsFragment;
+
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
