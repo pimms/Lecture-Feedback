@@ -59,7 +59,16 @@ public class LectureItem {
 	public String getDateString() {
 		return mDate;
 	}
-	
+
+    /**
+     * @return
+     * The date on the form "Jan 01"
+     */
+    public String getPrettyDateString() {
+        SimpleDateFormat format = new SimpleDateFormat("dd MMM", Locale.getDefault());
+        return format.format(mStartTime);
+    }
+
 	/**
 	 * @return
 	 * Date-object with 0 in all non-date related
