@@ -16,6 +16,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import chipmunk.unlimited.feedback.LectureReviewItem;
+import chipmunk.unlimited.feedback.MainActivityFragmentInterface;
 import chipmunk.unlimited.feedback.R;
 import chipmunk.unlimited.feedback.database.SubscriptionDatabase;
 import chipmunk.unlimited.feedback.rating.LectureRatingActivity;
@@ -28,7 +29,8 @@ import chipmunk.unlimited.feedback.webapi.WebAPI.GetFeedCallback;
  * recent reviews.
  */
 public class FeedFragment extends Fragment implements OnItemClickListener, 
-													  GetFeedCallback {
+													  GetFeedCallback,
+                                                      MainActivityFragmentInterface{
 	private static final String TAG = "FeedFragment";
 	
 	private FeedAdapter mFeedAdapter;
@@ -47,7 +49,7 @@ public class FeedFragment extends Fragment implements OnItemClickListener,
 		mListView.setAdapter(mFeedAdapter);
 		mListView.setOnItemClickListener(this);
 		
-		refreshItems();
+		refreshContents();
 			
 		return rootView;
 	}
@@ -60,7 +62,8 @@ public class FeedFragment extends Fragment implements OnItemClickListener,
 	/**
 	 * Refresh the list of items via the WebAPI's getFeed call.
 	 */
-	public void refreshItems() {
+    @Override
+    public void refreshContents() {
 		SubscriptionDatabase subDb = new SubscriptionDatabase(getActivity());
 		
 		WebAPI webApi = new WebAPI();

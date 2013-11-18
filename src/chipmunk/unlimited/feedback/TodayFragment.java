@@ -20,7 +20,8 @@ import chipmunk.unlimited.feedback.rating.LectureRatingActivity;
 import chipmunk.unlimited.feedback.subscription.SubscriptionItem;
 
 public class TodayFragment extends Fragment implements 	OnParseCompleteListener,
-														OnItemClickListener {
+														OnItemClickListener,
+                                                        MainActivityFragmentInterface {
 	private static final String TAG = "TodayFragment";
 	
 	private DailyLectureAdapter mListAdapter;
@@ -39,7 +40,7 @@ public class TodayFragment extends Fragment implements 	OnParseCompleteListener,
 		mListAdapter = new DailyLectureAdapter(rootView.getContext());
 		mListView.setAdapter(mListAdapter);
 		mListView.setOnItemClickListener(this);
-		refreshItems();
+		refreshContents();
 		
 		Log.d(TAG, "TodayFragment # onCreateView()");
 			
@@ -49,7 +50,8 @@ public class TodayFragment extends Fragment implements 	OnParseCompleteListener,
 	/**
 	 * Reload the list view with updated lectures.
 	 */
-	public void refreshItems() {
+    @Override
+    public void refreshContents() {
 		showProgressBar();
 		
 		SubscriptionDatabase db = new SubscriptionDatabase(getActivity());

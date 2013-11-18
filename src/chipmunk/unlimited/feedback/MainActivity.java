@@ -2,7 +2,7 @@ package chipmunk.unlimited.feedback;
 
 import java.util.Locale;
 
-import stats.StatisticsFragment;
+import chipmunk.unlimited.feedback.stats.StatisticsFragment;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
@@ -12,7 +12,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -222,11 +221,11 @@ public class MainActivity extends FragmentActivity implements
 	
 	private void refreshFragments() {
 		if (mTodayFragment != null) {
-			mTodayFragment.refreshItems();
+			mTodayFragment.refreshContents();
 		}
 		
 		if (mFeedFragment != null) {
-			mFeedFragment.refreshItems();
+			mFeedFragment.refreshContents();
 		}
 	}
 	

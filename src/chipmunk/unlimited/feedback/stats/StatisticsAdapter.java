@@ -1,4 +1,4 @@
-package stats;
+package chipmunk.unlimited.feedback.stats;
 
 import java.util.List;
 
