@@ -60,7 +60,7 @@ public class StatisticsAdapter extends BaseAdapter {
 		tvName.setText(sub.getName());
 		tvCode.setText(sub.getHigCode());
 		
-		return null;
+		return convertView;
 	}
 	
 	
