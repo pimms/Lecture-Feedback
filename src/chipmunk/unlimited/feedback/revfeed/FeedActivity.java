@@ -31,7 +31,7 @@ public class FeedActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
-        
+
     }
 
     private void handleIntentParameters() {
