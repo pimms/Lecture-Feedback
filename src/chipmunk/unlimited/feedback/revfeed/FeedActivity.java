@@ -3,7 +3,11 @@ package chipmunk.unlimited.feedback.revfeed;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.Menu;
+
+import chipmunk.unlimited.feedback.R;
 
 /**
  * Activity displaying a FeedFragment. This Activity
@@ -21,18 +25,34 @@ import android.util.Log;
  * +----------------------+--------+-----------------------------------+
  *
  */
-public class FeedActivity extends Activity {
+public class FeedActivity extends FragmentActivity {
     public static final String PARAM_SINGLE_COURSE = "single_course";
     public static final String PARAM_SINGLE_LECTURE = "single_lecture";
 
     private static final String TAG = "FeedActivity";
 
+    private FeedFragment mFeedFragment;
+
 
     @Override
     protected void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
+        setContentView(R.layout.activity_feed);
 
+        /* Add the FeedFragment */
+        mFeedFragment = new FeedFragment();
+        mFeedFragment.setArguments(getIntent().getExtras());
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.activity_feed_layout, mFeedFragment)
+                .commit();
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_actionbar, menu);
+        return true;
+    }
+
 
     private void handleIntentParameters() {
         String course;
