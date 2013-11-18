@@ -45,6 +45,8 @@ public class FeedActivity extends FragmentActivity {
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.activity_feed_layout, mFeedFragment)
                 .commit();
+
+        handleIntentParameters();
     }
 
     @Override
@@ -66,5 +68,7 @@ public class FeedActivity extends FragmentActivity {
             Log.e(TAG, "ONE PARAMETER MUST BE DEFINED.");
             finish();
         }
+
+
     }
 }

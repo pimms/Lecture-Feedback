@@ -32,6 +32,7 @@ public class FeedAdapter extends BaseAdapter {
 	
 	public void setReviewItems(List<LectureReviewItem> reviewItems) {
 		mReviewItems = reviewItems;
+        notifyDataSetChanged();
 	}
 	
 	@Override

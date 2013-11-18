@@ -15,6 +15,8 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+
+import chipmunk.unlimited.feedback.LectureItem;
 import chipmunk.unlimited.feedback.LectureReviewItem;
 import chipmunk.unlimited.feedback.MainActivityFragmentInterface;
 import chipmunk.unlimited.feedback.R;
@@ -23,16 +25,19 @@ import chipmunk.unlimited.feedback.rating.LectureRatingActivity;
 import chipmunk.unlimited.feedback.webapi.WebAPI;
 import chipmunk.unlimited.feedback.webapi.WebAPI.GetFeedCallback;
 
-/** 
- * @class FeedFragment
+/**
  * Fragment containing a list view which displays 
  * recent reviews.
+ *
+ * FeedFragment supports the same parameters FeedActivity
+ * does.
  */
-public class FeedFragment extends Fragment implements OnItemClickListener, 
-													  GetFeedCallback,
-                                                      MainActivityFragmentInterface{
+public class FeedFragment extends Fragment implements OnItemClickListener,
+                                                      Feed.FeedListener,
+                                                      MainActivityFragmentInterface {
 	private static final String TAG = "FeedFragment";
-	
+
+    private Feed mFeed;
 	private FeedAdapter mFeedAdapter;
 	private ListView mListView;
 	private ProgressBar mProgressBar;
@@ -41,13 +46,15 @@ public class FeedFragment extends Fragment implements OnItemClickListener,
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {		
 		View rootView = inflater.inflate(R.layout.fragment_main_feed, container, false);
-		
-		mListView = (ListView)rootView.findViewById(R.id.feed_list_view);
+
+   		mListView = (ListView)rootView.findViewById(R.id.feed_list_view);
 		mProgressBar = (ProgressBar)rootView.findViewById(R.id.feed_progress_bar);
 		
 		mFeedAdapter = new FeedAdapter(container.getContext());
 		mListView.setAdapter(mFeedAdapter);
 		mListView.setOnItemClickListener(this);
+
+        mFeed = new Feed(getActivity(), this);
 
 		refreshContents();
 			
@@ -55,20 +62,35 @@ public class FeedFragment extends Fragment implements OnItemClickListener,
 	}
 
 
+    /**
+     * Return the feed to allow external objects to
+     * modify it.
+     *
+     * @return
+     * OOOOH, IT'S WAFFLE TIME, IT'S WAFFLE TIME - WON'T
+     * YOU HAVE SOME WAFFLES OF MINE?
+     */
+    public Feed getFeed() {
+        return mFeed;
+    }
+
+
 	/**
 	 * Refresh the list of items via the WebAPI's getFeed call.
 	 */
     @Override
     public void refreshContents() {
-		SubscriptionDatabase subDb = new SubscriptionDatabase(getActivity());
-		
-		WebAPI webApi = new WebAPI();
-		webApi.getFeed(this, subDb.getSubscriptionList(), 0, 25);
-		
+        mFeed.update(0, 25);
 		showProgressBar();
 	}
-	
-	
+
+    @Override
+    public void onFeedUpdate(List<LectureReviewItem> items) {
+        mFeedAdapter.setReviewItems(items);
+        hideProgressBar();
+    }
+
+
 	/**
 	 * Start an instance of the LectureRatingActivity in a read-only state.
 	 */
@@ -92,24 +114,6 @@ public class FeedFragment extends Fragment implements OnItemClickListener,
 		intent.putExtra(LectureRatingActivity.PARAM_COMMENT, reviewItem.getComment());
 		
 		startActivity(intent);
-	}
-	
-
-	@Override
-	public void onGetFeedSuccess(List<LectureReviewItem> items) {
-		mFeedAdapter.setReviewItems(items);
-		mFeedAdapter.notifyDataSetChanged();
-		
-		hideProgressBar();
-	}
-
-	@Override
-	public void onGetFeedFailure(String errorMessage) {
-		Log.e(TAG, "GetFeed failed: " + errorMessage);
-		mListView.setAdapter(mFeedAdapter);
-		mFeedAdapter.setReviewItems(null);
-		
-		hideProgressBar();
 	}
 
 	
