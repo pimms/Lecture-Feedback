@@ -88,7 +88,7 @@ public class LectureRatingActivity extends Activity
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
-	    setContentView(R.layout.lecture_rating);
+	    setContentView(R.layout.lecture_rating_view);
 	    
 	    createAttributeRatingViews();
 	    handleIntentParameters();
