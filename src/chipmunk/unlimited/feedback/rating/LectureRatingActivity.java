@@ -8,7 +8,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,8 +19,6 @@ import android.widget.TextView;
 import chipmunk.unlimited.feedback.LectureItem;
 import chipmunk.unlimited.feedback.LectureReviewItem;
 import chipmunk.unlimited.feedback.R;
-import chipmunk.unlimited.feedback.R.id;
-import chipmunk.unlimited.feedback.R.layout;
 import chipmunk.unlimited.feedback.database.ReviewedLectureDatabase;
 import chipmunk.unlimited.feedback.rating.AttributeRatingView.OnRatingChangeListener;
 import chipmunk.unlimited.feedback.webapi.WebAPI;
@@ -91,7 +88,7 @@ public class LectureRatingActivity extends Activity
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
-	    setContentView(R.layout.activity_lecture_rating);
+	    setContentView(R.layout.lecture_rating);
 	    
 	    createAttributeRatingViews();
 	    handleIntentParameters();
