@@ -48,16 +48,12 @@ public class FeedFragment extends Fragment implements OnItemClickListener,
 		mFeedAdapter = new FeedAdapter(container.getContext());
 		mListView.setAdapter(mFeedAdapter);
 		mListView.setOnItemClickListener(this);
-		
+
 		refreshContents();
 			
 		return rootView;
 	}
-	
-	@Override
-	public void onSaveInstanceState(Bundle savedInstanceState) {
-		super.onSaveInstanceState(savedInstanceState);
-	}
+
 
 	/**
 	 * Refresh the list of items via the WebAPI's getFeed call.
