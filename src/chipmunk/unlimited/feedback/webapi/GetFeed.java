@@ -11,6 +11,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.util.Log;
+
+import chipmunk.unlimited.feedback.LectureItem;
 import chipmunk.unlimited.feedback.LectureReviewItem;
 import chipmunk.unlimited.feedback.subscription.SubscriptionItem;
 import chipmunk.unlimited.feedback.webapi.WebAPI.GetFeedCallback;
@@ -30,9 +32,11 @@ class GetFeed extends WebAPICall {
 		assert(callback != null);
 		mCallback = callback;
 	}
-	
+
+
 	/**
-	 * 
+	 * Get the feed of reviews for one or more courses.
+     *
 	 * @param baseUrl
 	 * The base url containing the root level of the webAPI.
 	 * 
@@ -56,14 +60,54 @@ class GetFeed extends WebAPICall {
 		
 		baseUrl += "/getFeed.php?";
 		baseUrl += "filter=" + createFilterString(subscriptions);
-		baseUrl += "&first=" + first;
-		baseUrl += "&count=" + count;
 
-		Log.d(TAG, baseUrl);
-		
-		new AsyncHttpClient().get(baseUrl, this);
+        apiCall(baseUrl, first, count);
 	}
-	
+
+    /**
+     * Get the feed of a single lecture.
+     *
+     * @param baseUrl
+     * The base url containing the root level of the webAPI.
+     *
+     * @param lecture
+     * The lecture to be included in the feed.
+     *
+     * @param first
+     * The first item to be returned in the result set.
+     *
+     * @param count
+     * The maximum number of items to be returned.
+     *
+     * @return
+     */
+    public void apiCall(String baseUrl, LectureItem lecture, int first, int count) {
+        baseUrl += "/getFeed.php?filter=LECTURE";
+        baseUrl += createFilterString(lecture);
+
+        apiCall(baseUrl, first, count);
+    }
+
+    private void apiCall(String baseUrl, int first, int count) {
+        baseUrl += "&first=" + first;
+        baseUrl += "&count=" + count;
+
+        Log.d(TAG, baseUrl);
+
+        new AsyncHttpClient().get(baseUrl, this);
+    }
+
+
+    /**
+     * Create a filter string to be used when retrieving the
+     * feed for a set of courses.
+     *
+     * @param subscriptions
+     * The courses to be included in the feed.
+     *
+     * @return
+     * The "filter" HTTP-GET parameter value.
+     */
 	private String createFilterString(List<SubscriptionItem> subscriptions) {
 		String result = "";
 		
@@ -77,7 +121,21 @@ class GetFeed extends WebAPICall {
 		
 		return result;
 	}
-	
+
+    /**
+     * Create a filter string to be used when retrieving
+     * the feed for a single lecture.
+     *
+     * @param lecture
+     * The lecture on which the feed is based.
+     *
+     * @return
+     * To be determined.
+     */
+    private String createFilterString(LectureItem lecture) {
+        return null;
+    }
+
 	
 	@Override
 	public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
