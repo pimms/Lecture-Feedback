@@ -62,11 +62,23 @@ public class LectureItem {
 
     /**
      * @return
-     * The date on the form "Jan 01"
+     * The date on the form "Jan 01" if the date is from
+     * this year, "Jan 01, 2012" if it was from another year.
      */
     public String getPrettyDateString() {
-        SimpleDateFormat format = new SimpleDateFormat("dd MMM", Locale.getDefault());
-        return format.format(mStartTime);
+        Calendar now = Calendar.getInstance();
+
+        Calendar then = Calendar.getInstance();
+        then.setTime(mStartTime);
+
+        String format = "dd MMM";
+
+        if (now.get(Calendar.YEAR) != then.get(Calendar.YEAR)) {
+            format += ", yyyy";
+        }
+
+        SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.getDefault());
+        return sdf.format(mStartTime);
     }
 
 	/**
