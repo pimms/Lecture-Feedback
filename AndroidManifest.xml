@@ -25,6 +25,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".rating.LectureRatingActivity"></activity>
+        <activity android:name=".revfeed.FeedActivity"></activity>
     </application>
 
 </manifest>
