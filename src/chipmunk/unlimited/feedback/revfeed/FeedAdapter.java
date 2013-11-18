@@ -67,6 +67,7 @@ public class FeedAdapter extends BaseAdapter {
 		}
 		
 		TextView tvCourse = (TextView)vi.findViewById(R.id.feed_item_text_view_course);
+        TextView tvDate = (TextView)vi.findViewById(R.id.feed_item_text_view_date);
 		TextView tvTime = (TextView)vi.findViewById(R.id.feed_item_text_view_time);
 		TextView tvLecturer = (TextView)vi.findViewById(R.id.feed_item_text_view_lecturer);
 		TextView tvPositive = (TextView)vi.findViewById(R.id.feed_item_text_view_positive);
@@ -75,6 +76,7 @@ public class FeedAdapter extends BaseAdapter {
 		
 		LectureReviewItem item = (LectureReviewItem)getItem(position);
 		tvCourse.setText(item.getCourseName());
+        tvDate.setText(item.getPrettyDateString());
 		tvTime.setText(item.getTimeString());
 		tvLecturer.setText(item.getLecturer() + ", " + item.getRoom());
 		tvComment.setText(item.getComment());
