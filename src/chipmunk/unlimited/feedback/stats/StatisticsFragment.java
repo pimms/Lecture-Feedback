@@ -18,7 +18,7 @@ public class StatisticsFragment extends Fragment
             implements MainActivityFragmentInterface,
                        AdapterView.OnItemClickListener {
     private StatisticsAdapter mAdapter;
-    
+
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.Menu;
 
 import chipmunk.unlimited.feedback.R;
+import chipmunk.unlimited.feedback.subscription.SubscriptionItem;
 
 /**
  * Activity displaying a FeedFragment. This Activity
@@ -17,17 +18,34 @@ import chipmunk.unlimited.feedback.R;
  * One, and only one of the following parameters must
  * be passed in the spawning Intent.
  *
- * +----------------------+--------+-----------------------------------+
- * | Parameter name       | Type   | Value                             |
- * +----------------------+--------+-----------------------------------+
- * | PARAM_SINGLE_COURSE  | String | The HiG course code to display.   |
- * | PARAM_SINGLE_LECTURE | TBI    | TBI                               |
- * +----------------------+--------+-----------------------------------+
+ * +----------------------+---------+--------+
+ * | Parameter name       | Type    | Value  |
+ * +----------------------+---------+--------+
+ * | PARAM_SINGLE_COURSE  | boolean | TRUE   |
+ * | PARAM_SINGLE_LECTURE | boolean | TRUE   |
+ * +----------------------+---------+--------+
  *
+ * If PARAM_SINGLE_COURSE is set, the following
+ * parameters must also be set:
+ *
+ * Parameter name           Type    Value
+ * PARAM_COURSE_NAME        String  The name of the course.
+ * PARAM_COURSE_CODE        String  The HiG code of the course
+ *
+ * If PARAM_SINGLE_CODE is set, the following
+ * parameters must also be set:
+ * TODO!
  */
 public class FeedActivity extends FragmentActivity {
     public static final String PARAM_SINGLE_COURSE = "single_course";
     public static final String PARAM_SINGLE_LECTURE = "single_lecture";
+
+    /* PARAM_SINGLE_COURSE attributes */
+    public static final String PARAM_COURSE_NAME = "course_name";
+    public static final String PARAM_COURSE_CODE = "course_code";
+
+    /* PARAM_SINGLE_CODE attributes */
+    // TODO!
 
     private static final String TAG = "FeedActivity";
 
@@ -57,18 +75,29 @@ public class FeedActivity extends FragmentActivity {
 
 
     private void handleIntentParameters() {
-        String course;
-        String lecture;
+        boolean course;
+        boolean lecture;
 
         Intent intent = getIntent();
-        course = intent.getStringExtra(PARAM_SINGLE_COURSE);
-        lecture = intent.getStringExtra(PARAM_SINGLE_LECTURE);
+        course = intent.getBooleanExtra(PARAM_SINGLE_COURSE, false);
+        lecture = intent.getBooleanExtra(PARAM_SINGLE_LECTURE, false);
 
-        if ( (course != null) == (lecture != null) ) {
+        if (course == lecture) {
             Log.e(TAG, "ONE PARAMETER MUST BE DEFINED.");
             finish();
         }
 
+        if (course) {
+            String name = intent.getStringExtra(PARAM_COURSE_NAME);
+            String code = intent.getStringExtra(PARAM_COURSE_CODE);
 
+            if (name == null || code == null) {
+                Log.e(TAG, "COURSE_NAME and COURSE_CODE must be defined!");
+                finish();
+            }
+
+            SubscriptionItem subItem = new SubscriptionItem(null, code, name);
+            mFeedFragment.getFeed().setStateCourse(subItem);
+        }
     }
 }
