@@ -59,6 +59,9 @@ public class FeedAdapter extends BaseAdapter {
      * will appear in the final list.
      */
     private void defineItemOrder() {
+        // Clear the previous list
+        mListItemTypes.clear();
+
         if (mFeedState == Feed.STATE_DEFAULT) {
             defineItemOrderDefault();
         } else if (mFeedState == Feed.STATE_COURSE) {
@@ -116,7 +119,14 @@ public class FeedAdapter extends BaseAdapter {
                     reviews++;
                 }
             }
-            return mReviewItems.get(reviews);
+            try {
+                return mReviewItems.get(reviews);
+            } catch (Exception ex) {
+                Log.d("EXCP", ex.getMessage());
+                ex.printStackTrace();
+                Log.d("LOLWAT", "lolwat");
+                return null;
+            }
         } else {
             return null;
         }
