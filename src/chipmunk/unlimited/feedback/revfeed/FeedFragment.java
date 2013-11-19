@@ -49,14 +49,18 @@ public class FeedFragment extends Fragment implements OnItemClickListener,
 
    		mListView = (ListView)rootView.findViewById(R.id.feed_list_view);
 		mProgressBar = (ProgressBar)rootView.findViewById(R.id.feed_progress_bar);
-		
-		mFeedAdapter = new FeedAdapter(container.getContext());
-		mListView.setAdapter(mFeedAdapter);
-		mListView.setOnItemClickListener(this);
 
+        /* Create the Feed */
         if (mFeed == null) {
             mFeed = new Feed(getActivity(), this);
         }
+
+        /* Create the adapter and adjust it to mFeed's state */
+        mFeedAdapter = new FeedAdapter(container.getContext());
+        mFeedAdapter.setFeedState(mFeed.getState());
+
+		mListView.setAdapter(mFeedAdapter);
+		mListView.setOnItemClickListener(this);
 
 		refreshContents();
 			
