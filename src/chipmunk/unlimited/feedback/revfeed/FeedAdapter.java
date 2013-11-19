@@ -1,6 +1,7 @@
 package chipmunk.unlimited.feedback.revfeed;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import chipmunk.unlimited.feedback.LectureReviewItem;
@@ -77,6 +78,9 @@ public class FeedAdapter extends BaseAdapter {
             return;
         }
 
+        // Sort the items
+        Collections.sort(mReviewItems);
+
         // Add separators between each lecture
         mListItemTypes.add(LIST_ITEM_TYPE_LECTURE_SEPARATOR);
         mListItemTypes.add(LIST_ITEM_TYPE_REVIEW);
@@ -140,7 +144,7 @@ public class FeedAdapter extends BaseAdapter {
 	public int getCount() {
 		return mListItemTypes.size();
 	}
-	
+
 	@Override
 	public Object getItem(int position) {
 		if (mListItemTypes.get(position) == LIST_ITEM_TYPE_REVIEW) {
@@ -149,7 +153,7 @@ public class FeedAdapter extends BaseAdapter {
 
         return null;
 	}
-	
+
 	@Override
 	public long getItemId(int position) {
 		return position;

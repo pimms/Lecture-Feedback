@@ -12,7 +12,7 @@ import chipmunk.unlimited.feedback.webapi.SHA1;
  * @class LectureItem
  * Representation of a lecture retrieved from TimeEdit.
  */
-public class LectureItem {
+public class LectureItem implements Comparable<LectureItem> {
 	protected Date mStartTime;
 	protected Date mEndTime;
 	protected String mDate;
@@ -230,6 +230,12 @@ public class LectureItem {
 	public String toString() {
 		return "[" + mStartTime + "-" + mEndTime + "] " + mCourseName + ", " + mRoom + ", " + mLecturer;
 	}
+
+
+    @Override
+    public int compareTo(LectureItem o) {
+        return o.mStartTime.compareTo(mStartTime);
+    }
 }
 
 
