@@ -18,15 +18,15 @@ import chipmunk.unlimited.feedback.webapi.WebAPI;
 public class Feed implements WebAPI.GetFeedCallback {
     /* The Fragment is in it's default state, and will use  *
      * ALL SubscriptionItems from the local Database.       */
-    private static final int STATE_DEFAULT      = 0;
+    public static final int STATE_DEFAULT      = 0;
 
     /* The fragment is in SINGLE_COURSE state, and will     *
      * only display a single course.                        */
-    private static final int STATE_COURSE       = 1;
+    public static final int STATE_COURSE       = 1;
 
     /* The fragment is in SINGLE_LECTURE state and will     *
      * only display reviews made of a single lecture        */
-    private static final int STATE_LECTURE      = 2;
+    public static final int STATE_LECTURE      = 2;
 
     private static final String TAG = "Feed";
 
@@ -54,6 +54,10 @@ public class Feed implements WebAPI.GetFeedCallback {
         mCallback = callback;
     }
 
+
+    public int getState() {
+        return mState;
+    }
 
     public void setStateDefault() {
         mState = STATE_DEFAULT;
