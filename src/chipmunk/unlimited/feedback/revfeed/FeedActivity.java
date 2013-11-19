@@ -1,6 +1,5 @@
 package chipmunk.unlimited.feedback.revfeed;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -45,7 +44,7 @@ public class FeedActivity extends FragmentActivity {
     public static final String PARAM_COURSE_NAME = "course_name";
     public static final String PARAM_COURSE_CODE = "course_code";
 
-    /* PARAM_SINGLE_CODE attributes */
+    /* PARAM_SINGLE_LECTURE attributes */
     // TODO!
 
     private static final String TAG = "FeedActivity";
