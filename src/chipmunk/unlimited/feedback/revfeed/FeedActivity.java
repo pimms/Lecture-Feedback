@@ -99,20 +99,29 @@ public class FeedActivity extends FragmentActivity {
         }
 
         if (course) {
-            String name = intent.getStringExtra(PARAM_COURSE_NAME);
-            String code = intent.getStringExtra(PARAM_COURSE_CODE);
-
-            if (name == null || code == null) {
-                Log.e(TAG, "COURSE_NAME and COURSE_CODE must be defined!");
-                finish();
-            }
-
-            SubscriptionItem subItem = new SubscriptionItem(null, code, name);
-            Feed feed = new Feed(this, mFeedFragment);
-            feed.setStateCourse(subItem);
-            mFeedFragment.setFeed(feed);
-
-            getActionBar().setTitle(subItem.getName());
+            handleSingleCourseState();
+        } else {
+            Log.e(TAG, "PARAM_SINGLE_LECTURE is unsupported");
+            finish();
         }
+    }
+
+    private void handleSingleCourseState() {
+        Intent intent = getIntent();
+
+        String name = intent.getStringExtra(PARAM_COURSE_NAME);
+        String code = intent.getStringExtra(PARAM_COURSE_CODE);
+
+        if (name == null || code == null) {
+            Log.e(TAG, "COURSE_NAME and COURSE_CODE must be defined!");
+            finish();
+        }
+
+        SubscriptionItem subItem = new SubscriptionItem(null, code, name);
+        Feed feed = new Feed(this, mFeedFragment);
+        feed.setStateCourse(subItem);
+        mFeedFragment.setFeed(feed);
+
+        getActionBar().setTitle(subItem.getName());
     }
 }
