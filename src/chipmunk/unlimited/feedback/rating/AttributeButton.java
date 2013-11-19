@@ -7,8 +7,8 @@ import android.util.Log;
 import android.widget.ImageButton;
 import chipmunk.unlimited.feedback.R;
 
-public class AttributeRatingButton extends ImageButton {
-	private static final String TAG = "AttributeRatingButton";
+public class AttributeButton extends ImageButton {
+	private static final String TAG = "AttributeButton";
 	
 	/* Does the button affect positively or negatively? */
 	public static final int NEGATIVE = 1;
@@ -23,15 +23,15 @@ public class AttributeRatingButton extends ImageButton {
 	private int mState = INACTIVE;
 	
 	
-	public AttributeRatingButton(Context context) {
+	public AttributeButton(Context context) {
 		super(context);
 	}
 	
-	public AttributeRatingButton(Context context, AttributeSet attrs) {
+	public AttributeButton(Context context, AttributeSet attrs) {
 		super(context, attrs);
 	}
 	
-	public AttributeRatingButton(Context context, AttributeSet attrs, int defStyle) {
+	public AttributeButton(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 	}
 	
