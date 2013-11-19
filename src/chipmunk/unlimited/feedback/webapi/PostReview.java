@@ -36,6 +36,7 @@ class PostReview extends WebAPICall {
 		baseUrl += "&end_time=" 	+ review.getEndTimeUNIX();
 		baseUrl += "&attribute_version_set=1";
 		baseUrl += "&attributes=" 	+ review.getRatingString();
+        baseUrl += "&hash="         + review.getLectureHash();
 		
 		String comment = review.getURIEncodedComment();
 		if (comment.length() != 0) {
