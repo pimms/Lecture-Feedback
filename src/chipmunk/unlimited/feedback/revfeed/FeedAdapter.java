@@ -23,12 +23,18 @@ public class FeedAdapter extends BaseAdapter {
 	private static LayoutInflater sInflater;
 	
 	private List<LectureReviewItem> mReviewItems;
-	
+	private int mFeedState = Feed.STATE_DEFAULT;
+
 	
 	public FeedAdapter(Context context) {
 		sInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
-	
+
+
+    public void setFeedState(int state) {
+        mFeedState = state;
+    }
+
 	
 	public void setReviewItems(List<LectureReviewItem> reviewItems) {
 		mReviewItems = reviewItems;
@@ -67,8 +73,6 @@ public class FeedAdapter extends BaseAdapter {
 		}
 		
 		TextView tvCourse = (TextView)vi.findViewById(R.id.feed_item_text_view_course);
-        TextView tvDate = (TextView)vi.findViewById(R.id.feed_item_text_view_date);
-		TextView tvTime = (TextView)vi.findViewById(R.id.feed_item_text_view_time);
 		TextView tvLecturer = (TextView)vi.findViewById(R.id.feed_item_text_view_lecturer);
 		TextView tvPositive = (TextView)vi.findViewById(R.id.feed_item_text_view_positive);
 		TextView tvNegative = (TextView)vi.findViewById(R.id.feed_item_text_view_negative);
@@ -76,8 +80,6 @@ public class FeedAdapter extends BaseAdapter {
 		
 		LectureReviewItem item = (LectureReviewItem)getItem(position);
 		tvCourse.setText(item.getCourseName());
-        tvDate.setText(item.getPrettyDateString());
-		tvTime.setText(item.getTimeString());
 		tvLecturer.setText(item.getLecturer() + ", " + item.getRoom());
 		tvComment.setText(item.getComment());
 		
@@ -93,8 +95,30 @@ public class FeedAdapter extends BaseAdapter {
 		}
 		tvPositive.setText("" + positive);
 		tvNegative.setText("" + negative);
-		
+
+        // Handle feed_item_text_view_date and feed_item_text_view_time
+        // based on the current state.
+        handleDateTimeTextViews(vi, item);
 		
 		return vi;
 	}
+
+    /**
+     * Handle the content of the TextViews containing the date
+     * and time based on the current FeedState.
+     */
+    private void handleDateTimeTextViews(View listItem, LectureReviewItem lecture) {
+        TextView tvDate = (TextView)listItem.findViewById(R.id.feed_item_text_view_date);
+        TextView tvTime = (TextView)listItem.findViewById(R.id.feed_item_text_view_time);
+
+        if (mFeedState == Feed.STATE_DEFAULT) {
+            // Set the text usual
+            tvDate.setText(lecture.getPrettyDateString());
+            tvTime.setText(lecture.getTimeString());
+        } else if (mFeedState == Feed.STATE_COURSE) {
+            tvDate.setText(null);
+            tvTime.setText(null);
+        }
+    }
+
 }
