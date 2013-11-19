@@ -209,6 +209,14 @@ public class LectureItem implements Comparable<LectureItem> {
 	
 	/**
 	 * Calculate the hash for this lecture.
+     * The hash used on both the client application
+     * and the backend server is the combined hash of:
+     * 1. The UNIX timestamp string of the start time of the lecture
+     * 2. The UNIX timestamp string of the end time of the lecture
+     * 3. The course name as it appears on TimeEdit
+     * 4. The HiG code of the course
+     * 5. The room as it appears on TimeEdit
+     * 6. The lecturer as it appears on TimeEdit
 	 * 
 	 * @return
 	 * SHA-1 of the LectureItem's uniquely identifying
@@ -216,8 +224,8 @@ public class LectureItem implements Comparable<LectureItem> {
 	 */
 	public final String getLectureHash() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(mStartTime.toString());
-		sb.append(mEndTime.toString());
+		sb.append(getStartTimeUNIX());
+		sb.append(getEndTimeUNIX());
 		sb.append(mCourseName);
 		sb.append(mCourseHigCode);
 		sb.append(mRoom);
