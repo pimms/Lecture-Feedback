@@ -112,6 +112,8 @@ public class FeedActivity extends FragmentActivity {
             Feed feed = new Feed(this, mFeedFragment);
             feed.setStateCourse(subItem);
             mFeedFragment.setFeed(feed);
+
+            getActionBar().setTitle(subItem.getName());
         }
     }
 }
