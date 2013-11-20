@@ -50,14 +50,14 @@
         android:layout_alignRight="@+id/lecture_text_view_lecturer" />
 
     <LinearLayout
-        android:id="@+id/lecture_view_positive"
+        android:id="@+id/lecture_separator_view_positive"
         android:layout_width="35dp"
         android:layout_height="40dp"
         android:background="@drawable/feed_background_positive"
         android:gravity="center_vertical"
         android:orientation="vertical"
-        android:layout_alignTop="@+id/lecture_view_negative"
-        android:layout_toLeftOf="@+id/lecture_view_negative"
+        android:layout_alignTop="@+id/lecture_separator_view_negative"
+        android:layout_toLeftOf="@+id/lecture_separator_view_negative"
         android:layout_marginRight="5dp">
 
         <ImageView
@@ -68,7 +68,7 @@
             android:background="@drawable/thumb_up"
             android:contentDescription="Thumbs up"/>
         <TextView
-            android:id="@+id/lecture_text_view_positive"
+            android:id="@+id/lecture_separator_text_view_positive"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
@@ -78,7 +78,7 @@
             android:text="3"/>
     </LinearLayout>
     <LinearLayout
-        android:id="@+id/lecture_view_negative"
+        android:id="@+id/lecture_separator_view_negative"
         android:orientation="vertical"
         android:layout_width="35dp"
         android:layout_height="40dp"
@@ -95,7 +95,7 @@
             android:background="@drawable/thumb_down"
             android:contentDescription="Thumbs down"/>
         <TextView
-            android:id="@+id/lecture_text_view_negative"
+            android:id="@+id/lecture_separator_text_view_negative"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
