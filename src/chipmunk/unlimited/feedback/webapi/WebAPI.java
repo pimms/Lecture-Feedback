@@ -211,12 +211,39 @@ public class WebAPI {
 	}
 
 
+    /**
+     * Wrapper around the web API call "getStats" with action
+     * parameter = "course_votes".
+     *
+     * @param callback
+     * The callback object.
+     *
+     * @param subs
+     * List of subscription items to be included in the
+     * result set.
+     */
     public void getCourseVotes(GetCourseVotesCallback callback,
                               List<SubscriptionItem> subs) {
         GetStats getStats = new GetStats();
         getStats.apiCallCourseVotes(callback, API_URL, subs);
     }
 
+    /**
+     * Wrapper aroud the web API call "getStats" with action
+     * parameter = "lecture_votes_all"
+     *
+     * @param callback
+     * The callback object
+     *
+     * @param course
+     * The course to retrieve lectures for
+     *
+     * @param first
+     * The first item in the total set to be included
+     *
+     * @param count
+     * The maxmimum number of items to be included
+     */
     public void getLectureVotesAll(GetLectureVotesAllCallback callback,
                                    String course, int first, int count) {
         GetStats getStats = new GetStats();
