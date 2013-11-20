@@ -15,7 +15,10 @@ import chipmunk.unlimited.feedback.subscription.SubscriptionItem;
 
 /**
  * The adapter retrieves all subscribed courses from the database, 
- * and displays them in the list view. 
+ * and displays them in the list view.
+ *
+ * The adapter retrieves the votes for the courses, and updates
+ * the list view when the votes arrive.
  */
 public class StatisticsAdapter extends BaseAdapter {
 	
@@ -54,11 +57,9 @@ public class StatisticsAdapter extends BaseAdapter {
 		}
 		
 		TextView tvName = (TextView)convertView.findViewById(R.id.course_text_view_name);
-		TextView tvCode = (TextView)convertView.findViewById(R.id.stats_course_text_view_code);
 		
 		SubscriptionItem sub = (SubscriptionItem)getItem(position);
 		tvName.setText(sub.getName());
-		tvCode.setText(sub.getHigCode());
 		
 		return convertView;
 	}
