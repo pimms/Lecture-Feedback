@@ -55,7 +55,7 @@ public class FeedActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
-        setContentView(R.layout.activity_feed);
+        setContentView(R.layout.linear_layout);
 
         /* Add the FeedFragment */
         mFeedFragment = new FeedFragment();
