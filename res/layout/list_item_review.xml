@@ -81,56 +81,12 @@
             android:ellipsize="end"
             android:text="The course is excellent, and I am learning so much. Oh, it&apos;s so nice to be superdi duperdi smart from this super course. Oh my lawds. LET'S BE SMART FOREVER YOU GUYS OMTRSOUH EILU RHESOR SORIE HSOERH SOERH RHØEI RHøuhe roW RHEORIAEWJ ETI HESATI EOIHJOPIH OH ØOUH UIGB OIUG OU HOU" />
 
-		<LinearLayout
-		    android:id="@+id/feed_item_view_positive"
-		    android:layout_width="20dp"
-		    android:layout_height="40dp"
-		    android:layout_marginLeft="5dp"
-		    android:background="@drawable/feed_background_positive"
-		    android:gravity="center_vertical"
-		    android:orientation="vertical" >
-
-		    <ImageView
-		        android:layout_width="17dp"
-		        android:layout_height="17dp"
-		        android:layout_marginTop="2dp"
-		        android:layout_marginLeft="1dp"
-		        android:background="@drawable/thumb_up"
-		        android:contentDescription="Thumbs up"/>
-		    <TextView
-		        android:id="@+id/feed_item_text_view_positive"
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
-		        android:layout_marginTop="3dp"
-		        android:textColor="#000"
-		        android:gravity="center|bottom"
-		        android:textAlignment="gravity"
-		        android:text="3"/>
-		</LinearLayout>
-		<LinearLayout
-		    android:id="@+id/feed_item_view_negative"
-		    android:orientation="vertical"
-		    android:layout_width="20dp"
-		    android:layout_height="40dp"
-		    android:layout_marginLeft="10dp"
-		    android:background="@drawable/feed_background_negative">
-		    <ImageView
-		        android:layout_width="17dp"
-		        android:layout_height="17dp"
-		        android:layout_marginTop="2dp"
-		        android:layout_marginLeft="1dp"
-		        android:background="@drawable/thumb_down"
-		        android:contentDescription="Thumbs down"/>
-		    <TextView
-		        android:id="@+id/feed_item_text_view_negative"
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
-		        android:layout_marginTop="3dp"
-		        android:textColor="#000"
-		        android:gravity="center|bottom"
-		        android:textAlignment="gravity"
-		        android:text="2"/>
-		</LinearLayout>
+        <RelativeLayout
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="0.3">
+            <include layout="@layout/simple_thumbs"/>
+        </RelativeLayout>
     </LinearLayout>
 
 </RelativeLayout>

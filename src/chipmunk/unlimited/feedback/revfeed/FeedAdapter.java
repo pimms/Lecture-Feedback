@@ -227,8 +227,8 @@ public class FeedAdapter extends BaseAdapter {
 
         TextView tvCourse = (TextView)vi.findViewById(R.id.feed_item_text_view_course);
         TextView tvLecturer = (TextView)vi.findViewById(R.id.feed_item_text_view_lecturer);
-        TextView tvPositive = (TextView)vi.findViewById(R.id.feed_item_text_view_positive);
-        TextView tvNegative = (TextView)vi.findViewById(R.id.feed_item_text_view_negative);
+        TextView tvPositive = (TextView)vi.findViewById(R.id.simple_thumb_text_view_positive);
+        TextView tvNegative = (TextView)vi.findViewById(R.id.simple_thumb_text_view_negative);
         TextView tvComment = (TextView)vi.findViewById(R.id.feed_item_text_view_comment);
 
         LectureReviewItem item = (LectureReviewItem)getItem(position);
