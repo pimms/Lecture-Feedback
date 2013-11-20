@@ -53,7 +53,7 @@ public class StatisticsAdapter extends BaseAdapter {
 			convertView = mInflater.inflate(R.layout.list_item_course, null);
 		}
 		
-		TextView tvName = (TextView)convertView.findViewById(R.id.stats_course_text_view_name);
+		TextView tvName = (TextView)convertView.findViewById(R.id.course_text_view_name);
 		TextView tvCode = (TextView)convertView.findViewById(R.id.stats_course_text_view_code);
 		
 		SubscriptionItem sub = (SubscriptionItem)getItem(position);
