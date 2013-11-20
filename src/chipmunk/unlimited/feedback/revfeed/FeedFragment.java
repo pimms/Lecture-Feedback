@@ -90,30 +90,36 @@ public class FeedFragment extends Fragment implements OnItemClickListener,
     }
 
 
-	/**
-	 * Start an instance of the LectureRatingActivity in a read-only state.
-	 */
 	@Override
 	public void onItemClick(AdapterView<?> adapter, View item, int position, long id) {		
-		Intent intent = new Intent(item.getContext(), LectureRatingActivity.class);
-		
-		LectureReviewItem reviewItem = (LectureReviewItem)mFeedAdapter.getItem(position);
-		
-		/* Required parameters */
-		intent.putExtra(LectureRatingActivity.PARAM_COURSE_NAME, reviewItem.getCourseName());
-		intent.putExtra(LectureRatingActivity.PARAM_COURSE_HIG_CODE, reviewItem.getCourseHigCode());
-		intent.putExtra(LectureRatingActivity.PARAM_LECTURER_NAME, reviewItem.getLecturer());
-		intent.putExtra(LectureRatingActivity.PARAM_TIME, reviewItem.getTimeString());
-		intent.putExtra(LectureRatingActivity.PARAM_DATE, reviewItem.getDateString());
-		intent.putExtra(LectureRatingActivity.PARAM_ROOM, reviewItem.getRoom());
-		
-		/* Optional, READ ONLY toggling parameters */
-		intent.putExtra(LectureRatingActivity.PARAM_READ_ONLY, true);
-		intent.putExtra(LectureRatingActivity.PARAM_RATINGS, reviewItem.getRatings());
-		intent.putExtra(LectureRatingActivity.PARAM_COMMENT, reviewItem.getComment());
-		
-		startActivity(intent);
+        if (mFeedAdapter.getFeedState() == Feed.STATE_DEFAULT) {
+            startReadOnlyLectureRatingActivity(position);
+        }
 	}
+
+    /**
+     * Start an instance of the LectureRatingActivity in a read-only state.
+     */
+    private void startReadOnlyLectureRatingActivity(int reviewItemIndex) {
+        Intent intent = new Intent(getActivity(), LectureRatingActivity.class);
+
+        LectureReviewItem reviewItem = (LectureReviewItem)mFeedAdapter.getItem(reviewItemIndex);
+
+		/* Required parameters */
+        intent.putExtra(LectureRatingActivity.PARAM_COURSE_NAME, reviewItem.getCourseName());
+        intent.putExtra(LectureRatingActivity.PARAM_COURSE_HIG_CODE, reviewItem.getCourseHigCode());
+        intent.putExtra(LectureRatingActivity.PARAM_LECTURER_NAME, reviewItem.getLecturer());
+        intent.putExtra(LectureRatingActivity.PARAM_TIME, reviewItem.getTimeString());
+        intent.putExtra(LectureRatingActivity.PARAM_DATE, reviewItem.getDateString());
+        intent.putExtra(LectureRatingActivity.PARAM_ROOM, reviewItem.getRoom());
+
+		/* Optional, READ ONLY toggling parameters */
+        intent.putExtra(LectureRatingActivity.PARAM_READ_ONLY, true);
+        intent.putExtra(LectureRatingActivity.PARAM_RATINGS, reviewItem.getRatings());
+        intent.putExtra(LectureRatingActivity.PARAM_COMMENT, reviewItem.getComment());
+
+        startActivity(intent);
+    }
 
 	
 	private void showProgressBar() {

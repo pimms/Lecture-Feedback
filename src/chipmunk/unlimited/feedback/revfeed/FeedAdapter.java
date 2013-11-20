@@ -106,6 +106,10 @@ public class FeedAdapter extends BaseAdapter {
     }
 
 
+    public int getFeedState() {
+        return mFeedState;
+    }
+
     private int getItemType(int position) {
         return mListItemTypes.get(position);
     }
@@ -170,6 +174,17 @@ public class FeedAdapter extends BaseAdapter {
 	}
 
 
+    @Override
+    public boolean areAllItemsEnabled() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled(int position) {
+        return mListItemTypes.get(position) != LIST_ITEM_TYPE_LECTURE_SEPARATOR;
+    }
+
+
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
         int type = getItemType(position);
@@ -187,7 +202,7 @@ public class FeedAdapter extends BaseAdapter {
     public View getLectureSeparatorView(int position, View convertView) {
         View vi = convertView;
 
-        if (vi == null || (vi != null && vi.getId() != R.layout.list_item_lecture_separator)) {
+        if (vi == null || vi.getId() != R.layout.list_item_lecture_separator) {
             vi = sInflater.inflate(R.layout.list_item_lecture_separator, null);
         }
 
@@ -206,7 +221,7 @@ public class FeedAdapter extends BaseAdapter {
     public View getReviewView(int position, View convertView) {
         View vi = convertView;
 
-        if (vi == null || (vi != null && vi.getId() != R.layout.list_item_review)) {
+        if (vi == null || vi.getId() != R.layout.list_item_review) {
             vi = sInflater.inflate(R.layout.list_item_review, null);
         }
 
