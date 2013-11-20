@@ -36,6 +36,8 @@ class GetStats extends WebAPICall {
                                    String baseUrl,
                                    List<SubscriptionItem> subs) {
         mAction = ACTION_COURSE_VOTES;
+        mCourseVotesCallback = callback;
+
         baseUrl += "/getStats.php?action=course_votes";
         baseUrl += "&courses=" + getCourseCodeCSV(subs);
 
@@ -49,6 +51,8 @@ class GetStats extends WebAPICall {
                                        String baseUrl, String course,
                                        int first, int count) {
         mAction = ACTION_LECTURE_VOTES_ALL;
+        mLectureVotesCallback = callback;
+
         baseUrl += "/getStats.php?action=lecture_votes_all";
         baseUrl += "&course=" + course;
         baseUrl += "&first=" + first;
