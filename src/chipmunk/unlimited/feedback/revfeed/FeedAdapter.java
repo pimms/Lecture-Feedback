@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import chipmunk.unlimited.feedback.webapi.WebAPI;
+import chipmunk.unlimited.feedback.webapi.WebAPI.*;
 import chipmunk.unlimited.feedback.LectureReviewItem;
 import chipmunk.unlimited.feedback.R;
 
@@ -20,12 +22,15 @@ import android.widget.TextView;
  * Adapter class preparing LectureReviewItem objects
  * for display in a ListView.
  */
-public class FeedAdapter extends BaseAdapter {
+public class FeedAdapter extends BaseAdapter implements GetLectureVotesAllCallback {
+    private static final String TAG = "FeedAdapter";
+
 	private static LayoutInflater sInflater;
     private static final int LIST_ITEM_TYPE_LECTURE_SEPARATOR = 1;
     private static final int LIST_ITEM_TYPE_REVIEW = 2;
 	
 	private List<LectureReviewItem> mReviewItems;
+    private List<LectureVote> mLectureVotes;
 	private int mFeedState = Feed.STATE_DEFAULT;
 
     /**
@@ -153,6 +158,24 @@ public class FeedAdapter extends BaseAdapter {
         return null;
     }
 
+    private LectureVote getLectureVoteForSeparator(int position) {
+        LectureVote lectureVote = null;
+
+        if (mListItemTypes.get(position) == LIST_ITEM_TYPE_LECTURE_SEPARATOR &&
+                mLectureVotes != null) {
+            int offset = 0;
+            for (int i=0; i<position; i++) {
+                if (mListItemTypes.get(i) == LIST_ITEM_TYPE_LECTURE_SEPARATOR) {
+                    offset++;
+                }
+            }
+
+            lectureVote = mLectureVotes.get(offset);
+        }
+
+        return lectureVote;
+    }
+
 
 	@Override
 	public int getCount() {
@@ -209,11 +232,22 @@ public class FeedAdapter extends BaseAdapter {
         TextView tvDate = (TextView)vi.findViewById(R.id.lecture_separator_text_view_date);
         TextView tvTime = (TextView)vi.findViewById(R.id.lecture_separator_text_view_time);
         TextView tvLecturer = (TextView)vi.findViewById(R.id.lecture_separator_text_view_lecturer);
+        TextView tvPos  = (TextView)vi.findViewById(R.id.simple_thumb_text_view_positive);
+        TextView tvNeg  = (TextView)vi.findViewById(R.id.simple_thumb_text_view_negative);
 
         LectureReviewItem reviewItem = getLectureSeparatorItem(position);
         tvDate.setText(reviewItem.getPrettyDateString());
         tvTime.setText(reviewItem.getTimeString());
         tvLecturer.setText(reviewItem.getLecturer());
+
+        LectureVote vote = getLectureVoteForSeparator(position);
+        if (vote != null) {
+            tvPos.setText("" + vote.getPositiveVoteCount());
+            tvPos.setText("" + vote.getNegativeVoteCount());
+        } else {
+            tvPos.setText("?");
+            tvNeg.setText("?");
+        }
 
         return vi;
     }
@@ -273,4 +307,17 @@ public class FeedAdapter extends BaseAdapter {
         }
     }
 
+
+
+    @Override
+    public void onGetLectureVotesAllSuccess(List<LectureVote> items) {
+        mLectureVotes = items;
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public void onGetLectureVotesAllFailure(String errorMessage) {
+        mLectureVotes = null;
+        Log.e(TAG, "Failed to get lecture votes: " + errorMessage);
+    }
 }
