@@ -50,7 +50,7 @@ public class StatisticsAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parentGroup) {
 		if (convertView == null) {
-			convertView = mInflater.inflate(R.layout.stats_course_item, null);
+			convertView = mInflater.inflate(R.layout.list_item_course, null);
 		}
 		
 		TextView tvName = (TextView)convertView.findViewById(R.id.stats_course_text_view_name);

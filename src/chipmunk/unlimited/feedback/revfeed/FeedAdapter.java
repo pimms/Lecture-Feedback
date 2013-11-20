@@ -206,8 +206,8 @@ public class FeedAdapter extends BaseAdapter {
     public View getReviewView(int position, View convertView) {
         View vi = convertView;
 
-        if (vi == null || (vi != null && vi.getId() != R.layout.feed_review_item)) {
-            vi = sInflater.inflate(R.layout.feed_review_item, null);
+        if (vi == null || (vi != null && vi.getId() != R.layout.list_item_review)) {
+            vi = sInflater.inflate(R.layout.list_item_review, null);
         }
 
         TextView tvCourse = (TextView)vi.findViewById(R.id.feed_item_text_view_course);
