@@ -212,6 +212,10 @@ class GetFeed extends WebAPICall {
 		String room = jsonObject.getString("room");
 		String comment = jsonObject.getString("comment");
 		String strReviewTime = jsonObject.getString("review_time");
+
+        if (comment.equals("null")) {
+            comment = "";
+        }
 		
 		Date reviewDate = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(strReviewTime);
 		
