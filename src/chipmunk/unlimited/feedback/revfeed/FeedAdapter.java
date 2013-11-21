@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import chipmunk.unlimited.feedback.webapi.WebAPI;
 import chipmunk.unlimited.feedback.webapi.WebAPI.*;
 import chipmunk.unlimited.feedback.LectureReviewItem;
 import chipmunk.unlimited.feedback.R;
@@ -225,8 +224,8 @@ public class FeedAdapter extends BaseAdapter implements GetLectureVotesAllCallba
     public View getLectureSeparatorView(int position, View convertView) {
         View vi = convertView;
 
-        if (vi == null || vi.getId() != R.layout.list_item_lecture_separator) {
-            vi = sInflater.inflate(R.layout.list_item_lecture_separator, null);
+        if (vi == null || vi.getId() != R.layout.list_item_lecture_total) {
+            vi = sInflater.inflate(R.layout.list_item_lecture_total, null);
         }
 
         TextView tvDate = (TextView)vi.findViewById(R.id.lecture_separator_text_view_date);
