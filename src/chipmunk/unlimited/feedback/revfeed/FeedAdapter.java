@@ -181,7 +181,6 @@ public class FeedAdapter extends BaseAdapter implements GetLectureVotesAllCallba
 	public int getCount() {
 		return mListItemTypes.size();
 	}
-
 	@Override
 	public Object getItem(int position) {
 		if (mListItemTypes.get(position) == LIST_ITEM_TYPE_REVIEW) {
@@ -190,7 +189,6 @@ public class FeedAdapter extends BaseAdapter implements GetLectureVotesAllCallba
 
         return null;
 	}
-
 	@Override
 	public long getItemId(int position) {
 		return position;
@@ -201,7 +199,6 @@ public class FeedAdapter extends BaseAdapter implements GetLectureVotesAllCallba
     public boolean areAllItemsEnabled() {
         return false;
     }
-
     @Override
     public boolean isEnabled(int position) {
         return mListItemTypes.get(position) != LIST_ITEM_TYPE_LECTURE_SEPARATOR;
@@ -314,7 +311,6 @@ public class FeedAdapter extends BaseAdapter implements GetLectureVotesAllCallba
         mLectureVotes = items;
         notifyDataSetChanged();
     }
-
     @Override
     public void onGetLectureVotesAllFailure(String errorMessage) {
         mLectureVotes = null;
