@@ -34,7 +34,7 @@ import chipmunk.unlimited.feedback.subscription.SubscriptionItem;
  *
  * If PARAM_SINGLE_CODE is set, the following
  * parameters must also be set:
- * TODO!
+ * PARAM_LECTURE_HASH       String  The SHA1 of the lecture
  */
 public class FeedActivity extends FragmentActivity {
     public static final String PARAM_SINGLE_COURSE = "single_course";
@@ -45,9 +45,10 @@ public class FeedActivity extends FragmentActivity {
     public static final String PARAM_COURSE_CODE = "course_code";
 
     /* PARAM_SINGLE_LECTURE attributes */
-    // TODO!
+    public static final String PARAM_LECTURE_HASH = "lecture_hash";
 
     private static final String TAG = "FeedActivity";
+
 
     private FeedFragment mFeedFragment;
 
@@ -101,8 +102,7 @@ public class FeedActivity extends FragmentActivity {
         if (course) {
             handleSingleCourseState();
         } else {
-            Log.e(TAG, "PARAM_SINGLE_LECTURE is unsupported");
-            finish();
+            handleSingleLectureState();
         }
     }
 
@@ -123,5 +123,23 @@ public class FeedActivity extends FragmentActivity {
         mFeedFragment.setFeed(feed);
 
         getActionBar().setTitle(subItem.getName());
+    }
+
+    private void handleSingleLectureState() {
+        Intent intent = getIntent();
+
+        String hash = intent.getStringExtra(PARAM_LECTURE_HASH);
+
+        if (hash == null) {
+            Log.e(TAG, "LECTURE_HASH must be defined!");
+            finish();
+        }
+
+        Feed feed = new Feed(this, mFeedFragment);
+        feed.setStateLecture(hash);
+        mFeedFragment.setFeed(feed);
+
+        // TODO
+        getActionBar().setTitle("totally bitchin'");
     }
 }

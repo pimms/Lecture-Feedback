@@ -38,7 +38,7 @@ public class Feed implements WebAPI.GetFeedCallback {
 
     private int mState = STATE_DEFAULT;
     private SubscriptionItem mSubItem;
-    private LectureItem mLecture;
+    private String mLectureHash;
 
     private Context mContext;
     private FeedListener mCallback;
@@ -68,9 +68,9 @@ public class Feed implements WebAPI.GetFeedCallback {
         mSubItem = subItem;
     }
 
-    public void setStateLecture(LectureItem lecture) {
+    public void setStateLecture(String hash) {
         mState = STATE_LECTURE;
-        mLecture = lecture;
+        mLectureHash = hash;
     }
 
 

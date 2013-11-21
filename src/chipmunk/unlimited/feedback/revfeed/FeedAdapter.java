@@ -66,7 +66,8 @@ public class FeedAdapter extends BaseAdapter implements GetLectureVotesAllCallba
         // Clear the previous list
         mListItemTypes.clear();
 
-        if (mFeedState == Feed.STATE_DEFAULT) {
+        if (mFeedState == Feed.STATE_DEFAULT ||
+            mFeedState == Feed.STATE_LECTURE) {
             defineItemOrderDefault();
         } else if (mFeedState == Feed.STATE_COURSE) {
             defineItemOrderLectureSeparator();
