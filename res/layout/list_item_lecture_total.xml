@@ -3,11 +3,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="90dp"
+    android:layout_height="wrap_content"
     android:minHeight="90dp">
 
     <LinearLayout
-        android:layout_height="70dp"
+        android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:orientation="vertical"
         android:layout_margin="10dp">
@@ -42,6 +42,11 @@
             android:layout_below="@+id/lecture_total_text_view_date"
             android:layout_alignParentLeft="false" />
     </LinearLayout>
+
+    <!-- Manual padding, lol -->
+    <LinearLayout
+        android:layout_height="10dp"
+        android:layout_width="match_parent"/>
 
     <include layout="@layout/simple_thumbs"/>
 </RelativeLayout>
