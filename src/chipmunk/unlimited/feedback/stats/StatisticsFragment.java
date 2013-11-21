@@ -44,7 +44,7 @@ public class StatisticsFragment extends Fragment
 
         if (subItem != null) {
             Intent intent = new Intent(getActivity(), CourseLecturesActivity.class);
-            startActivity(intent)
+            startActivity(intent);
         }
     }
 }
