@@ -228,9 +228,9 @@ public class FeedAdapter extends BaseAdapter implements GetLectureVotesAllCallba
             vi = sInflater.inflate(R.layout.list_item_lecture_total, null);
         }
 
-        TextView tvDate = (TextView)vi.findViewById(R.id.lecture_separator_text_view_date);
-        TextView tvTime = (TextView)vi.findViewById(R.id.lecture_separator_text_view_time);
-        TextView tvLecturer = (TextView)vi.findViewById(R.id.lecture_separator_text_view_lecturer);
+        TextView tvDate = (TextView)vi.findViewById(R.id.lecture_total_text_view_date);
+        TextView tvTime = (TextView)vi.findViewById(R.id.lecture_total_text_view_time);
+        TextView tvLecturer = (TextView)vi.findViewById(R.id.lecture_total_text_view_lecturer);
         TextView tvPos  = (TextView)vi.findViewById(R.id.simple_thumb_text_view_positive);
         TextView tvNeg  = (TextView)vi.findViewById(R.id.simple_thumb_text_view_negative);
 

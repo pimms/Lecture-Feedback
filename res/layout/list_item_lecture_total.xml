@@ -12,7 +12,7 @@
         android:orientation="vertical"
         android:layout_margin="10dp">
         <TextView
-            android:id="@+id/lecture_separator_text_view_date"
+            android:id="@+id/lecture_total_text_view_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -22,24 +22,24 @@
             android:layout_alignParentLeft="true" />
 
         <TextView
-            android:id="@+id/lecture_separator_text_view_time"
+            android:id="@+id/lecture_total_text_view_time"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:layout_weight="0.3"
             android:maxLines="3"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="10:15 - 12:00"
-            android:layout_below="@+id/lecture_separator_text_view_lecturer"
+            android:layout_below="@+id/lecture_total_text_view_lecturer"
             android:layout_alignParentLeft="false" />
 
         <TextView
-            android:id="@+id/lecture_separator_text_view_lecturer"
+            android:id="@+id/lecture_total_text_view_lecturer"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:maxLines="3"
             android:textAppearance="?android:textAppearanceMedium"
             android:text="Professor Fleksnes"
-            android:layout_below="@+id/lecture_separator_text_view_date"
+            android:layout_below="@+id/lecture_total_text_view_date"
             android:layout_alignParentLeft="false" />
     </LinearLayout>
 
