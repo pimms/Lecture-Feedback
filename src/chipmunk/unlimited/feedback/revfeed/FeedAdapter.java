@@ -298,7 +298,7 @@ public class FeedAdapter extends BaseAdapter implements GetLectureVotesAllCallba
             // Set the text usual
             tvDate.setText(lecture.getPrettyDateString());
             tvTime.setText(lecture.getTimeString());
-        } elsehar {
+        } else {
             tvDate.setText(null);
             tvTime.setText(null);
         }
