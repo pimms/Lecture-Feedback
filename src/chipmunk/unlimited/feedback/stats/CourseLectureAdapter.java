@@ -16,12 +16,21 @@ import chipmunk.unlimited.feedback.webapi.WebAPI;
 import chipmunk.unlimited.feedback.webapi.WebAPI.*;
 
 public class CourseLectureAdapter extends BaseAdapter implements GetLectureVotesAllCallback {
+    private static final String TAG = "CourseLectureAdapter";
+
     private List<LectureVote> mVotes;
     private LayoutInflater mInflater;
+    private String mCourse;
 
-    public CourseLectureAdapter(Context context) {
+    public CourseLectureAdapter(Context context, String course) {
         mInflater = (LayoutInflater)context.getSystemService(
                                     Context.LAYOUT_INFLATER_SERVICE);
+        mCourse = course;
+    }
+
+    public void reloadItems(int first, int count) {
+        WebAPI webApi = new WebAPI();
+        webApi.getLectureVotesAll(this, mCourse, first, count);
     }
 
 
