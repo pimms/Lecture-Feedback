@@ -44,6 +44,7 @@ public class StatisticsFragment extends Fragment
 
         if (subItem != null) {
             Intent intent = new Intent(getActivity(), CourseLecturesActivity.class);
+            intent.putExtra(CourseLecturesActivity.PARAM_COURSE_CODE, subItem.getHigCode());
             startActivity(intent);
         }
     }

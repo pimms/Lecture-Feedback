@@ -12,7 +12,7 @@ import chipmunk.unlimited.feedback.R;
  * PARAM_COURSE_CODE:      The HiG course code.
  */
 public class CourseLecturesActivity extends Activity {
-    private static final String PARAM_COURSE_CODE = "course_code";
+    public static final String PARAM_COURSE_CODE = "course_code";
 
     private CourseLectureAdapter mAdapter;
 

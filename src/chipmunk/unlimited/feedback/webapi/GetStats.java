@@ -1,5 +1,7 @@
 package chipmunk.unlimited.feedback.webapi;
 
+import android.util.Log;
+
 import com.loopj.android.http.AsyncHttpClient;
 
 import org.apache.http.Header;
