@@ -102,7 +102,8 @@ public class Feed implements WebAPI.GetFeedCallback {
     }
 
     private void updateWithSingleLecture(int first, int count) {
-        onGetFeedFailure("State not supported: " + mState);
+        WebAPI webApi = new WebAPI();
+        webApi.getFeed(this, mLectureHash, first, count);
     }
 
 

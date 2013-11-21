@@ -70,7 +70,7 @@ class GetFeed extends WebAPICall {
      * @param baseUrl
      * The base url containing the root level of the webAPI.
      *
-     * @param lecture
+     * @param lectureHash
      * The lecture to be included in the feed.
      *
      * @param first
@@ -81,10 +81,8 @@ class GetFeed extends WebAPICall {
      *
      * @return
      */
-    public void apiCall(String baseUrl, LectureItem lecture, int first, int count) {
-        baseUrl += "/getFeed.php?filter=LECTURE";
-        baseUrl += createFilterString(lecture);
-
+    public void apiCall(String baseUrl, String lectureHash, int first, int count) {
+        baseUrl += "/getFeed.php?hash=" + lectureHash;
         apiCall(baseUrl, first, count);
     }
 

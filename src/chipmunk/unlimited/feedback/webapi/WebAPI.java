@@ -182,11 +182,10 @@ public class WebAPI {
      * The maximum number of items to be returned.
      */
     public void getFeed(GetFeedCallback callback,
-                        LectureItem lecture, int first, int count) {
+                        String lectureHash, int first, int count) {
         GetFeed getFeed = new GetFeed(callback);
-        getFeed.apiCall(API_URL, lecture, first, count);
+        getFeed.apiCall(API_URL, lectureHash, first, count);
     }
-
 
 
 	/**
