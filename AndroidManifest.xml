@@ -26,6 +26,7 @@
         </activity>
         <activity android:name=".rating.LectureRatingActivity"></activity>
         <activity android:name=".revfeed.FeedActivity"></activity>
+        <activity android:name=".stats.CourseLecturesActivity"> </activity>
     </application>
 
 </manifest>
