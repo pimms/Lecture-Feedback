@@ -92,7 +92,8 @@ public class FeedFragment extends Fragment implements OnItemClickListener,
 
 	@Override
 	public void onItemClick(AdapterView<?> adapter, View item, int position, long id) {		
-        if (mFeedAdapter.getFeedState() == Feed.STATE_DEFAULT) {
+        if (mFeedAdapter.getFeedState() == Feed.STATE_DEFAULT ||
+            mFeedAdapter.getFeedState() == Feed.STATE_LECTURE) {
             startReadOnlyLectureRatingActivity(position);
         }
 	}
