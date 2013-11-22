@@ -19,6 +19,18 @@ import chipmunk.unlimited.feedback.R;
 public class LectureRatingView extends LinearLayout
                         implements  AttributeView.OnRatingChangeListener,
                                     View.OnClickListener {
+    private static final String[] LECTURE_ATTRIBUTES = new String[] {
+        "Overall", "Clarity", "Progression", "Engagement", "Material coverage"
+    };
+    private static final String[] LECTURE_ATTRIBUTE_DESC = new String[] {
+        "How would you rate the lecture in total?",
+        "Was the material presented clearly and unambiguously?",
+        "Was the lecture properly paced?",
+        "Did the lecturers engagement spread?",
+        "Was the presented material covered thoroughly enough?"
+    };
+
+
     public interface RatingListener {
         /**
          * Called when the Submit-button is pressed
@@ -58,13 +70,11 @@ public class LectureRatingView extends LinearLayout
 
     private void createAttributeRatingViews() {
         LinearLayout wrapper = (LinearLayout)findViewById(R.id.rating_attribute_wrapper);
-
-        String[] attrs = new String[] { "Overall", "Relevance", "Progression", "something", "something" };
         mAttributeViews = new ArrayList<AttributeView>();
 
         for (int i=0; i<5; i++) {
             AttributeView attributeView = new AttributeView(getContext());
-            attributeView.setAttributeName(attrs[i]);
+            attributeView.setAttributeName(LECTURE_ATTRIBUTES[i]);
             attributeView.setOnRatingChangeListener(this);
 
             mAttributeViews.add(attributeView);
