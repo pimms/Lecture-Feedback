@@ -79,8 +79,8 @@ public class FeedFragment extends Fragment implements OnItemClickListener,
 	 */
     @Override
     public void refreshContents() {
+        showProgressBar();
         mFeed.update(0, 25);
-		showProgressBar();
 	}
 
     @Override
