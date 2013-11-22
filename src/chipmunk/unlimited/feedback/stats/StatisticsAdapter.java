@@ -77,8 +77,8 @@ public class StatisticsAdapter extends BaseAdapter
             tvPos.setText("" + vote.getPositiveVoteCount());
             tvNeg.setText("" + vote.getNegativeVoteCount());
         } else {
-            tvPos.setText("?");
-            tvNeg.setText("?");
+            tvPos.setText("0");
+            tvNeg.setText("0");
         }
 		
 		return convertView;
