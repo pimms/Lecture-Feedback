@@ -57,12 +57,6 @@ public class ReviewedLectureDatabase extends DatabaseWrapper {
 	 * @param item
 	 * The lecture item rated by the user.
 	 * 
-	 * @param ratings
-	 * Boolean array containing the ratings.
-	 * 
-	 * @param comment
-	 * The comment made by the user.
-	 * 
 	 * @return
 	 * True if the insertion succeeded, false otherwise.
 	 */
