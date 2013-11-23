@@ -20,23 +20,15 @@ import chipmunk.unlimited.feedback.subscription.AddSubscriptionFragment;
 import chipmunk.unlimited.feedback.subscription.SubscriptionFragment;
 import chipmunk.unlimited.feedback.subscription.SubscriptionsChangedListener;
 
+import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshAttacher;
+import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
+
 public class MainActivity extends FragmentActivity implements
 		ActionBar.TabListener,
 		SubscriptionsChangedListener {
 
-	/**
-	 * The {@link android.support.v4.view.PagerAdapter} that will provide
-	 * fragments for each of the sections. We use a
-	 * {@link android.support.v4.app.FragmentPagerAdapter} derivative, which
-	 * will keep every loaded fragment in memory. If this becomes too memory
-	 * intensive, it may be best to switch to a
-	 * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-	 */
-	SectionsPagerAdapter mSectionsPagerAdapter;
 
-	/**
-	 * The {@link ViewPager} that will host the section contents.
-	 */
+	SectionsPagerAdapter mSectionsPagerAdapter;
 	ViewPager mViewPager;
 	
 	/* Fragments related to subscription management */
@@ -52,7 +44,10 @@ public class MainActivity extends FragmentActivity implements
 	 * should be updated. */
 	private boolean mShouldUpdateFragments = false;
 
-	@Override
+    private PullToRefreshAttacher mPullRefresh;
+
+
+    @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main_activity);
