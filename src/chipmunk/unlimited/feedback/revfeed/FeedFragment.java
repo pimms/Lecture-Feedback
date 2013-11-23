@@ -5,25 +5,18 @@ import java.util.List;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
-import chipmunk.unlimited.feedback.LectureItem;
 import chipmunk.unlimited.feedback.LectureReviewItem;
 import chipmunk.unlimited.feedback.MainActivityFragmentInterface;
 import chipmunk.unlimited.feedback.R;
-import chipmunk.unlimited.feedback.database.SubscriptionDatabase;
 import chipmunk.unlimited.feedback.rating.LectureRatingActivity;
-import chipmunk.unlimited.feedback.webapi.WebAPI;
-import chipmunk.unlimited.feedback.webapi.WebAPI.GetFeedCallback;
 
 /**
  * Fragment containing a list view which displays 
@@ -47,7 +40,7 @@ public class FeedFragment extends Fragment implements OnItemClickListener,
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {		
 		View rootView = inflater.inflate(R.layout.fragment_main_feed, container, false);
 
-   		mListView = (ListView)rootView.findViewById(R.id.feed_list_view);
+   		mListView = (ListView)rootView.findViewById(R.id.list);
 		mProgressBar = (ProgressBar)rootView.findViewById(R.id.feed_progress_bar);
 
         /* Create the Feed */
