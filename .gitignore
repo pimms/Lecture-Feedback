@@ -27,9 +27,3 @@ proguard/
 *.ipr
 *.iws
 .idea/
-
-# Gradle build files (for importing into Android Studio)
-build.gradle
-gradle/
-gradlew
-gradlew.bat
