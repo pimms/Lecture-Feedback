@@ -22,10 +22,12 @@ import chipmunk.unlimited.feedback.subscription.SubscriptionsChangedListener;
 
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshAttacher;
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
+import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
 public class MainActivity extends FragmentActivity implements
 		ActionBar.TabListener,
-		SubscriptionsChangedListener {
+		SubscriptionsChangedListener,
+        OnRefreshListener {
 
 
 	SectionsPagerAdapter mSectionsPagerAdapter;
@@ -150,7 +152,12 @@ public class MainActivity extends FragmentActivity implements
 			FragmentTransaction fragmentTransaction) {
 	}
 
-	/**
+    @Override
+    public void onRefreshStarted(View view) {
+        refreshFragments();
+    }
+
+    /**
 	 * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
 	 * one of the sections/tabs/pages.
 	 */
