@@ -223,7 +223,7 @@ public class DailyLectureAdapter extends BaseAdapter {
 	 * TODO: Localize
 	 * 
 	 * @return
-	 * "yyyy-MM-dd" if date is more than 2 days old, otherwise
+	 * "Mon, 01 Jan" if date is more than 2 days old, otherwise
 	 * "today" or "yesterday".
 	 */
 	private String getDateString(Date someDate) {

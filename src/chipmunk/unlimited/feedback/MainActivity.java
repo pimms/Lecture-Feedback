@@ -2,7 +2,7 @@ package chipmunk.unlimited.feedback;
 
 import java.util.Locale;
 
-import stats.StatisticsFragment;
+import chipmunk.unlimited.feedback.stats.StatisticsFragment;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
@@ -12,7 +12,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -69,6 +68,7 @@ public class MainActivity extends FragmentActivity implements
 
 		// Set up the ViewPager with the sections adapter.
 		mViewPager = (ViewPager) findViewById(R.id.pager);
+        mViewPager.setOffscreenPageLimit(2);
 		mViewPager.setAdapter(mSectionsPagerAdapter);
 
 		// When swiping between different sections, select the corresponding
@@ -186,10 +186,7 @@ public class MainActivity extends FragmentActivity implements
 				/* TODO: Handle error */
 				fragment = null;
 			}
-			
-			Bundle args = new Bundle();
-			args.putInt("Dunno tbh lols ", position + 1);
-			fragment.setArguments(args);
+
 			return fragment;
 		}
 
@@ -204,11 +201,11 @@ public class MainActivity extends FragmentActivity implements
 			Locale l = Locale.getDefault();
 			switch (position) {
 			case 0:
-				return "Feed";
+				return "Classmate's reviews";
 			case 1:
-				return "Today";
+				return "Review today's lectures";
 			case 2:
-				return "Stats";
+				return "Overview";
 			}
 			return null;
 		}
@@ -222,12 +219,16 @@ public class MainActivity extends FragmentActivity implements
 	
 	private void refreshFragments() {
 		if (mTodayFragment != null) {
-			mTodayFragment.refreshItems();
+			mTodayFragment.refreshContents();
 		}
 		
 		if (mFeedFragment != null) {
-			mFeedFragment.refreshItems();
+			mFeedFragment.refreshContents();
 		}
+
+        if (mStatsFragment != null) {
+            mStatsFragment.refreshContents();
+        }
 	}
 	
 	

@@ -12,7 +12,7 @@ import chipmunk.unlimited.feedback.webapi.SHA1;
  * @class LectureItem
  * Representation of a lecture retrieved from TimeEdit.
  */
-public class LectureItem {
+public class LectureItem implements Comparable<LectureItem> {
 	protected Date mStartTime;
 	protected Date mEndTime;
 	protected String mDate;
@@ -59,7 +59,28 @@ public class LectureItem {
 	public String getDateString() {
 		return mDate;
 	}
-	
+
+    /**
+     * @return
+     * The date on the form "Jan 01" if the date is from
+     * this year, "Jan 01, 2012" if it was from another year.
+     */
+    public String getPrettyDateString() {
+        Calendar now = Calendar.getInstance();
+
+        Calendar then = Calendar.getInstance();
+        then.setTime(mStartTime);
+
+        String format = "dd MMM";
+
+        if (now.get(Calendar.YEAR) != then.get(Calendar.YEAR)) {
+            format += ", yyyy";
+        }
+
+        SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.getDefault());
+        return sdf.format(mStartTime);
+    }
+
 	/**
 	 * @return
 	 * Date-object with 0 in all non-date related
@@ -188,6 +209,14 @@ public class LectureItem {
 	
 	/**
 	 * Calculate the hash for this lecture.
+     * The hash used on both the client application
+     * and the backend server is the combined hash of:
+     * 1. The UNIX timestamp string of the start time of the lecture
+     * 2. The UNIX timestamp string of the end time of the lecture
+     * 3. The course name as it appears on TimeEdit
+     * 4. The HiG code of the course
+     * 5. The room as it appears on TimeEdit
+     * 6. The lecturer as it appears on TimeEdit
 	 * 
 	 * @return
 	 * SHA-1 of the LectureItem's uniquely identifying
@@ -195,8 +224,8 @@ public class LectureItem {
 	 */
 	public final String getLectureHash() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(mStartTime.toString());
-		sb.append(mEndTime.toString());
+		sb.append(getStartTimeUNIX());
+		sb.append(getEndTimeUNIX());
 		sb.append(mCourseName);
 		sb.append(mCourseHigCode);
 		sb.append(mRoom);
@@ -209,6 +238,12 @@ public class LectureItem {
 	public String toString() {
 		return "[" + mStartTime + "-" + mEndTime + "] " + mCourseName + ", " + mRoom + ", " + mLecturer;
 	}
+
+
+    @Override
+    public int compareTo(LectureItem o) {
+        return o.mStartTime.compareTo(mStartTime);
+    }
 }
 
 

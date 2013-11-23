@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="7dp"
+    android:paddingBottom="7dp" 
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp">
+	
+    <!-- This text-view should be replaced with some indicator of the lecture attributes -->
+
+    <LinearLayout
+        android:id="@+id/feed_title_wrapper"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:minHeight="35dp"
+        android:gravity="center">
+        <TextView
+            android:id="@+id/feed_item_text_view_course"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.8"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:maxLines="5"
+            android:text="Development Solution Procedures"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+        <TextView
+            android:id="@+id/feed_item_text_view_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.35"
+            android:layout_marginBottom="3dp"
+            android:text="MMM 31 MMM"
+            android:textStyle="italic"
+            android:textAlignment="center"
+            android:layout_gravity="bottom"
+            android:gravity="right"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="15dp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/feed_item_text_view_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/feed_title_wrapper"
+        android:text="13:15-15:15"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textStyle="italic"
+        android:layout_marginRight="15dp" />
+
+    <TextView
+        android:id="@+id/feed_item_text_view_lecturer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/feed_item_text_view_time"
+        android:layout_alignBottom="@+id/feed_item_text_view_time"
+        android:layout_alignParentLeft="true"
+        android:text="Lecurer McProfessor"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textStyle="italic" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/feed_item_text_view_time"
+        android:gravity="center_vertical"
+        android:maxHeight="350dp"
+        android:minHeight="50dp"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/feed_item_text_view_comment"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".8"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:maxLines="5"
+            android:ellipsize="end"
+            android:text="The course is excellent, and I am learning so much. Oh, it&apos;s so nice to be superdi duperdi smart from this super course. Oh my lawds. LET'S BE SMART FOREVER YOU GUYS OMTRSOUH EILU RHESOR SORIE HSOERH SOERH RHØEI RHøuhe roW RHEORIAEWJ ETI HESATI EOIHJOPIH OH ØOUH UIGB OIUG OU HOU" />
+
+        <RelativeLayout
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="0.3">
+            <include layout="@layout/simple_thumbs"/>
+        </RelativeLayout>
+    </LinearLayout>
+
+</RelativeLayout>

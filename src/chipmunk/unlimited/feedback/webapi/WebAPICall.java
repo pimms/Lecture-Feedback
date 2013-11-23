@@ -12,7 +12,7 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
  * Abstract superclass for all WebAPI calls.
  * 
  */
-abstract public class WebAPICall extends AsyncHttpResponseHandler {
+abstract class WebAPICall extends AsyncHttpResponseHandler {
 	private static final String TAG = "WebAPICall";
 	
 	
