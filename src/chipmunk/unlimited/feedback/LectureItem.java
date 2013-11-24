@@ -5,7 +5,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import android.util.Log;
 import chipmunk.unlimited.feedback.webapi.SHA1;
 
 /**
@@ -62,22 +61,24 @@ public class LectureItem implements Comparable<LectureItem> {
 
     /**
      * @return
-     * The date on the form "Jan 01" if the date is from
-     * this year, "Jan 01, 2012" if it was from another year.
+     * The date on the form "Monday, 01 Jan" if the date is from
+     * this year, "01 Jan, 2012" if it was from another year.
      */
     public String getPrettyDateString() {
         Calendar now = Calendar.getInstance();
 
         Calendar then = Calendar.getInstance();
         then.setTime(mStartTime);
-
-        String format = "dd MMM";
-
+        
+        String format = "";
+        
         if (now.get(Calendar.YEAR) != then.get(Calendar.YEAR)) {
-            format += ", yyyy";
+            format = "dd MMM, yyyy";
+        } else {
+        	format = "EEEE, dd MMM";
         }
 
-        SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.getDefault());
+        SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.US);
         return sdf.format(mStartTime);
     }
 
