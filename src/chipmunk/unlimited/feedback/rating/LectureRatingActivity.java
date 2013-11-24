@@ -4,6 +4,7 @@ import java.security.InvalidParameterException;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +20,7 @@ import chipmunk.unlimited.feedback.R;
 import chipmunk.unlimited.feedback.database.ReviewedLectureDatabase;
 import chipmunk.unlimited.feedback.webapi.WebAPI;
 import chipmunk.unlimited.feedback.webapi.WebAPI.PostReviewCallback;
+import chipmunk.unlimited.feedback.webapi.WebAPI.VoteCallback;
 
 
 
@@ -49,12 +51,15 @@ import chipmunk.unlimited.feedback.webapi.WebAPI.PostReviewCallback;
  *   | 	PARAM_RATINGS			 | The ratings of all the   |			|  		  | 
  *   |							 | lecture attribtues 		| NO* 		| bool[5] |
  *   | 	PARAM_COMMENT 			 | User comment on lecture  | NO* 		| String  |
+ *   |  PARAM_REVIEW_ID          | The ID of the review     | NO*       | int     |
  *   +---------------------------+--------------------------+-----------+---------+
  *   *) Required parameter if "PARAM_READ_ONLY" is true
  */
 public class LectureRatingActivity extends Activity 
 	        implements  PostReviewCallback,
-                        LectureRatingView.RatingListener {
+                        VoteCallback,
+                        LectureRatingView.RatingListener,
+                        View.OnClickListener {
 	/** 
 	 * The keys through which values will be set through the Intent 
 	 */
@@ -67,6 +72,7 @@ public class LectureRatingActivity extends Activity
 	public static final String PARAM_READ_ONLY 			= "param_read_only";
 	public static final String PARAM_RATINGS 			= "param_ratings";
 	public static final String PARAM_COMMENT 			= "param_comment";
+    public static final String PARAM_REVIEW_ID          = "param_review_id";
 	
 	private static final String TAG = "LectureRatingActivity";
 
@@ -74,6 +80,9 @@ public class LectureRatingActivity extends Activity
 	private LectureItem mLectureItem;
 	private LectureReviewItem mLectureReviewItem;
     private LectureRatingView mLectureRatingView;
+
+    private boolean mReadOnly;
+    private int mReviewId = -1;
 	
 	/** Displayed when submitting */
 	private ProgressDialog mProgressDialog;
@@ -106,7 +115,6 @@ public class LectureRatingActivity extends Activity
 		hideProgressDialog();
 		finish();
 	}
-	
 	@Override
 	public void onPostReviewFailure(String errorMessage) {
 		hideProgressDialog();
@@ -126,16 +134,24 @@ public class LectureRatingActivity extends Activity
         showProgressDialog();
     }
 
+
+    private void cloneReview() {
+        showProgressDialog();
+
+        WebAPI webApi = new WebAPI();
+        webApi.voteUp(this, mReviewId);
+    }
+
 	
 	/**
 	 * Set and return mLectureReviewItem.
 	 */
 	private LectureReviewItem getReviewItem() {
-		mLectureReviewItem = new LectureReviewItem(
-				mLectureItem,
-				getRatingArray(),
-				getComment(),
-				-1, null);
+        mLectureReviewItem = new LectureReviewItem(
+                mLectureItem,
+                getRatingArray(),
+                getComment(),
+                mReviewId, null);
 		return mLectureReviewItem;
 	}
 	
@@ -181,13 +197,14 @@ public class LectureRatingActivity extends Activity
 		} catch (InvalidParameterException ex) {
 			Log.e(TAG, "Missing REQUIRED parameter definitions: " + ex.getMessage());
 			displayErrorDialog(ex.getMessage());
+            finish();
 		}
 		
 		/* Optional parameter handling */
 		try {
 			handleOptionalParameters();
 		} catch (InvalidParameterException ex) {
-			Log.e(TAG, "Mission OPTIONAL parameter definitions: " + ex.getMessage());
+			Log.e(TAG, "Missing OPTIONAL parameter definitions: " + ex.getMessage());
 			displayErrorDialog(ex.getMessage());
 		}
 	}
@@ -225,8 +242,18 @@ public class LectureRatingActivity extends Activity
 	
 	
 	private void handleOptionalParameters() throws InvalidParameterException {
-		if (getIntent().getBooleanExtra(PARAM_READ_ONLY, false)) {
-			handleRatingParameters();
+        Intent intent = getIntent();
+        mReadOnly = intent.getBooleanExtra(PARAM_READ_ONLY, false);
+
+		if (mReadOnly) {
+            mReadOnly = true;
+
+            mReviewId = intent.getIntExtra(PARAM_REVIEW_ID, -1);
+            if (mReviewId == -1) {
+                throw new InvalidParameterException("PARAM_REVIEW_ID must be defined!");
+            }
+
+            handleRatingParameters();
 			handleCommentParameter();
             handleCloneWrapperView();
 		}
