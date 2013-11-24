@@ -110,9 +110,7 @@ public class LectureRatingActivity extends Activity
 	
 	@Override 
 	public void onPostReviewSuccess() {
-		ReviewedLectureDatabase db = new ReviewedLectureDatabase(this);
-		db.insertLectureItem(mLectureReviewItem);
-		
+        insertReviewItemLocally();
 		hideProgressDialog();
 		finish();
 	}
@@ -125,14 +123,19 @@ public class LectureRatingActivity extends Activity
 
     @Override
     public void onVoteSuccess() {
-        hideProgressDialog();
-        showCloneSuccessfulToast();
-        finish();
+        if (insertReviewItemLocally()) {
+            hideProgressDialog();
+            showCloneSuccessfulToast();
+            finish();
+        } else {
+            onVoteFailure("Failed to store review locally");
+        }
+
     }
     @Override
     public void onVoteFailure(String errorMessage) {
         hideProgressDialog();
-        displayErrorDialog("Failed to clone: " + errorMessage);
+        displayErrorDialog("Failed to clone:\n" + errorMessage);
     }
 
 
@@ -201,7 +204,12 @@ public class LectureRatingActivity extends Activity
 
         return null;
 	}
-	
+
+    private boolean insertReviewItemLocally() {
+        ReviewedLectureDatabase db = new ReviewedLectureDatabase(this);
+        return db.insertLectureItem(getReviewItem());
+    }
+
 	
 	private void showProgressDialog() {
 		hideProgressDialog();
