@@ -37,13 +37,17 @@ class GetStats extends WebAPICall {
     public void apiCallCourseVotes(GetCourseVotesCallback callback,
                                    String baseUrl,
                                    List<SubscriptionItem> subs) {
-        mAction = ACTION_COURSE_VOTES;
-        mCourseVotesCallback = callback;
-
-        baseUrl += "/getStats.php?action=course_votes";
-        baseUrl += "&courses=" + getCourseCodeCSV(subs);
-
-        new AsyncHttpClient().get(baseUrl, this);
+    	if (subs.size() == 0) {
+    		callback.onGetCourseVotesSuccess(new ArrayList<CourseVote>());
+    	} else {
+	        mAction = ACTION_COURSE_VOTES;
+	        mCourseVotesCallback = callback;
+	
+	        baseUrl += "/getStats.php?action=course_votes";
+	        baseUrl += "&courses=" + getCourseCodeCSV(subs);
+	
+	        new AsyncHttpClient().get(baseUrl, this);
+    	}
     }
 
     /**
