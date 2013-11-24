@@ -1,8 +1,11 @@
 package chipmunk.unlimited.feedback.webapi;
 
+import android.util.Log;
+
 import com.loopj.android.http.AsyncHttpClient;
 
 import org.apache.http.Header;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
@@ -72,8 +75,9 @@ class Vote extends WebAPICall {
             } else {
                 mCallback.onVoteFailure("bad JSON status");
             }
-        } catch (Exception e) {
-            mCallback.onVoteFailure("Failed to parse json: " + e.getMessage());
+        } catch (JSONException ex) {
+            mCallback.onVoteFailure("Failed to parse json: " + ex.getMessage());
+            ex.printStackTrace();
         }
     }
 
