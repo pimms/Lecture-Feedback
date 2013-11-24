@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ScrollView;
 
 import chipmunk.unlimited.feedback.LectureItem;
 import chipmunk.unlimited.feedback.LectureReviewItem;
@@ -86,8 +87,9 @@ public class LectureRatingActivity extends Activity
 
         mLectureRatingView = new LectureRatingView(this);
         mLectureRatingView.setRatingListener(this);
-
-        addContentView(mLectureRatingView, new LayoutParams(
+        
+        ScrollView scrollView = (ScrollView)findViewById(R.id.rating_scroll_content);
+        scrollView.addView(mLectureRatingView, new LayoutParams(
                 LayoutParams.MATCH_PARENT,
                 LayoutParams.WRAP_CONTENT
         ));
