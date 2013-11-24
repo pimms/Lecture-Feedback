@@ -13,6 +13,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
 import chipmunk.unlimited.feedback.LectureItem;
 import chipmunk.unlimited.feedback.LectureReviewItem;
@@ -125,10 +126,13 @@ public class LectureRatingActivity extends Activity
     @Override
     public void onVoteSuccess() {
         hideProgressDialog();
+        showCloneSuccessfulToast();
+        finish();
     }
     @Override
     public void onVoteFailure(String errorMessage) {
         hideProgressDialog();
+        displayErrorDialog("Failed to clone: " + errorMessage);
     }
 
 
@@ -158,6 +162,15 @@ public class LectureRatingActivity extends Activity
 
         WebAPI webApi = new WebAPI();
         webApi.voteUp(this, mReviewId);
+    }
+
+    private void showCloneSuccessfulToast() {
+        // TODO: Localize
+        Toast toast = Toast.makeText(
+                this,
+                "This review will be treated as your own",
+                3500);
+        toast.show();
     }
 
 	
