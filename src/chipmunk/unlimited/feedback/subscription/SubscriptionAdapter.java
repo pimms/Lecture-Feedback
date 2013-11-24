@@ -53,7 +53,7 @@ public class SubscriptionAdapter extends CursorAdapter {
         img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(ctx, "??: " + name, Toast.LENGTH_LONG).show();
+                Toast.makeText(ctx, "Removed subscription '" + name + "'", Toast.LENGTH_LONG).show();
                 deleteSub(id);
             }
         });

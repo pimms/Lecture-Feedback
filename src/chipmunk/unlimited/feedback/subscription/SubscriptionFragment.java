@@ -53,9 +53,10 @@ public class SubscriptionFragment extends DialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.fragment_subscriptions, null);
 
+        // TODO: Localization
         builder.setView(view)
-                .setTitle("Title")
-                .setNeutralButton("Neutral", new DialogInterface.OnClickListener() {
+                .setTitle("Your courses")
+                .setNeutralButton("Go back", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
