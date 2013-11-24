@@ -123,6 +123,24 @@ public class LectureRatingActivity extends Activity
 
 
     @Override
+    public void onVoteSuccess() {
+        hideProgressDialog();
+    }
+    @Override
+    public void onVoteFailure(String errorMessage) {
+        hideProgressDialog();
+    }
+
+
+    @Override
+    public void onClick(View view) {
+        if (mReadOnly && view.getId() == R.id.rating_button_clone) {
+            cloneReview();
+        }
+    }
+
+
+    @Override
     public void onRatingSubmit() {
         submitLectureReview();
     }
@@ -300,19 +318,20 @@ public class LectureRatingActivity extends Activity
 		Button submitButton = (Button)findViewById(R.id.rating_button_submit);
 		submitButton.setVisibility(View.INVISIBLE);
 	}
-
     /**
      * Display the Clone-wrapper layout if the lecture has
      * not been reviewed by the local user.
      */
     private void handleCloneWrapperView() {
-        ReviewedLectureDatabase reviews = new ReviewedLectureDatabase(this);
         if (mLectureItem != null) {
+            ReviewedLectureDatabase reviews = new ReviewedLectureDatabase(this);
             int visibility;
+
             if (reviews.hasUserReviewed(mLectureItem)) {
                 visibility = View.GONE;
             } else {
                 visibility = View.VISIBLE;
+                findViewById(R.id.rating_button_clone).setOnClickListener(this);
             }
 
             View wrapper = findViewById(R.id.rating_clone_wrapper);
