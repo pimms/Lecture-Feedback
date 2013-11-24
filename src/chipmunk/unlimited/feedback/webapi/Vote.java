@@ -1,7 +1,97 @@
 package chipmunk.unlimited.feedback.webapi;
 
+import com.loopj.android.http.AsyncHttpClient;
+
+import org.apache.http.Header;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+
+import chipmunk.unlimited.feedback.webapi.WebAPI.*;
+
 /**
- * Created by pimms on 11/24/13.
+ * Wrapper around the web API call "vote.php".
  */
-public class Vote {
+class Vote extends WebAPICall {
+    private static final String TAG = "Vote";
+
+    public static final String VOTE_POSITIVE = "up";
+    public static final String VOTE_NEGATIVE = "down";
+
+
+    private VoteCallback mCallback;
+
+
+    /**
+     * @param callback
+     * The callback to receive the status notification.
+     */
+    public Vote(VoteCallback callback) {
+        mCallback = callback;
+    }
+
+    /**
+     * Vote a lecture review up or down.
+     *
+     * @param baseUrl
+     * The base URL of the web API.
+     *
+     * @param reviewId
+     * The ID of the review in question.
+     *
+     * @param type
+     * String holding either VOTE_POSITIVE or VOTE_NEGATIVE.
+     */
+    public void apiCall(String baseUrl,
+                        int reviewId, String type) {
+        assert(type.equals(VOTE_POSITIVE) || type.equals(VOTE_NEGATIVE));
+
+        baseUrl += "/vote.php";
+        baseUrl += "?review_id=" + reviewId;
+        baseUrl += "&type=" + type;
+
+        (new AsyncHttpClient()).get(baseUrl, this);
+    }
+
+
+    @Override
+    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+        String response;
+
+        try {
+            response = new String(responseBody, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            mCallback.onVoteFailure("Returned content is not UTF-8 encoded");
+            return;
+        }
+
+        JSONObject json = getJsonRoot(response);
+        try {
+            if (json != null && json.getString("status").equals("ok")) {
+                mCallback.onVoteSuccess();
+            } else {
+                mCallback.onVoteFailure("bad JSON status");
+            }
+        } catch (Exception e) {
+            mCallback.onVoteFailure("Failed to parse json: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+        String bodyString;
+        String errorMessage = "HTTP Error with code " + statusCode;
+
+        try {
+            if (responseBody != null) {
+                bodyString = new String(responseBody, "UTF-8");
+                errorMessage += " (" + bodyString + ")";
+            }
+        } catch (UnsupportedEncodingException e) {
+            mCallback.onVoteFailure(errorMessage);
+            return;
+        }
+
+        mCallback.onVoteFailure(errorMessage);
+    }
 }

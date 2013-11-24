@@ -59,6 +59,13 @@ public class WebAPI {
         public void onGetCourseVotesFailure(String errorMessage);
     }
 
+    /**
+     * Callback interface for the api-call "vote
+     */
+    public interface VoteCallback {
+        public void onVoteSuccess();
+        public void onVoteFailure(String errorMessage);
+    }
 
 
     /**
