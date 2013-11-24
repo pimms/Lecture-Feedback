@@ -111,6 +111,7 @@ public class FeedFragment extends Fragment implements OnItemClickListener,
         intent.putExtra(LectureRatingActivity.PARAM_READ_ONLY, true);
         intent.putExtra(LectureRatingActivity.PARAM_RATINGS, reviewItem.getRatings());
         intent.putExtra(LectureRatingActivity.PARAM_COMMENT, reviewItem.getComment());
+        intent.putExtra(LectureRatingActivity.PARAM_REVIEW_ID, reviewItem.getId());
 
         startActivity(intent);
     }

@@ -105,6 +105,7 @@ public class TodayFragment extends Fragment implements 	OnParseCompleteListener,
 			intent.putExtra(LectureRatingActivity.PARAM_READ_ONLY, true);
 			intent.putExtra(LectureRatingActivity.PARAM_RATINGS, review.getRatings());
 			intent.putExtra(LectureRatingActivity.PARAM_COMMENT, review.getComment());
+            intent.putExtra(LectureRatingActivity.PARAM_REVIEW_ID, 0);
 		}
 		
 		startActivity(intent);

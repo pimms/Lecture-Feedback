@@ -4,6 +4,7 @@ import java.security.InvalidParameterException;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
 import chipmunk.unlimited.feedback.LectureItem;
 import chipmunk.unlimited.feedback.LectureReviewItem;
@@ -19,6 +21,7 @@ import chipmunk.unlimited.feedback.R;
 import chipmunk.unlimited.feedback.database.ReviewedLectureDatabase;
 import chipmunk.unlimited.feedback.webapi.WebAPI;
 import chipmunk.unlimited.feedback.webapi.WebAPI.PostReviewCallback;
+import chipmunk.unlimited.feedback.webapi.WebAPI.VoteCallback;
 
 
 
@@ -49,12 +52,15 @@ import chipmunk.unlimited.feedback.webapi.WebAPI.PostReviewCallback;
  *   | 	PARAM_RATINGS			 | The ratings of all the   |			|  		  | 
  *   |							 | lecture attribtues 		| NO* 		| bool[5] |
  *   | 	PARAM_COMMENT 			 | User comment on lecture  | NO* 		| String  |
+ *   |  PARAM_REVIEW_ID          | The ID of the review     | NO*       | int     |
  *   +---------------------------+--------------------------+-----------+---------+
  *   *) Required parameter if "PARAM_READ_ONLY" is true
  */
 public class LectureRatingActivity extends Activity 
 	        implements  PostReviewCallback,
-                        LectureRatingView.RatingListener {
+                        VoteCallback,
+                        LectureRatingView.RatingListener,
+                        View.OnClickListener {
 	/** 
 	 * The keys through which values will be set through the Intent 
 	 */
@@ -67,6 +73,7 @@ public class LectureRatingActivity extends Activity
 	public static final String PARAM_READ_ONLY 			= "param_read_only";
 	public static final String PARAM_RATINGS 			= "param_ratings";
 	public static final String PARAM_COMMENT 			= "param_comment";
+    public static final String PARAM_REVIEW_ID          = "param_review_id";
 	
 	private static final String TAG = "LectureRatingActivity";
 
@@ -74,6 +81,9 @@ public class LectureRatingActivity extends Activity
 	private LectureItem mLectureItem;
 	private LectureReviewItem mLectureReviewItem;
     private LectureRatingView mLectureRatingView;
+
+    private boolean mReadOnly;
+    private int mReviewId = -1;
 	
 	/** Displayed when submitting */
 	private ProgressDialog mProgressDialog;
@@ -100,18 +110,41 @@ public class LectureRatingActivity extends Activity
 	
 	@Override 
 	public void onPostReviewSuccess() {
-		ReviewedLectureDatabase db = new ReviewedLectureDatabase(this);
-		db.insertLectureItem(mLectureReviewItem);
-		
+        insertReviewItemLocally();
 		hideProgressDialog();
 		finish();
 	}
-	
 	@Override
 	public void onPostReviewFailure(String errorMessage) {
 		hideProgressDialog();
 		displayErrorDialog(errorMessage);
 	}
+
+
+    @Override
+    public void onVoteSuccess() {
+        if (insertReviewItemLocally()) {
+            hideProgressDialog();
+            showCloneSuccessfulToast();
+            finish();
+        } else {
+            onVoteFailure("Failed to store review locally");
+        }
+
+    }
+    @Override
+    public void onVoteFailure(String errorMessage) {
+        hideProgressDialog();
+        displayErrorDialog("Failed to clone:\n" + errorMessage);
+    }
+
+
+    @Override
+    public void onClick(View view) {
+        if (mReadOnly && view.getId() == R.id.rating_button_clone) {
+            cloneReview();
+        }
+    }
 
 
     @Override
@@ -126,16 +159,33 @@ public class LectureRatingActivity extends Activity
         showProgressDialog();
     }
 
+
+    private void cloneReview() {
+        showProgressDialog();
+
+        WebAPI webApi = new WebAPI();
+        webApi.voteUp(this, mReviewId);
+    }
+
+    private void showCloneSuccessfulToast() {
+        // TODO: Localize
+        Toast toast = Toast.makeText(
+                this,
+                "This review will be treated as your own",
+                3500);
+        toast.show();
+    }
+
 	
 	/**
 	 * Set and return mLectureReviewItem.
 	 */
 	private LectureReviewItem getReviewItem() {
-		mLectureReviewItem = new LectureReviewItem(
-				mLectureItem,
-				getRatingArray(),
-				getComment(),
-				-1, null);
+        mLectureReviewItem = new LectureReviewItem(
+                mLectureItem,
+                getRatingArray(),
+                getComment(),
+                mReviewId, null);
 		return mLectureReviewItem;
 	}
 	
@@ -154,7 +204,12 @@ public class LectureRatingActivity extends Activity
 
         return null;
 	}
-	
+
+    private boolean insertReviewItemLocally() {
+        ReviewedLectureDatabase db = new ReviewedLectureDatabase(this);
+        return db.insertLectureItem(getReviewItem());
+    }
+
 	
 	private void showProgressDialog() {
 		hideProgressDialog();
@@ -181,13 +236,14 @@ public class LectureRatingActivity extends Activity
 		} catch (InvalidParameterException ex) {
 			Log.e(TAG, "Missing REQUIRED parameter definitions: " + ex.getMessage());
 			displayErrorDialog(ex.getMessage());
+            finish();
 		}
 		
 		/* Optional parameter handling */
 		try {
 			handleOptionalParameters();
 		} catch (InvalidParameterException ex) {
-			Log.e(TAG, "Mission OPTIONAL parameter definitions: " + ex.getMessage());
+			Log.e(TAG, "Missing OPTIONAL parameter definitions: " + ex.getMessage());
 			displayErrorDialog(ex.getMessage());
 		}
 	}
@@ -225,9 +281,20 @@ public class LectureRatingActivity extends Activity
 	
 	
 	private void handleOptionalParameters() throws InvalidParameterException {
-		if (getIntent().getBooleanExtra(PARAM_READ_ONLY, false)) {
-			handleRatingParameters();
-			handleCommentParameter();	
+        Intent intent = getIntent();
+        mReadOnly = intent.getBooleanExtra(PARAM_READ_ONLY, false);
+
+		if (mReadOnly) {
+            mReadOnly = true;
+
+            mReviewId = intent.getIntExtra(PARAM_REVIEW_ID, -1);
+            if (mReviewId == -1) {
+                throw new InvalidParameterException("PARAM_REVIEW_ID must be defined!");
+            }
+
+            handleRatingParameters();
+			handleCommentParameter();
+            handleCloneWrapperView();
 		}
 	}
 	/**
@@ -272,6 +339,30 @@ public class LectureRatingActivity extends Activity
 		Button submitButton = (Button)findViewById(R.id.rating_button_submit);
 		submitButton.setVisibility(View.INVISIBLE);
 	}
+    /**
+     * Display the Clone-wrapper layout if the lecture has
+     * not been reviewed by the local user.
+     */
+    private void handleCloneWrapperView() {
+        if (mLectureItem != null) {
+            ReviewedLectureDatabase reviews = new ReviewedLectureDatabase(this);
+            int visibility;
+
+            if (reviews.hasUserReviewed(mLectureItem)) {
+                visibility = View.GONE;
+            } else {
+                visibility = View.VISIBLE;
+                findViewById(R.id.rating_button_clone).setOnClickListener(this);
+            }
+
+            View wrapper = findViewById(R.id.rating_clone_wrapper);
+            if (wrapper != null) {
+                wrapper.setVisibility(visibility);
+            }
+        } else {
+            Log.d(TAG, "Unable to determine if lecture has been reviewed.");
+        }
+    }
 
 
 	private void displayErrorDialog(String message) {
