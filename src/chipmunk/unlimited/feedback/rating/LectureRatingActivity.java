@@ -227,7 +227,8 @@ public class LectureRatingActivity extends Activity
 	private void handleOptionalParameters() throws InvalidParameterException {
 		if (getIntent().getBooleanExtra(PARAM_READ_ONLY, false)) {
 			handleRatingParameters();
-			handleCommentParameter();	
+			handleCommentParameter();
+            handleCloneWrapperView();
 		}
 	}
 	/**
@@ -272,6 +273,29 @@ public class LectureRatingActivity extends Activity
 		Button submitButton = (Button)findViewById(R.id.rating_button_submit);
 		submitButton.setVisibility(View.INVISIBLE);
 	}
+
+    /**
+     * Display the Clone-wrapper layout if the lecture has
+     * not been reviewed by the local user.
+     */
+    private void handleCloneWrapperView() {
+        ReviewedLectureDatabase reviews = new ReviewedLectureDatabase(this);
+        if (mLectureItem != null) {
+            int visibility;
+            if (reviews.hasUserReviewed(mLectureItem)) {
+                visibility = View.GONE;
+            } else {
+                visibility = View.VISIBLE;
+            }
+
+            View wrapper = findViewById(R.id.rating_clone_wrapper);
+            if (wrapper != null) {
+                wrapper.setVisibility(visibility);
+            }
+        } else {
+            Log.d(TAG, "Unable to determine if lecture has been reviewed.");
+        }
+    }
 
 
 	private void displayErrorDialog(String message) {
