@@ -63,7 +63,7 @@ class PostReview extends WebAPICall {
 			if (json != null && json.getString("status").equals("ok")) {
 				mCallback.onPostReviewSuccess();
 			} else {
-				throw new Exception("bad JSON status");
+				mCallback.onPostReviewFailure("Post failed: api returned status bad");
 			}
 		} catch (Exception e) {
 			mCallback.onPostReviewFailure("Failed to parse json: " + e.getMessage());
