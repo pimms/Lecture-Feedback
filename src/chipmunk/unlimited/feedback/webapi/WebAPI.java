@@ -179,8 +179,8 @@ public class WebAPI {
      * @param callback
      * The object to receive the finish-notifications.
      *
-     * @param lecture
-     * The single lecture from which to receive a feed of reviews.
+     * @param lectureHash
+     * The hash of the lecture from which to retrieve a feed.
      *
      * @param first
      * The first item to be returned.
@@ -254,5 +254,30 @@ public class WebAPI {
                                    String course, int first, int count) {
         GetStats getStats = new GetStats();
         getStats.apiCallLectureVotesAll(callback, API_URL, course, first, count);
+    }
+
+
+    public void voteUp(VoteCallback callback, int reviewId) {
+        vote(callback, reviewId, Vote.VOTE_POSITIVE);
+    }
+
+    public void voteDown(VoteCallback callback, int reviewId) {
+        vote(callback, reviewId, Vote.VOTE_NEGATIVE);
+    }
+    /**
+     * Vote a review either up or down.
+     *
+     * @param callback
+     * The callback to be notified.
+     *
+     * @param reviewId
+     * The id of the review in question.
+     *
+     * @param type
+     * Must be of value Vote.VOTE_POSITIVE or Vote.VOTE_NEGATIVE.
+     */
+    private void vote(VoteCallback callback, int reviewId, String type) {
+        Vote vote = new Vote(callback);
+        vote.apiCall(API_URL, reviewId, type);
     }
 }
