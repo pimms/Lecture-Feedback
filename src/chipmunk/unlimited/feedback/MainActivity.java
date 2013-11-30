@@ -103,7 +103,6 @@ public class MainActivity extends FragmentActivity implements
 		 * Figure out why this works.
 		 */
 		getMenuInflater().inflate(R.menu.main_activity, menu);
-		getMenuInflater().inflate(R.menu.main_actionbar, menu);
 		return true;
 	}
 	@Override
