@@ -19,6 +19,7 @@ import chipmunk.unlimited.feedback.revfeed.FeedFragment;
 import chipmunk.unlimited.feedback.subscription.AddSubscriptionFragment;
 import chipmunk.unlimited.feedback.subscription.SubscriptionFragment;
 import chipmunk.unlimited.feedback.subscription.SubscriptionsChangedListener;
+import chipmunk.unlimited.feedback.today.TodayFragment;
 
 
 public class MainActivity extends FragmentActivity implements

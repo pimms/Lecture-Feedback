@@ -1,4 +1,4 @@
-package chipmunk.unlimited.feedback;
+package chipmunk.unlimited.feedback.today;
 
 import java.util.List;
 
@@ -13,15 +13,23 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+
+import chipmunk.unlimited.feedback.LectureItem;
+import chipmunk.unlimited.feedback.LectureReviewItem;
+import chipmunk.unlimited.feedback.MainActivityFragmentInterface;
+import chipmunk.unlimited.feedback.R;
+import chipmunk.unlimited.feedback.TimeEditHTTP;
+import chipmunk.unlimited.feedback.TimeEditParser;
 import chipmunk.unlimited.feedback.TimeEditParser.OnParseCompleteListener;
 import chipmunk.unlimited.feedback.database.ReviewedLectureDatabase;
 import chipmunk.unlimited.feedback.database.SubscriptionDatabase;
 import chipmunk.unlimited.feedback.rating.LectureRatingActivity;
 import chipmunk.unlimited.feedback.subscription.SubscriptionItem;
+import chipmunk.unlimited.feedback.today.DailyLectureAdapter;
 
 public class TodayFragment extends Fragment implements 	OnParseCompleteListener,
 														OnItemClickListener,
-                                                        MainActivityFragmentInterface {
+        MainActivityFragmentInterface {
 	private static final String TAG = "TodayFragment";
 	
 	private DailyLectureAdapter mListAdapter;

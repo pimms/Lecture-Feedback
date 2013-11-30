@@ -1,4 +1,4 @@
-package chipmunk.unlimited.feedback;
+package chipmunk.unlimited.feedback.today;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,6 +16,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import chipmunk.unlimited.feedback.LectureItem;
+import chipmunk.unlimited.feedback.R;
 import chipmunk.unlimited.feedback.database.ReviewedLectureDatabase;
 
 /**
@@ -111,7 +114,7 @@ public class DailyLectureAdapter extends BaseAdapter {
 	private View getLectureListItem(View convertView, LectureItem item) {
 		View vi = convertView;
 		if (vi == null || 
-			(vi != null && vi.getId() != R.layout.today_list_item_lecture)) 
+			(vi != null && vi.getId() != R.layout.today_list_item_lecture))
 		{
 			vi = mInflater.inflate(R.layout.today_list_item_lecture, null);
 		}
