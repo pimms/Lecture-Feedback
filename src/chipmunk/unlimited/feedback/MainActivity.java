@@ -95,13 +95,6 @@ public class MainActivity extends FragmentActivity implements
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		/*
-		 * I have truly no idea why the second menu is
-		 * added to the action bar. It just works. 
-		 * 
-		 * TODO:
-		 * Figure out why this works.
-		 */
 		getMenuInflater().inflate(R.menu.main_activity, menu);
 		return true;
 	}
