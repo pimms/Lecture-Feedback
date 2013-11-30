@@ -163,13 +163,13 @@ public class MainActivity extends FragmentActivity implements
 			Fragment fragment;
 			
 			switch (position) {
-			case 0:
+            case 0:
+                mTodayFragment = new TodayFragment();
+                fragment = mTodayFragment;
+                break;
+			case 1:
 				mFeedFragment = new FeedFragment();
 				fragment = mFeedFragment;
-				break;
-			case 1:
-				mTodayFragment = new TodayFragment();
-				fragment = mTodayFragment;
 				break;
 			case 2:
 				mStatsFragment = new StatisticsFragment();
@@ -193,10 +193,10 @@ public class MainActivity extends FragmentActivity implements
 		public CharSequence getPageTitle(int position) {
 			Locale l = Locale.getDefault();
 			switch (position) {
-			case 0:
-				return "Classmate's reviews";
+            case 0:
+                return "Review today's lectures";
 			case 1:
-				return "Review today's lectures";
+				return "Classmate's reviews";
 			case 2:
 				return "Overview";
 			}
