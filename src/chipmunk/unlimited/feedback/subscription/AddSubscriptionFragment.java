@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -77,21 +78,9 @@ public class AddSubscriptionFragment extends DialogFragment {
         final ListView lv = (ListView)dialog.findViewById(R.id.add_result_list);
         final TextView aerror = (TextView)dialog.findViewById(R.id.aerror_text);
         final Button abutton = (Button)dialog.findViewById(R.id.add_nores_button);
-
         final Button neutButton = (Button) dialog.getButton(Dialog.BUTTON_NEUTRAL);
 
-        et.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                if(i == EditorInfo.IME_ACTION_DONE){
-                    neutButton.performClick();
-                    return true;
-                }
-                return false;
-            }
-        });
-
-        assert neutButton != null;
+        showKeyboard(et);
 
         //Set onClick Listener for dialog button
         neutButton.setOnClickListener(new View.OnClickListener()
@@ -188,4 +177,21 @@ public class AddSubscriptionFragment extends DialogFragment {
 
     }
 
+
+    private void showKeyboard(final EditText editText) {
+        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                editText.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        InputMethodManager imm = (InputMethodManager)
+                                getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
+                    }
+                });
+            }
+        });
+        editText.requestFocus();
+    }
 }
