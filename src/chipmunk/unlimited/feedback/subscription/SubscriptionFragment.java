@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
@@ -25,10 +26,15 @@ import chipmunk.unlimited.feedback.database.SubscriptionDatabase;
  * Created by Tobias on 31.08.13, forked by Joakim on 11.11.2013
  */
 public class SubscriptionFragment extends DialogFragment {	
-    private SubscriptionsChangedListener mListener;
+    private SubscriptionProtocolListener mListener;
     private boolean update = false;
     private SubscriptionAdapter adapter;
 
+
+    public SubscriptionFragment(SubscriptionProtocolListener listener) {
+        assert(listener != null);
+        mListener = listener;
+    }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
@@ -37,6 +43,14 @@ public class SubscriptionFragment extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.fragment_subscriptions, null);
+
+        /* Create an anonymous callback for the button */
+        view.findViewById(R.id.subs_add_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SubscriptionFragment.this.displayAddSubscriptionFragment();
+            }
+        });
 
         // TODO: Localization
         builder.setView(view)
@@ -57,29 +71,23 @@ public class SubscriptionFragment extends DialogFragment {
         AlertDialog dialog = (AlertDialog)getDialog();
         ListView list = (ListView)dialog.findViewById(R.id.subs_list);
 
+        /* Load the subscriptions */
         SubscriptionDatabase datasource = new SubscriptionDatabase(getActivity());
         datasource.open();
-
         adapter = new SubscriptionAdapter(getActivity(), datasource.getSubscriptionCursor(), 0);
         list.setAdapter(adapter);
         datasource.close();
     }
-    
+
     @Override
     public void onDismiss(DialogInterface dialog){
-        if(mListener != null) {
-            mListener.onSubscriptionsChanged();
-        }
+        mListener.onSubscriptionsChanged();
 
         super.onDismiss(dialog);
     }
 
 
-    public void setSubscriptionsChangedListener(SubscriptionsChangedListener listener) {
-    	mListener = listener;
-    }
-
-    public void displayAddSubscriptionFragment() {
-
+    private void displayAddSubscriptionFragment() {
+        mListener.onAddSubscriptionRequest(this);
     }
 }

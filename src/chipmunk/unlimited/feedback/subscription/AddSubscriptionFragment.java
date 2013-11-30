@@ -41,12 +41,14 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 public class AddSubscriptionFragment extends DialogFragment {
 
     private SubscriptionDatabase datasource;
-    private SubscriptionsChangedListener mListener;
+    private SubscriptionProtocolListener mListener;
 
-    
-    public void setSubscriptionsChangedListener(SubscriptionsChangedListener listener) {
-    	mListener = listener;
+
+    public AddSubscriptionFragment(SubscriptionProtocolListener listener) {
+        assert(listener != null);
+        mListener = listener;
     }
+
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
@@ -56,18 +58,31 @@ public class AddSubscriptionFragment extends DialogFragment {
         View view = inflater.inflate(R.layout.fragment_add_subscription, null);
 
         // TODO: Localization
-        builder.setView(view)
-                .setTitle("Search for courses")
-                .setNeutralButton("Search", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                    }
-                });
-
+        builder.setView(view).setTitle("Search for courses").setNeutralButton("Search", null);
         return builder.create();
     }
-    
+
+    private void showKeyboard(final EditText editText) {
+        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                editText.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        InputMethodManager imm = (InputMethodManager)
+                                getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
+                    }
+                });
+            }
+        });
+        editText.requestFocus();
+    }
+
+    private void dismissAddSubscriptionFragment() {
+        mListener.onAddSubscriptionFragmentDismiss(this);
+    }
+
     @Override
     public void onStart(){
         super.onStart();
@@ -82,7 +97,17 @@ public class AddSubscriptionFragment extends DialogFragment {
 
         showKeyboard(et);
 
-        //Set onClick Listener for dialog button
+        abutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddSubscriptionFragment.this.dismissAddSubscriptionFragment();
+            }
+        });
+
+        /**********************************************/
+        /** Stop reading at this point. I'm serious. **/
+        /**********************************************/
+        assert(neutButton != null);
         neutButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -133,15 +158,15 @@ public class AddSubscriptionFragment extends DialogFragment {
                                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                         datasource = new SubscriptionDatabase(getActivity());
                                         datasource.open();
-                                        
+
                                         String[] split = results[position][1].split(",");
                                         String higCode = split[0];
-                                        
+
                                         String name = split[1];
                                         for (int i=2; i<split.length; i++) {
                                         	name += "," + split[i];
                                         }
-                                        
+
                                         datasource.addSubscription(results[position][0], higCode, name);
                                         datasource.close();
                                         mListener.onSubscriptionsChanged();
@@ -175,23 +200,5 @@ public class AddSubscriptionFragment extends DialogFragment {
             }
         });
 
-    }
-
-
-    private void showKeyboard(final EditText editText) {
-        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                editText.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        InputMethodManager imm = (InputMethodManager)
-                                getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                        imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
-                    }
-                });
-            }
-        });
-        editText.requestFocus();
     }
 }

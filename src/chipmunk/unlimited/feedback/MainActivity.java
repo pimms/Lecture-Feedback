@@ -14,25 +14,19 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
+
 import chipmunk.unlimited.feedback.revfeed.FeedFragment;
 import chipmunk.unlimited.feedback.subscription.AddSubscriptionFragment;
 import chipmunk.unlimited.feedback.subscription.SubscriptionFragment;
-import chipmunk.unlimited.feedback.subscription.SubscriptionsChangedListener;
+import chipmunk.unlimited.feedback.subscription.SubscriptionProtocolListener;
 import chipmunk.unlimited.feedback.today.TodayFragment;
 
 
 public class MainActivity extends FragmentActivity implements
 		ActionBar.TabListener,
-		SubscriptionsChangedListener {
-
-
+        SubscriptionProtocolListener {
 	SectionsPagerAdapter mSectionsPagerAdapter;
 	ViewPager mViewPager;
-	
-	/* Fragments related to subscription management */
-	private SubscriptionFragment mSubscriptionFragment;
-	private AddSubscriptionFragment mAddSubscriptionFragment;
 	
 	/* Fragments included in the pane-view */
 	private FeedFragment mFeedFragment;
@@ -126,26 +120,42 @@ public class MainActivity extends FragmentActivity implements
 		return true;
 	}
 	@Override
-	public void onTabSelected(ActionBar.Tab tab,
-			FragmentTransaction fragmentTransaction) {
+	public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
 		mViewPager.setCurrentItem(tab.getPosition());
 	}
 	@Override
-	public void onTabUnselected(ActionBar.Tab tab,
-			FragmentTransaction fragmentTransaction) {
+	public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+
 	}
 	@Override
-	public void onTabReselected(ActionBar.Tab tab,
-			FragmentTransaction fragmentTransaction) {
+	public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+
 	}
 
-	
-	@Override
+
+
+    private void showSubscriptionFragment() {
+        SubscriptionFragment sub = new SubscriptionFragment(this);
+        sub.show(getFragmentManager(), "fragment_subscription");
+    }
+    @Override
+    public void onAddSubscriptionRequest(SubscriptionFragment toDismiss) {
+        toDismiss.dismiss();
+
+        AddSubscriptionFragment addSub = new AddSubscriptionFragment(this);
+        addSub.show(getFragmentManager(), "add_subscription_fragment");
+    }
+    @Override
 	public void onSubscriptionsChanged() {
 		refreshFragments();
 	}
-	
-	private void refreshFragments() {
+    @Override
+    public void onAddSubscriptionFragmentDismiss(AddSubscriptionFragment toDismiss) {
+        toDismiss.dismiss();
+    }
+
+
+    private void refreshFragments() {
 		if (mTodayFragment != null) {
 			mTodayFragment.refreshContents();
 		}
@@ -157,25 +167,6 @@ public class MainActivity extends FragmentActivity implements
         if (mStatsFragment != null) {
             mStatsFragment.refreshContents();
         }
-	}
-	
-	
-	private void showSubscriptionFragment() {
-		mSubscriptionFragment = new SubscriptionFragment();
-		mSubscriptionFragment.setSubscriptionsChangedListener(this);
-		mSubscriptionFragment.show(getFragmentManager(), "fragment_subscription");
-	}
-	
-	public void showAddSubscriptionFragment(View view) {
-		mSubscriptionFragment.dismiss();
-		
-		mAddSubscriptionFragment = new AddSubscriptionFragment();
-		mAddSubscriptionFragment.setSubscriptionsChangedListener(this);
-		mAddSubscriptionFragment.show(getFragmentManager(), "add_subscription_fragment");
-	}
-	
-	public void dismissAddSubscriptionFragment(View view) {
-		mAddSubscriptionFragment.dismiss();
 	}
 
 
