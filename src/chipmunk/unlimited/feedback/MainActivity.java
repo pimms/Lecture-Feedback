@@ -2,6 +2,7 @@ package chipmunk.unlimited.feedback;
 
 import java.util.Locale;
 
+import chipmunk.unlimited.feedback.database.SubscriptionDatabase;
 import chipmunk.unlimited.feedback.stats.StatisticsFragment;
 
 import android.app.ActionBar;
@@ -77,6 +78,11 @@ public class MainActivity extends FragmentActivity implements
 					.setText(mSectionsPagerAdapter.getPageTitle(i))
 					.setTabListener(this));
 		}
+
+        /* If no subscriptions exists, display the add-subscription fragment */
+        if (!SubscriptionDatabase.hasAnySubscriptions(this)) {
+            showSubscriptionFragment();
+        }
 	}
 	@Override
 	protected void onResume() {
@@ -92,7 +98,7 @@ public class MainActivity extends FragmentActivity implements
 		mShouldUpdateFragments = true;
 	}
 	
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.main_activity, menu);
