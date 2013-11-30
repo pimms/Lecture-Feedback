@@ -84,7 +84,6 @@ public class MainActivity extends FragmentActivity implements
 					.setTabListener(this));
 		}
 	}
-
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -93,7 +92,6 @@ public class MainActivity extends FragmentActivity implements
 			mShouldUpdateFragments = false;
 		}
 	}
-	
 	@Override
 	protected void onPause() {
 		super.onPause();
@@ -114,7 +112,6 @@ public class MainActivity extends FragmentActivity implements
 		getMenuInflater().inflate(R.menu.main_actionbar, menu);
 		return true;
 	}
-
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -128,7 +125,6 @@ public class MainActivity extends FragmentActivity implements
 		
 		return true;
 	}
-	
 	@Override
 	public void onTabSelected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {
@@ -136,72 +132,13 @@ public class MainActivity extends FragmentActivity implements
 		// the ViewPager.
 		mViewPager.setCurrentItem(tab.getPosition());
 	}
-
 	@Override
 	public void onTabUnselected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {
 	}
-
 	@Override
 	public void onTabReselected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {
-	}
-	
-
-    /**
-	 * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-	 * one of the sections/tabs/pages.
-	 */
-	public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
-		public SectionsPagerAdapter(FragmentManager fm) {
-			super(fm);
-		}
-
-		@Override
-		public Fragment getItem(int position) {
-			Fragment fragment;
-			
-			switch (position) {
-            case 0:
-                mTodayFragment = new TodayFragment();
-                fragment = mTodayFragment;
-                break;
-			case 1:
-				mFeedFragment = new FeedFragment();
-				fragment = mFeedFragment;
-				break;
-			case 2:
-				mStatsFragment = new StatisticsFragment();
-				fragment = mStatsFragment;
-				break;
-			default:
-				/* TODO: Handle error */
-				fragment = null;
-			}
-
-			return fragment;
-		}
-
-		@Override
-		public int getCount() {
-			// Show 3 total pages.
-			return 3;
-		}
-
-		@Override
-		public CharSequence getPageTitle(int position) {
-			Locale l = Locale.getDefault();
-			switch (position) {
-            case 0:
-                return "Review today's lectures";
-			case 1:
-				return "Classmate's reviews";
-			case 2:
-				return "Overview";
-			}
-			return null;
-		}
 	}
 
 	
@@ -242,4 +179,57 @@ public class MainActivity extends FragmentActivity implements
 	public void dismissAddSubscriptionFragment(View view) {
 		mAddSubscriptionFragment.dismiss();
 	}
+
+
+    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+
+        public SectionsPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            Fragment fragment;
+
+            switch (position) {
+                case 0:
+                    mTodayFragment = new TodayFragment();
+                    fragment = mTodayFragment;
+                    break;
+                case 1:
+                    mFeedFragment = new FeedFragment();
+                    fragment = mFeedFragment;
+                    break;
+                case 2:
+                    mStatsFragment = new StatisticsFragment();
+                    fragment = mStatsFragment;
+                    break;
+                default:
+				/* TODO: Handle error */
+                    fragment = null;
+            }
+
+            return fragment;
+        }
+
+        @Override
+        public int getCount() {
+            // Show 3 total pages.
+            return 3;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            Locale l = Locale.getDefault();
+            switch (position) {
+                case 0:
+                    return "Review today's lectures";
+                case 1:
+                    return "Classmate's reviews";
+                case 2:
+                    return "Overview";
+            }
+            return null;
+        }
+    }
 }
