@@ -133,7 +133,6 @@ public class MainActivity extends FragmentActivity implements
 	}
 
 
-
     private void showSubscriptionFragment() {
         SubscriptionFragment sub = new SubscriptionFragment(this);
         sub.show(getFragmentManager(), "fragment_subscription");
@@ -153,7 +152,6 @@ public class MainActivity extends FragmentActivity implements
     public void onAddSubscriptionFragmentDismiss(AddSubscriptionFragment toDismiss) {
         toDismiss.dismiss();
     }
-
 
     private void refreshFragments() {
 		if (mTodayFragment != null) {
