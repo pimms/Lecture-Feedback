@@ -50,7 +50,7 @@ public class SubscriptionDatabase extends DatabaseWrapper {
 			+ ");";
 	
 
-    static boolean hasAnySubscriptions(Context context) {
+    static public boolean hasAnySubscriptions(Context context) {
         SubscriptionDatabase db = new SubscriptionDatabase(context);
         int subCount;
 
