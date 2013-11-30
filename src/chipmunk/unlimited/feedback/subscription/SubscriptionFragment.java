@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -74,8 +75,17 @@ public class SubscriptionFragment extends DialogFragment {
         /* Load the subscriptions */
         SubscriptionDatabase datasource = new SubscriptionDatabase(getActivity());
         datasource.open();
-        adapter = new SubscriptionAdapter(getActivity(), datasource.getSubscriptionCursor(), 0);
-        list.setAdapter(adapter);
+
+        Cursor subCursor = datasource.getSubscriptionCursor();
+        if (subCursor.getCount() != 0) {
+            /* Display the existing subscriptions */
+            adapter = new SubscriptionAdapter(getActivity(), subCursor, 0);
+            list.setAdapter(adapter);
+        } else {
+            /* No subscriptions exists, go to Add-view */
+            displayAddSubscriptionFragment();
+            subCursor.close();
+        }
         datasource.close();
     }
 
