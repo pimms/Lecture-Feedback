@@ -31,19 +31,6 @@ public class SubscriptionFragment extends DialogFragment {
 
 
     @Override
-    public void onStart(){
-        super.onStart();
-        AlertDialog dialog = (AlertDialog)getDialog();
-        ListView list = (ListView)dialog.findViewById(R.id.subs_list);
-
-        SubscriptionDatabase datasource = new SubscriptionDatabase(getActivity());
-        datasource.open();
-
-        adapter = new SubscriptionAdapter(getActivity(), datasource.getSubscriptionCursor(), 0);
-        list.setAdapter(adapter);
-        datasource.close();
-    }
-    @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
 
         //Dialog builder
@@ -63,6 +50,21 @@ public class SubscriptionFragment extends DialogFragment {
 
         return builder.create();
     }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        AlertDialog dialog = (AlertDialog)getDialog();
+        ListView list = (ListView)dialog.findViewById(R.id.subs_list);
+
+        SubscriptionDatabase datasource = new SubscriptionDatabase(getActivity());
+        datasource.open();
+
+        adapter = new SubscriptionAdapter(getActivity(), datasource.getSubscriptionCursor(), 0);
+        list.setAdapter(adapter);
+        datasource.close();
+    }
+    
     @Override
     public void onDismiss(DialogInterface dialog){
         if(mListener != null) {
@@ -72,10 +74,12 @@ public class SubscriptionFragment extends DialogFragment {
         super.onDismiss(dialog);
     }
 
-    
+
     public void setSubscriptionsChangedListener(SubscriptionsChangedListener listener) {
     	mListener = listener;
     }
 
+    public void displayAddSubscriptionFragment() {
 
+    }
 }
