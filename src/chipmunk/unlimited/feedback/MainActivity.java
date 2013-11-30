@@ -50,8 +50,7 @@ public class MainActivity extends FragmentActivity implements
 
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the app.
-		mSectionsPagerAdapter = new SectionsPagerAdapter(
-				getSupportFragmentManager());
+		mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
 		// Set up the ViewPager with the sections adapter.
 		mViewPager = (ViewPager) findViewById(R.id.pager);
@@ -152,17 +151,21 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private void refreshFragments() {
-		if (mTodayFragment != null) {
-			mTodayFragment.refreshContents();
+		if (mTodayFragment == null) {
+			mTodayFragment = (TodayFragment)mSectionsPagerAdapter.getItem(0);
 		}
 		
 		if (mFeedFragment != null) {
-			mFeedFragment.refreshContents();
+            mFeedFragment = (FeedFragment)mSectionsPagerAdapter.getItem(1);
 		}
 
         if (mStatsFragment != null) {
-            mStatsFragment.refreshContents();
+            mStatsFragment = (StatisticsFragment)mSectionsPagerAdapter.getItem(2);
         }
+
+        mTodayFragment.refreshContents();
+        mFeedFragment.refreshContents();
+        mStatsFragment.refreshContents();
 	}
 
 
@@ -178,15 +181,21 @@ public class MainActivity extends FragmentActivity implements
 
             switch (position) {
                 case 0:
-                    mTodayFragment = new TodayFragment();
+                    if (mTodayFragment == null) {
+                        mTodayFragment = new TodayFragment();
+                    }
                     fragment = mTodayFragment;
                     break;
                 case 1:
-                    mFeedFragment = new FeedFragment();
+                    if (mFeedFragment == null) {
+                        mFeedFragment = new FeedFragment();
+                    }
                     fragment = mFeedFragment;
                     break;
                 case 2:
-                    mStatsFragment = new StatisticsFragment();
+                    if (mStatsFragment == null) {
+                        mStatsFragment = new StatisticsFragment();
+                    }
                     fragment = mStatsFragment;
                     break;
                 default:
