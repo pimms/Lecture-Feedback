@@ -21,19 +21,17 @@ public class StatisticsFragment extends UpdateableFragment
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_main_statistics, container, false);
-		return rootView;
-	}
-    @Override
-    public void onActivityCreated(Bundle bundle) {
-        super.onActivityCreated(bundle);
-        
+
         mAdapter = new StatisticsAdapter(getActivity());
-        ListView listView = getListView();
+        ListView listView = (ListView)rootView.findViewById(R.id.stats_list_view);
         listView.setAdapter(mAdapter);
         listView.setOnItemClickListener(this);
 
         refreshContents();
-    }
+        onFragmentInitialized();
+		return rootView;
+	}
+
     @Override
     public void doRefresh() {
         mAdapter.reloadSubscriptions();

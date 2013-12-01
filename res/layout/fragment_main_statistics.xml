@@ -5,7 +5,7 @@
     android:orientation="vertical" >
 
     <com.costum.android.widget.PullAndLoadListView
-        android:id="@android:id/list"
+        android:id="@+id/stats_list_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
     </com.costum.android.widget.PullAndLoadListView>
