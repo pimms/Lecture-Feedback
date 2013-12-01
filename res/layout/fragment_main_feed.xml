@@ -13,9 +13,9 @@
         android:visibility="gone"
         style="@android:style/Widget.ProgressBar.Large"/>
 	
-    <ListView
+    <com.costum.android.widget.LoadMoreListView
         android:id="@+id/list"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
-    </ListView>
+    </com.costum.android.widget.LoadMoreListView>
 </LinearLayout>
