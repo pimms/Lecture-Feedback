@@ -52,6 +52,7 @@ public class TodayFragment extends UpdateableFragment
         onFragmentInitialized();
 		return rootView;
 	}
+
     @Override
     protected void doRefresh() {
         showProgressBar();
