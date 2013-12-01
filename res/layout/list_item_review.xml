@@ -20,25 +20,39 @@
             android:id="@+id/feed_item_text_view_course"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.8"
+            android:layout_weight="0.7"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:maxLines="5"
             android:text="Development Solution Procedures"
             android:textAppearance="?android:attr/textAppearanceMedium" />
-        <TextView
-            android:id="@+id/feed_item_text_view_date"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.35"
-            android:layout_marginBottom="3dp"
-            android:text="MMM 31 MMM"
-            android:textStyle="italic"
-            android:textAlignment="center"
-            android:layout_gravity="bottom"
-            android:gravity="right"
-            android:layout_marginLeft="0dp"
-            android:layout_marginRight="15dp" />
+            android:layout_weight="0.3"
+            android:orientation="vertical"
+            android:gravity="right">
+            <TextView
+                android:id="@+id/feed_item_text_view_clones"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
+                android:text="0 clones"
+                android:gravity="center"
+                android:background="@drawable/separator_background"/>
+            <TextView
+                android:id="@+id/feed_item_text_view_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="3dp"
+                android:layout_marginRight="15dp"
+                android:text="MMM 31 MMM"
+                android:textStyle="italic"
+                android:textAlignment="center"
+                android:layout_gravity="bottom"
+                android:gravity="right" />
+        </LinearLayout>
     </LinearLayout>
 
     <TextView
