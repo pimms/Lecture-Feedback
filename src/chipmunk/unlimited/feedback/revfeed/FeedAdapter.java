@@ -267,7 +267,12 @@ public class FeedAdapter extends BaseAdapter implements GetLectureVotesAllCallba
         tvCourse.setText(item.getCourseName());
         tvLecturer.setText(item.getLecturer() + ", " + item.getRoom());
         tvComment.setText(item.getComment());
-        tvClones.setText("" + item.getCloneCount() + " clones");
+
+        if (item.getCloneCount() != 0) {
+            tvClones.setText("" + item.getCloneCount() + " clones");
+        } else {
+            tvClones.setVisibility(View.GONE);
+        }
 
         boolean[] ratings = item.getRatings();
         int negative = 0;
