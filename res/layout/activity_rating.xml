@@ -9,6 +9,13 @@
         android:layout_height="0dp"
         android:layout_weight="0.7"
         android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/action_bar_extension"
+            android:gravity="center"
+            android:id="@+id/rating_text_view_clone_count"
+            android:text="9 clones"/>
 		<ScrollView 
 		    android:id="@+id/rating_scroll_content"
 		    android:layout_width="match_parent"
