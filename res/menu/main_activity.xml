@@ -1,6 +1,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    
+
+    <item
+        android:id="@+id/action_topcourses"
+        android:showAsAction="always"
+        android:title="Highscores"
+        android:icon="@drawable/navigation_trophy"/>
+
     <item 
         android:id="@+id/action_subscriptions"
         android:showAsAction="always"
