@@ -64,6 +64,8 @@ public class FeedAdapter extends BaseAdapter implements GetLectureVotesAllCallba
         } else {
             mTutorial = true;
         }
+
+        notifyDataSetChanged();
 	}
 
 
