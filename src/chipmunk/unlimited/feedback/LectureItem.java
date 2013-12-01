@@ -15,7 +15,7 @@ public class LectureItem implements Comparable<LectureItem> {
     /**
      * How many days is a Lecture reviewable?
      */
-    private static final int REVIEWABLE_PERIOD_DAYS = 10;
+    private static final int REVIEWABLE_PERIOD_DAYS = 5;
 
 	protected Date mStartTime;
 	protected Date mEndTime;
@@ -155,7 +155,11 @@ public class LectureItem implements Comparable<LectureItem> {
     public boolean canReviewLecture() {
         Calendar limit = Calendar.getInstance();
         limit.add(Calendar.DAY_OF_MONTH, -REVIEWABLE_PERIOD_DAYS);
-        return mEndTime.after(limit.getTime());
+
+        Calendar now = Calendar.getInstance();
+
+        return mEndTime.after(limit.getTime()) &&
+               mStartTime.before(now.getTime());
     }
 
 

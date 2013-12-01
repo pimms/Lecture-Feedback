@@ -153,33 +153,12 @@ public class DailyLectureAdapter extends BaseAdapter {
 	
 	/**
 	 * Remove all irrelevant lectures from the data set.
-	 * The relevant time-period is NOW and 24 hours back.
-	 * Only the start time OR the end time of the lecture
-	 * has to fit within this 24 hour period for the lecture
-	 * to be considered relevant.
-	 * 
-	 * TODO:
-	 * For development purposes, the cut-off limit has been
-	 * increased to 10 days. Lower this at an appropriate time.
+	 * If a lecture cannot be voted for, it is counted as
+     * irrelevant.
 	 */
 	private void stripIrrelevantLectures() {
-		Calendar cal = Calendar.getInstance();
-		
-		Date upperBounds = cal.getTime();
-		cal.add(Calendar.DAY_OF_YEAR, -10);
-		Date lowerBounds = cal.getTime();
-		
-		Log.d(TAG, "BOUNDS: " + lowerBounds + ", " + upperBounds);
-		
 		for (int i=0; i<mLectureItems.size(); i++) {
-			LectureItem lecture = mLectureItems.get(i);
-			
-			Date startTime = lecture.getStartTime();
-			Date endTime = lecture.getEndTime();
-			
-			//Log.d(TAG, "Lecture: " + startTime + ", " + endTime);
-			
-			if (!endTime.after(lowerBounds) || !startTime.before(upperBounds)) {
+			if (!mLectureItems.get(i).canReviewLecture()) {
 				mLectureItems.remove(i--);
 			}
 		}
