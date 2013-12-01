@@ -7,6 +7,9 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import uk.co.senab.actionbarpulltorefresh.library.*;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
@@ -16,8 +19,8 @@ import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
  * a framework for safely updating the fragments.
  *
  * Subclasses must override "doRefresh()", and must
- * call "onFragmentInitialized()" after all init has
- * been performed.
+ * call "onUpdateCompleted()" once the update has
+ * finalized.
  */
 public abstract class UpdateableFragment extends ListFragment
         implements OnRefreshListener {
@@ -41,30 +44,9 @@ public abstract class UpdateableFragment extends ListFragment
                 .listener(this)
                 .setup(mPtrLayout);
     }
-
-
     @Override
     public void onRefreshStarted(View view) {
-        Log.d("YOLO", "YOOOLOOO");
-
-        new AsyncTask<Void, Void, Void>() {
-
-            @Override
-            protected Void doInBackground(Void... params) {
-                try {
-                    Thread.sleep(2500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void result) {
-                super.onPostExecute(result);
-                mPtrLayout.setRefreshComplete();
-            }
-        }.execute();
+        refreshContents();
     }
 
 
@@ -83,6 +65,10 @@ public abstract class UpdateableFragment extends ListFragment
         } else {
             mScheduledUpdate = true;
         }
+    }
+
+    public final void onUpdateCompleted() {
+        mPtrLayout.setRefreshComplete();
     }
 
     protected abstract void doRefresh();
