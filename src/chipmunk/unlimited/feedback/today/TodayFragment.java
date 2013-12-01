@@ -45,10 +45,10 @@ public class TodayFragment extends UpdateableFragment
 		mListAdapter = new DailyLectureAdapter(rootView.getContext());
 		mListView.setAdapter(mListAdapter);
 		mListView.setOnItemClickListener(this);
-		refreshContents();
 		
 		Log.d(TAG, "TodayFragment # onCreateView()");
 
+        refreshContents();
         onFragmentInitialized();
 		return rootView;
 	}

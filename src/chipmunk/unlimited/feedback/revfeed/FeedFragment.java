@@ -54,8 +54,7 @@ public class FeedFragment extends UpdateableFragment
 		mListView.setAdapter(mFeedAdapter);
 		mListView.setOnItemClickListener(this);
 
-		refreshContents();
-			
+		onFragmentInitialized();
 		return rootView;
 	}
 

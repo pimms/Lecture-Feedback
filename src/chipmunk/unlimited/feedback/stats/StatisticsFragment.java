@@ -27,6 +27,8 @@ public class StatisticsFragment extends UpdateableFragment
         listView.setAdapter(mAdapter);
         listView.setOnItemClickListener(this);
 
+        refreshContents();
+        onFragmentInitialized();
 		return rootView;
 	}
 
