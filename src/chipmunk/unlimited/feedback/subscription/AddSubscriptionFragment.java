@@ -79,6 +79,14 @@ public class AddSubscriptionFragment extends DialogFragment {
         editText.requestFocus();
     }
 
+    private void hideKeyboard(final EditText editText) {
+        editText.setOnFocusChangeListener(null);
+        
+        InputMethodManager imm = (InputMethodManager)
+                getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+    }
+
     private void dismissAddSubscriptionFragment() {
         mListener.onAddSubscriptionFragmentDismiss(this);
     }
@@ -135,6 +143,8 @@ public class AddSubscriptionFragment extends DialogFragment {
                             @Override
                             public void onSuccess(String response){
                                 Log.d("DIALOG", "onSuccess starting");
+
+                                hideKeyboard(et);
 
                                 //Get parsed results from parser
                                 final String[][] results = TimeEditParser.search(response, term);
