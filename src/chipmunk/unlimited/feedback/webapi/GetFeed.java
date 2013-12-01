@@ -212,6 +212,7 @@ class GetFeed extends WebAPICall {
 		String room = jsonObject.getString("room");
 		String comment = jsonObject.getString("comment");
 		String strReviewTime = jsonObject.getString("review_time");
+        int cloneCount = jsonObject.getInt("clone_count");
 
         if (comment.equals("null")) {
             comment = "";
@@ -228,7 +229,7 @@ class GetFeed extends WebAPICall {
 		LectureReviewItem reviewItem = new LectureReviewItem(
 				date, time, courseName, courseCode, 
 				room, lecturer, ratings, 
-				comment, id, reviewDate);
+				comment, id, reviewDate, cloneCount);
 		return reviewItem;
 	}
 }

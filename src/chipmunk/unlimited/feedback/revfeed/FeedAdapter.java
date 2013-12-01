@@ -256,16 +256,18 @@ public class FeedAdapter extends BaseAdapter implements GetLectureVotesAllCallba
             vi = sInflater.inflate(R.layout.list_item_review, null);
         }
 
-        TextView tvCourse = (TextView)vi.findViewById(R.id.feed_item_text_view_course);
+        TextView tvCourse   = (TextView)vi.findViewById(R.id.feed_item_text_view_course);
         TextView tvLecturer = (TextView)vi.findViewById(R.id.feed_item_text_view_lecturer);
         TextView tvPositive = (TextView)vi.findViewById(R.id.simple_thumb_text_view_positive);
         TextView tvNegative = (TextView)vi.findViewById(R.id.simple_thumb_text_view_negative);
-        TextView tvComment = (TextView)vi.findViewById(R.id.feed_item_text_view_comment);
+        TextView tvComment  = (TextView)vi.findViewById(R.id.feed_item_text_view_comment);
+        TextView tvClones   = (TextView)vi.findViewById(R.id.feed_item_text_view_clones);
 
         LectureReviewItem item = (LectureReviewItem)getItem(position);
         tvCourse.setText(item.getCourseName());
         tvLecturer.setText(item.getLecturer() + ", " + item.getRoom());
         tvComment.setText(item.getComment());
+        tvClones.setText("" + item.getCloneCount() + " clones");
 
         boolean[] ratings = item.getRatings();
         int negative = 0;

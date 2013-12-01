@@ -185,7 +185,7 @@ public class LectureRatingActivity extends Activity
                 mLectureItem,
                 getRatingArray(),
                 getComment(),
-                mReviewId, null);
+                mReviewId, null, 0);
 		return mLectureReviewItem;
 	}
 	

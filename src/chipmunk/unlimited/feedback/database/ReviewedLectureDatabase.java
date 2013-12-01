@@ -132,7 +132,7 @@ public class ReviewedLectureDatabase extends DatabaseWrapper {
 			String comment = cursor.getString(commentIdx);
 			
 			boolean[] rating = LectureReviewItem.getRatingArrayFromString(ratingStr);
-			review = new LectureReviewItem(item, rating, comment, -1, null);
+			review = new LectureReviewItem(item, rating, comment, -1, null, 0);
 			cursor.close();
 		}
 		
