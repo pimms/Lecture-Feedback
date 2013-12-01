@@ -1,5 +1,6 @@
 package chipmunk.unlimited.feedback;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
@@ -45,6 +46,25 @@ public abstract class UpdateableFragment extends ListFragment
     @Override
     public void onRefreshStarted(View view) {
         Log.d("YOLO", "YOOOLOOO");
+
+        new AsyncTask<Void, Void, Void>() {
+
+            @Override
+            protected Void doInBackground(Void... params) {
+                try {
+                    Thread.sleep(2500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void result) {
+                super.onPostExecute(result);
+                mPtrLayout.setRefreshComplete();
+            }
+        }.execute();
     }
 
 
