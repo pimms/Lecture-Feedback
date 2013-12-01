@@ -347,7 +347,7 @@ public class LectureRatingActivity extends Activity
             ReviewedLectureDatabase reviews = new ReviewedLectureDatabase(this);
             int visibility;
 
-            if (reviews.hasUserReviewed(mLectureItem)) {
+            if (reviews.hasUserReviewed(mLectureItem) || !mLectureItem.canReviewLecture()) {
                 visibility = View.GONE;
             } else {
                 visibility = View.VISIBLE;
