@@ -30,10 +30,12 @@ import chipmunk.unlimited.feedback.database.ReviewedLectureDatabase;
  */
 public class DailyLectureAdapter extends BaseAdapter {
 	private static final String TAG = "DailyLectureAdapter";
-	
-	
+
 	private static final int LIST_ITEM_TYPE_LECTURE = 1;
 	private static final int LIST_ITEM_TYPE_SEPARATOR = 2;
+
+    private boolean mTutorial;
+
 	
 	/**
 	 * To differentiate between Lecture-list items and 
@@ -67,19 +69,33 @@ public class DailyLectureAdapter extends BaseAdapter {
 	
 	public void setLectureItems(List<LectureItem> items) {
 		mLectureItems = items;
-		stripIrrelevantLectures();
-		defineItemOrder();
+
+        if (mLectureItems == null || mLectureItems.size() == 0) {
+            mTutorial = true;
+        } else {
+            mTutorial = false;
+            stripIrrelevantLectures();
+            defineItemOrder();
+        }
 	}
 	
 	
 	@Override
 	public int getCount() {
-		return mListItemTypes.size();
+        if (!mTutorial) {
+		    return mListItemTypes.size();
+        } else {
+            return 1;
+        }
 	}
 	
 	@Override
 	public Object getItem(int position) {
-		return getLectureForListItem(position);
+        if (!mTutorial) {
+		    return getLectureForListItem(position);
+        }
+
+        return null;
 	}
 	
 	@Override
@@ -94,12 +110,20 @@ public class DailyLectureAdapter extends BaseAdapter {
 	
 	@Override
 	public boolean isEnabled(int position) {
-		return mListItemTypes.get(position) == LIST_ITEM_TYPE_LECTURE;
+        if (!mTutorial) {
+		    return mListItemTypes.get(position) == LIST_ITEM_TYPE_LECTURE;
+        }
+
+        return false;
 	}
 	
 	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+        if (mTutorial) {
+            return getTutorialView(convertView);
+        }
+
 		LectureItem item = getLectureForListItem(position);
 		
 		if (item != null) {
@@ -149,6 +173,17 @@ public class DailyLectureAdapter extends BaseAdapter {
 		
 		return vi;
 	}
+
+    private View getTutorialView(View convertView) {
+        if (convertView == null || convertView.getId() != R.layout.tutorial) {
+            convertView = mInflater.inflate(R.layout.tutorial, null);
+        }
+
+        // TODO:
+        // Put proper text in the tutorial view
+
+        return convertView;
+    }
 
 	
 	/**
