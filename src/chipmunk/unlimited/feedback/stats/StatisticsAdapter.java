@@ -25,6 +25,10 @@ import chipmunk.unlimited.feedback.webapi.WebAPI.*;
  */
 public class StatisticsAdapter extends BaseAdapter
                                implements GetCourseVotesCallback {
+    public interface StatisticsAdapterUpdateListener {
+        public void onStatsAdapterUpdated(StatisticsAdapter adapter, boolean success);
+    }
+
     private static final String TAG = "StatisticsAdapter";
 	
 	private List<SubscriptionItem> mSubscriptions;
@@ -32,11 +36,17 @@ public class StatisticsAdapter extends BaseAdapter
 	private LayoutInflater mInflater;
 	private Context mContext;
 
+    private StatisticsAdapterUpdateListener mListener;
+
 	
 	public StatisticsAdapter(Context context) {
 		mContext = context;
         mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
+
+    public void setStatisticsAdapterUpdateListener(StatisticsAdapterUpdateListener li) {
+        mListener = li;
+    }
 
 
 	@Override
@@ -119,12 +129,20 @@ public class StatisticsAdapter extends BaseAdapter
     public void onGetCourseVotesSuccess(List<CourseVote> items) {
         mCourseVotes = items;
         notifyDataSetChanged();
+
+        if (mListener != null) {
+            mListener.onStatsAdapterUpdated(this, true);
+        }
     }
 
     @Override
     public void onGetCourseVotesFailure(String errorMessage) {
         mCourseVotes = null;
         Log.e(TAG, "Failed to get course votes: " + errorMessage);
+
+        if (mListener != null) {
+            mListener.onStatsAdapterUpdated(this, false);
+        }
     }
 }
 

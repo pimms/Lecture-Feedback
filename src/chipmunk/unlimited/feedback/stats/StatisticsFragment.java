@@ -14,7 +14,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 public class StatisticsFragment extends UpdateableFragment
-            implements AdapterView.OnItemClickListener {
+            implements  AdapterView.OnItemClickListener,
+                        StatisticsAdapter.StatisticsAdapterUpdateListener {
     private StatisticsAdapter mAdapter;
 
 
@@ -26,6 +27,7 @@ public class StatisticsFragment extends UpdateableFragment
     @Override
     public void onActivityCreated(Bundle bundle) {
         mAdapter = new StatisticsAdapter(getActivity());
+        mAdapter.setStatisticsAdapterUpdateListener(this);
 
         ListView listView = getListView();
         listView.setAdapter(mAdapter);
@@ -37,6 +39,10 @@ public class StatisticsFragment extends UpdateableFragment
     @Override
     public void doRefresh() {
         mAdapter.reloadSubscriptions();
+    }
+    @Override
+    public void onStatsAdapterUpdated(StatisticsAdapter adapter, boolean success) {
+        onUpdateCompleted();
     }
 
 
