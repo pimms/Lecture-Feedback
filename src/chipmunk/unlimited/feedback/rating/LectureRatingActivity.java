@@ -52,6 +52,7 @@ import chipmunk.unlimited.feedback.webapi.WebAPI.VoteCallback;
  *   |							 | lecture attribtues 		| NO* 		| bool[5] |
  *   | 	PARAM_COMMENT 			 | User comment on lecture  | NO* 		| String  |
  *   |  PARAM_REVIEW_ID          | The ID of the review     | NO*       | int     |
+ *   |  PARAM_CLONE_COUNT        | The number of clones     | NO*       | int     |
  *   +---------------------------+--------------------------+-----------+---------+
  *   *) Required parameter if "PARAM_READ_ONLY" is true
  */
@@ -73,6 +74,7 @@ public class LectureRatingActivity extends Activity
 	public static final String PARAM_RATINGS 			= "param_ratings";
 	public static final String PARAM_COMMENT 			= "param_comment";
     public static final String PARAM_REVIEW_ID          = "param_review_id";
+    public static final String PARAM_CLONE_COUNT        = "param_clone_count";
 	
 	private static final String TAG = "LectureRatingActivity";
 
@@ -293,6 +295,7 @@ public class LectureRatingActivity extends Activity
 
             handleRatingParameters();
 			handleCommentParameter();
+            handleCloneCountParameter();
             handleCloneWrapperView();
 		}
 	}
@@ -338,6 +341,14 @@ public class LectureRatingActivity extends Activity
 		Button submitButton = (Button)findViewById(R.id.rating_button_submit);
 		submitButton.setVisibility(View.INVISIBLE);
 	}
+
+    private void handleCloneCountParameter() throws InvalidParameterException {
+        int cloneCount = getIntent().getIntExtra(PARAM_CLONE_COUNT, -1);
+
+        if (cloneCount == -1) {
+            throw new InvalidParameterException("Parameter 'PARAM_CLONE_COUNT' must be defined");
+        }
+    }
     /**
      * Display the Clone-wrapper layout if the lecture has
      * not been reviewed by the local user.

@@ -111,6 +111,7 @@ public class FeedFragment extends UpdateableFragment
         intent.putExtra(LectureRatingActivity.PARAM_RATINGS, reviewItem.getRatings());
         intent.putExtra(LectureRatingActivity.PARAM_COMMENT, reviewItem.getComment());
         intent.putExtra(LectureRatingActivity.PARAM_REVIEW_ID, reviewItem.getId());
+        intent.putExtra(LectureRatingActivity.PARAM_CLONE_COUNT, reviewItem.getCloneCount());
 
         startActivity(intent);
     }
