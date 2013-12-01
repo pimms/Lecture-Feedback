@@ -14,7 +14,7 @@
         style="@android:style/Widget.ProgressBar.Large"/>
 	
     <com.costum.android.widget.PullAndLoadListView
-        android:id="@+id/list"
+        android:id="@android:id/list"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
     </com.costum.android.widget.PullAndLoadListView>

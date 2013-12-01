@@ -25,12 +25,15 @@ import chipmunk.unlimited.feedback.database.SubscriptionDatabase;
 import chipmunk.unlimited.feedback.rating.LectureRatingActivity;
 import chipmunk.unlimited.feedback.subscription.SubscriptionItem;
 
+import com.costum.android.widget.PullAndLoadListView;
+import com.costum.android.widget.PullToRefreshListView;
+
 public class TodayFragment extends UpdateableFragment
         implements 	OnParseCompleteListener, OnItemClickListener {
 	private static final String TAG = "TodayFragment";
 	
 	private DailyLectureAdapter mListAdapter;
-	private ListView mListView;
+	private PullAndLoadListView mListView;
 	
 	private ProgressBar mProgressBar;
 
@@ -38,20 +41,22 @@ public class TodayFragment extends UpdateableFragment
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_main_today, container, false);
-
-		mListView = (ListView)rootView.findViewById(R.id.today_list_view);
-		mProgressBar = (ProgressBar)rootView.findViewById(R.id.today_progress_bar);
-		
-		mListAdapter = new DailyLectureAdapter(rootView.getContext());
-		mListView.setAdapter(mListAdapter);
-		mListView.setOnItemClickListener(this);
-		
-		Log.d(TAG, "TodayFragment # onCreateView()");
-
-        refreshContents();
-        onFragmentInitialized();
 		return rootView;
 	}
+    @Override
+    public void onActivityCreated(Bundle savedInstance) {
+        super.onActivityCreated(savedInstance);
+
+        mListView = (PullAndLoadListView)getListView();
+        mProgressBar = (ProgressBar)getView().findViewById(R.id.today_progress_bar);
+
+        mListAdapter = new DailyLectureAdapter(getActivity());
+        mListView.setAdapter(mListAdapter);
+        mListView.setOnItemClickListener(this);
+
+        addPullAndLoadListener();
+        refreshContents();
+    }
     @Override
     protected void doRefresh() {
         showProgressBar();
@@ -62,6 +67,25 @@ public class TodayFragment extends UpdateableFragment
         TimeEditParser parser = new TimeEditParser(TimeEditParser.CONTENT_TIMETABLE);
         parser.setOnParseCompleteListener(this);
         TimeEditHTTP.getTimeTable(subs, parser);
+    }
+
+
+    private void addPullAndLoadListener() {
+        mListView.setOnLoadMoreListener(new PullAndLoadListView.OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                Log.d(TAG, "Load more pls!");
+                mListView.onLoadMore();
+            }
+        });
+
+        mListView.setOnRefreshListener(new PullToRefreshListView.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Log.d(TAG, "Refresh pls!");
+                mListView.onRefreshComplete();
+            }
+        });
     }
 
 	
