@@ -13,7 +13,6 @@
             android:background="@drawable/action_bar_extension"
             android:gravity="center"
             android:id="@+id/rating_text_view_clone_count"
-            android:textColor="black"
             android:text="9 clones"/>
 	    
 	    <TextView 

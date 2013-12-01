@@ -12,6 +12,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import chipmunk.unlimited.feedback.LectureItem;
@@ -27,16 +28,16 @@ import chipmunk.unlimited.feedback.webapi.WebAPI.VoteCallback;
 /**
  * @class LectureRatingActivity
  * Activity for displaying and submitting a review of a lecture.
- * 
+ *
  * The activity has two different states: read-only and write. The state
  * of the activity depends on the parameters passed via the Intent.
  * Parameters are passed via the intent using the "putExtra" interface.
- * 
- * Note that if any parameter description is ambiguous or unclear, 
- * all the required parameters map DIRECTLY to get-methods in the 
+ *
+ * Note that if any parameter description is ambiguous or unclear,
+ * all the required parameters map DIRECTLY to get-methods in the
  * LectureItem class. A LectureItem instance is created from the required
- * parameters. 
- * 
+ * parameters.
+ *
  * Parameter list:
  * 	 +---------------------------+--------------------------+-----------+---------+
  *   |	Parameter name			 |	Description 			| Required  | Type	  |
@@ -48,7 +49,7 @@ import chipmunk.unlimited.feedback.webapi.WebAPI.VoteCallback;
  *   | 	PARAM_DATE 				 | "yyyy-MM-dd" date of lec.| YES 		| String  |
  *   | 	PARAM_ROOM 				 | The room of the lecture  | YES       | String  |
  *   | 	PARAM_READ_ONLY 		 | Toggle read only? 		| NO 		| bool 	  |
- *   | 	PARAM_RATINGS			 | The ratings of all the   |			|  		  | 
+ *   | 	PARAM_RATINGS			 | The ratings of all the   |			|  		  |
  *   |							 | lecture attribtues 		| NO* 		| bool[5] |
  *   | 	PARAM_COMMENT 			 | User comment on lecture  | NO* 		| String  |
  *   |  PARAM_REVIEW_ID          | The ID of the review     | NO*       | int     |
@@ -56,13 +57,13 @@ import chipmunk.unlimited.feedback.webapi.WebAPI.VoteCallback;
  *   +---------------------------+--------------------------+-----------+---------+
  *   *) Required parameter if "PARAM_READ_ONLY" is true
  */
-public class LectureRatingActivity extends Activity 
+public class LectureRatingActivity extends Activity
 	        implements  PostReviewCallback,
                         VoteCallback,
                         LectureRatingView.RatingListener,
                         View.OnClickListener {
-	/** 
-	 * The keys through which values will be set through the Intent 
+	/**
+	 * The keys through which values will be set through the Intent
 	 */
 	public static final String PARAM_COURSE_NAME 		= "param_course_name";
 	public static final String PARAM_COURSE_HIG_CODE 	= "param_course_hig_code";
@@ -75,7 +76,7 @@ public class LectureRatingActivity extends Activity
 	public static final String PARAM_COMMENT 			= "param_comment";
     public static final String PARAM_REVIEW_ID          = "param_review_id";
     public static final String PARAM_CLONE_COUNT        = "param_clone_count";
-	
+
 	private static final String TAG = "LectureRatingActivity";
 
 
@@ -85,11 +86,11 @@ public class LectureRatingActivity extends Activity
 
     private boolean mReadOnly;
     private int mReviewId = -1;
-	
+
 	/** Displayed when submitting */
 	private ProgressDialog mProgressDialog;
-	
-	
+
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -98,7 +99,7 @@ public class LectureRatingActivity extends Activity
 
         mLectureRatingView = new LectureRatingView(this);
         mLectureRatingView.setRatingListener(this);
-        
+
         ScrollView scrollView = (ScrollView)findViewById(R.id.rating_scroll_content);
         scrollView.addView(mLectureRatingView, new LayoutParams(
                 LayoutParams.MATCH_PARENT,
@@ -108,8 +109,8 @@ public class LectureRatingActivity extends Activity
 	    handleIntentParameters();
 	}
 
-	
-	@Override 
+
+	@Override
 	public void onPostReviewSuccess() {
         insertReviewItemLocally();
 		hideProgressDialog();
@@ -177,7 +178,7 @@ public class LectureRatingActivity extends Activity
         toast.show();
     }
 
-	
+
 	/**
 	 * Set and return mLectureReviewItem.
 	 */
@@ -189,7 +190,7 @@ public class LectureRatingActivity extends Activity
                 mReviewId, null, 0);
 		return mLectureReviewItem;
 	}
-	
+
 	private boolean[] getRatingArray() {
 		if (mLectureRatingView != null) {
             return mLectureRatingView.getRatingArray();
@@ -197,7 +198,7 @@ public class LectureRatingActivity extends Activity
 
         return null;
 	}
-	
+
 	private String getComment() {
 		if (mLectureRatingView != null) {
             return mLectureRatingView.getComment();
@@ -211,17 +212,17 @@ public class LectureRatingActivity extends Activity
         return db.insertLectureItem(getReviewItem());
     }
 
-	
+
 	private void showProgressDialog() {
 		hideProgressDialog();
-		
+
 		// TODO: Localization
 		mProgressDialog = new ProgressDialog(this);
 		mProgressDialog.setTitle("Submitting...");
 		mProgressDialog.setIndeterminate(true);
 		mProgressDialog.show();
 	}
-	
+
 	private void hideProgressDialog() {
 		if (mProgressDialog != null && mProgressDialog.isShowing()) {
 			mProgressDialog.dismiss();
@@ -229,17 +230,17 @@ public class LectureRatingActivity extends Activity
 		}
 	}
 
-	
+
 	private void handleIntentParameters() {
 		/* Required parameter handling */
 		try {
-			handleRequiredParameters();	
+			handleRequiredParameters();
 		} catch (InvalidParameterException ex) {
 			Log.e(TAG, "Missing REQUIRED parameter definitions: " + ex.getMessage());
 			displayErrorDialog(ex.getMessage());
             finish();
 		}
-		
+
 		/* Optional parameter handling */
 		try {
 			handleOptionalParameters();
@@ -248,12 +249,12 @@ public class LectureRatingActivity extends Activity
 			displayErrorDialog(ex.getMessage());
 		}
 	}
-	
-	
+
+
 	private void handleRequiredParameters() throws InvalidParameterException {
 		handleTextViewParameters();
 	}
-	
+
 	private void handleTextViewParameters() throws InvalidParameterException {
 		Intent intent = getIntent();
 		
@@ -279,8 +280,8 @@ public class LectureRatingActivity extends Activity
 		mLectureRatingView.setLecturerText(lecturer);
 		mLectureRatingView.setDateAndTimeText(mLectureItem.getPrettyDateString() + ", " + time);
 	}
-	
-	
+
+
 	private void handleOptionalParameters() throws InvalidParameterException {
         Intent intent = getIntent();
         mReadOnly = intent.getBooleanExtra(PARAM_READ_ONLY, false);
@@ -305,7 +306,7 @@ public class LectureRatingActivity extends Activity
 	 */
 	private void handleRatingParameters() throws InvalidParameterException {
 		Intent intent = getIntent();
-		
+
 		boolean[] ratings = intent.getBooleanArrayExtra(PARAM_RATINGS);
 		if (ratings == null) {
 			throw new InvalidParameterException("Parameter 'PARAM_RATINGS' cannot be null!");
@@ -321,23 +322,23 @@ public class LectureRatingActivity extends Activity
 			} else {
 				state = AttributeView.STATE_NEGATIVE;
 			}
-			
+
             mLectureRatingView.setAttributeViewState(i, state);
 		}
 	}
-	
+
 	private void handleCommentParameter() throws InvalidParameterException {
 		String comment = getIntent().getStringExtra(PARAM_COMMENT);
-		
+
 		if (comment == null) {
 			throw new InvalidParameterException("Parameter 'PARAM_COMMENT' cannot be null!");
 		}
-		
+
 		EditText editText = (EditText)findViewById(R.id.rating_edit_text_comments);
 		editText.setText(comment);
 		//editText.setEnabled(false);
 		editText.setFocusable(false);
-		
+
 		Button submitButton = (Button)findViewById(R.id.rating_button_submit);
 		submitButton.setVisibility(View.INVISIBLE);
 	}
@@ -347,6 +348,15 @@ public class LectureRatingActivity extends Activity
 
         if (cloneCount == -1) {
             throw new InvalidParameterException("Parameter 'PARAM_CLONE_COUNT' must be defined");
+        } else {
+            TextView textClone = (TextView)findViewById(R.id.rating_text_view_clone_count);
+
+            if (cloneCount > 0) {
+                textClone.setVisibility(View.VISIBLE);
+                textClone.setText(cloneCount + " clone" + ((cloneCount != 1) ? "s" : ""));
+            } else {
+                textClone.setVisibility(View.GONE);
+            }
         }
     }
     /**
