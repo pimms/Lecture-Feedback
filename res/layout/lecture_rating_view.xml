@@ -15,7 +15,7 @@
 	        android:layout_marginTop="15dp"
 	        android:layout_marginBottom="15dp"
 	        android:textSize="20sp"
-	        android:text="Algoritmiske Metoder"/>
+	        android:text="Algoritmiske Metoder, 12 Nov"/>
 	    <TextView 
 	        android:id="@+id/rating_text_view_lecturer"
 	        android:layout_width="wrap_content"
@@ -24,12 +24,12 @@
 	        android:textSize="12sp"
 	        android:text="Frode Haug"/>
 	    <TextView 
-	        android:id="@+id/rating_text_view_time_room"
+	        android:id="@+id/rating_text_view_datetime"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_gravity="center"
 	        android:textSize="12sp"
-	        android:text="09:17 - 16:32, K105"/>
+	        android:text="12 Nov, 09:17 - 16:32"/>
 	    
     
     	<!-- The AttributeRatingViews will be programmatically

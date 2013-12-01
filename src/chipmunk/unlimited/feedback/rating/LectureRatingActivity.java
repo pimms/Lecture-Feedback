@@ -4,7 +4,6 @@ import java.security.InvalidParameterException;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -276,7 +275,7 @@ public class LectureRatingActivity extends Activity
 		/* Set the text */
 		mLectureRatingView.setCourseText(courseName);
 		mLectureRatingView.setLecturerText(lecturer);
-		mLectureRatingView.setRoomAndTimeText(time + ", " + room);
+		mLectureRatingView.setDateAndTimeText(mLectureItem.getPrettyDateString() + ", " + time);
 	}
 	
 	

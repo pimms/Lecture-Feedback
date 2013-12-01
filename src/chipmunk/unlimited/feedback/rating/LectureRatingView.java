@@ -102,9 +102,9 @@ public class LectureRatingView extends LinearLayout
         tv.setText(lecturerText);
     }
 
-    public void setRoomAndTimeText(String rntText) {
-        TextView tv = (TextView)findViewById(R.id.rating_text_view_time_room);
-        tv.setText(rntText);
+    public void setDateAndTimeText(String datetimeText) {
+        TextView tv = (TextView)findViewById(R.id.rating_text_view_datetime);
+        tv.setText(datetimeText);
     }
 
 
