@@ -54,7 +54,7 @@ public class TodayFragment extends Fragment implements 	OnParseCompleteListener,
 			
 		return rootView;
 	}
-	
+
 	/**
 	 * Reload the list view with updated lectures.
 	 */
@@ -78,14 +78,11 @@ public class TodayFragment extends Fragment implements 	OnParseCompleteListener,
 		
 		hideProgressBar();
 	}
-
 	@Override
 	public void onTimeTableParsingFailed(String errorMessage) {
 		Log.e(TAG, "Failed to get TimeEdit data: " + errorMessage);
 		hideProgressBar();
 	}
-	
-	
 	@Override
 	public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
 		LectureItem lecture = (LectureItem)mListAdapter.getItem(position);
