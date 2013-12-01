@@ -4,7 +4,6 @@ import java.util.List;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +15,7 @@ import android.widget.ProgressBar;
 
 import chipmunk.unlimited.feedback.LectureItem;
 import chipmunk.unlimited.feedback.LectureReviewItem;
-import chipmunk.unlimited.feedback.MainActivityFragmentInterface;
+import chipmunk.unlimited.feedback.UpdateableFragment;
 import chipmunk.unlimited.feedback.R;
 import chipmunk.unlimited.feedback.TimeEditHTTP;
 import chipmunk.unlimited.feedback.TimeEditParser;
@@ -25,20 +24,15 @@ import chipmunk.unlimited.feedback.database.ReviewedLectureDatabase;
 import chipmunk.unlimited.feedback.database.SubscriptionDatabase;
 import chipmunk.unlimited.feedback.rating.LectureRatingActivity;
 import chipmunk.unlimited.feedback.subscription.SubscriptionItem;
-import chipmunk.unlimited.feedback.today.DailyLectureAdapter;
 
-public class TodayFragment extends Fragment implements 	OnParseCompleteListener,
-														OnItemClickListener,
-        MainActivityFragmentInterface {
+public class TodayFragment extends UpdateableFragment
+        implements 	OnParseCompleteListener, OnItemClickListener {
 	private static final String TAG = "TodayFragment";
 	
 	private DailyLectureAdapter mListAdapter;
 	private ListView mListView;
 	
 	private ProgressBar mProgressBar;
-
-    private boolean mInitialized;
-	private boolean mUpdateScheduled;
 
 	
 	@Override
@@ -55,29 +49,12 @@ public class TodayFragment extends Fragment implements 	OnParseCompleteListener,
 		
 		Log.d(TAG, "TodayFragment # onCreateView()");
 
-        mInitialized = true;
-        if (mUpdateScheduled) {
-            refresh();
-            mUpdateScheduled = false;
-        }
-
+        onFragmentInitialized();
 		return rootView;
 	}
 
-	/**
-	 * Reload the list view with updated lectures.
-	 */
     @Override
-    public void refreshContents() {
-		if (mInitialized) {
-            refresh();
-        } else {
-            Log.e(TAG, "YE BOIII");
-            mUpdateScheduled = true;
-        }
-	}
-
-    private void refresh() {
+    protected void doRefresh() {
         showProgressBar();
 
         SubscriptionDatabase db = new SubscriptionDatabase(getActivity());

@@ -14,7 +14,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 
 import chipmunk.unlimited.feedback.LectureReviewItem;
-import chipmunk.unlimited.feedback.MainActivityFragmentInterface;
+import chipmunk.unlimited.feedback.UpdateableFragment;
 import chipmunk.unlimited.feedback.R;
 import chipmunk.unlimited.feedback.rating.LectureRatingActivity;
 
@@ -25,9 +25,8 @@ import chipmunk.unlimited.feedback.rating.LectureRatingActivity;
  * FeedFragment supports the same parameters FeedActivity
  * does.
  */
-public class FeedFragment extends Fragment implements OnItemClickListener,
-                                                      Feed.FeedListener,
-                                                      MainActivityFragmentInterface {
+public class FeedFragment extends UpdateableFragment
+        implements OnItemClickListener,Feed.FeedListener {
 	private static final String TAG = "FeedFragment";
 
     private Feed mFeed;
@@ -71,7 +70,7 @@ public class FeedFragment extends Fragment implements OnItemClickListener,
 	 * Refresh the list of items via the WebAPI's getFeed call.
 	 */
     @Override
-    public void refreshContents() {
+    public void doRefresh() {
         showProgressBar();
         mFeed.update(0, 25);
 	}

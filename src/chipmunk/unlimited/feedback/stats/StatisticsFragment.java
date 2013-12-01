@@ -1,8 +1,7 @@
 package chipmunk.unlimited.feedback.stats;
 
-import chipmunk.unlimited.feedback.MainActivityFragmentInterface;
+import chipmunk.unlimited.feedback.UpdateableFragment;
 import chipmunk.unlimited.feedback.R;
-import chipmunk.unlimited.feedback.revfeed.FeedActivity;
 import chipmunk.unlimited.feedback.subscription.SubscriptionItem;
 
 import android.content.Intent;
@@ -14,9 +13,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-public class StatisticsFragment extends Fragment
-            implements MainActivityFragmentInterface,
-                       AdapterView.OnItemClickListener {
+public class StatisticsFragment extends UpdateableFragment
+            implements AdapterView.OnItemClickListener {
     private StatisticsAdapter mAdapter;
 
 
@@ -33,7 +31,7 @@ public class StatisticsFragment extends Fragment
 	}
 
     @Override
-    public void refreshContents() {
+    public void doRefresh() {
         mAdapter.reloadSubscriptions();
     }
 
