@@ -36,12 +36,15 @@ public class TodayFragment extends Fragment implements 	OnParseCompleteListener,
 	private ListView mListView;
 	
 	private ProgressBar mProgressBar;
-	
+
+    private boolean mInitialized;
+	private boolean mUpdateScheduled;
+
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_main_today, container, false);
-		
+
 		mListView = (ListView)rootView.findViewById(R.id.today_list_view);
 		mProgressBar = (ProgressBar)rootView.findViewById(R.id.today_progress_bar);
 		
@@ -51,7 +54,13 @@ public class TodayFragment extends Fragment implements 	OnParseCompleteListener,
 		refreshContents();
 		
 		Log.d(TAG, "TodayFragment # onCreateView()");
-			
+
+        mInitialized = true;
+        if (mUpdateScheduled) {
+            refresh();
+            mUpdateScheduled = false;
+        }
+
 		return rootView;
 	}
 
@@ -60,15 +69,24 @@ public class TodayFragment extends Fragment implements 	OnParseCompleteListener,
 	 */
     @Override
     public void refreshContents() {
-		showProgressBar();
-		
-		SubscriptionDatabase db = new SubscriptionDatabase(getActivity());
-		List<SubscriptionItem> subs = db.getSubscriptionList();
-		
-		TimeEditParser parser = new TimeEditParser(TimeEditParser.CONTENT_TIMETABLE);
-		parser.setOnParseCompleteListener(this);
-		TimeEditHTTP.getTimeTable(subs, parser);
+		if (mInitialized) {
+            refresh();
+        } else {
+            Log.e(TAG, "YE BOIII");
+            mUpdateScheduled = true;
+        }
 	}
+
+    private void refresh() {
+        showProgressBar();
+
+        SubscriptionDatabase db = new SubscriptionDatabase(getActivity());
+        List<SubscriptionItem> subs = db.getSubscriptionList();
+
+        TimeEditParser parser = new TimeEditParser(TimeEditParser.CONTENT_TIMETABLE);
+        parser.setOnParseCompleteListener(this);
+        TimeEditHTTP.getTimeTable(subs, parser);
+    }
 
 	
 	@Override

@@ -155,11 +155,11 @@ public class MainActivity extends FragmentActivity implements
 			mTodayFragment = (TodayFragment)mSectionsPagerAdapter.getItem(0);
 		}
 		
-		if (mFeedFragment != null) {
+		if (mFeedFragment == null) {
             mFeedFragment = (FeedFragment)mSectionsPagerAdapter.getItem(1);
 		}
 
-        if (mStatsFragment != null) {
+        if (mStatsFragment == null) {
             mStatsFragment = (StatisticsFragment)mSectionsPagerAdapter.getItem(2);
         }
 
