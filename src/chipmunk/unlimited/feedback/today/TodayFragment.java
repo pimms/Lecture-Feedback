@@ -106,6 +106,9 @@ public class TodayFragment extends UpdateableFragment
 			intent.putExtra(LectureRatingActivity.PARAM_RATINGS, review.getRatings());
 			intent.putExtra(LectureRatingActivity.PARAM_COMMENT, review.getComment());
             intent.putExtra(LectureRatingActivity.PARAM_REVIEW_ID, 0);
+
+            /* Don't send a clone count, as the clone count is not stored locally */
+            intent.putExtra(LectureRatingActivity.PARAM_CLONE_COUNT, 0);
 		}
 		
 		startActivity(intent);
