@@ -31,8 +31,6 @@ public class TodayFragment extends UpdateableFragment
 	
 	private DailyLectureAdapter mListAdapter;
 	private ListView mListView;
-	
-	private ProgressBar mProgressBar;
 
 	
 	@Override
@@ -43,7 +41,6 @@ public class TodayFragment extends UpdateableFragment
     @Override
     public void onActivityCreated(Bundle bundle) {
         mListView = getListView();
-        mProgressBar = (ProgressBar)getView().findViewById(R.id.today_progress_bar);
 
         mListAdapter = new DailyLectureAdapter(getActivity());
         mListView.setAdapter(mListAdapter);
@@ -54,8 +51,6 @@ public class TodayFragment extends UpdateableFragment
     }
     @Override
     protected void doRefresh() {
-        showProgressBar();
-
         SubscriptionDatabase db = new SubscriptionDatabase(getActivity());
         List<SubscriptionItem> subs = db.getSubscriptionList();
 
@@ -69,13 +64,12 @@ public class TodayFragment extends UpdateableFragment
 	public void onTimeTableParsingComplete(List<LectureItem> items) {
 		mListAdapter.setLectureItems(items);
 		mListAdapter.notifyDataSetChanged();
-		
-		hideProgressBar();
+		onUpdateCompleted();
 	}
 	@Override
 	public void onTimeTableParsingFailed(String errorMessage) {
 		Log.e(TAG, "Failed to get TimeEdit data: " + errorMessage);
-		hideProgressBar();
+		onUpdateCompleted();
 	}
 	@Override
 	public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
@@ -111,14 +105,5 @@ public class TodayFragment extends UpdateableFragment
 		}
 		
 		startActivity(intent);
-	}
-
-	
-	private void showProgressBar() {
-		mProgressBar.setVisibility(View.VISIBLE);
-	}
-	
-	private void hideProgressBar() {
-		mProgressBar.setVisibility(View.GONE);
 	}
 }

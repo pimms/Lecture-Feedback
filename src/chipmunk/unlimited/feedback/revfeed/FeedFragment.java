@@ -32,7 +32,6 @@ public class FeedFragment extends UpdateableFragment
     private Feed mFeed;
 	private FeedAdapter mFeedAdapter;
 	private ListView mListView;
-	private ProgressBar mProgressBar;
 
 	
 	@Override
@@ -43,7 +42,6 @@ public class FeedFragment extends UpdateableFragment
     @Override
     public void onActivityCreated(Bundle bundle) {
         mListView = getListView();
-        mProgressBar = (ProgressBar)getView().findViewById(R.id.feed_progress_bar);
 
         /* Create the Feed */
         if (mFeed == null) {
@@ -72,14 +70,13 @@ public class FeedFragment extends UpdateableFragment
 	 */
     @Override
     public void doRefresh() {
-        showProgressBar();
         mFeed.update(0, 25);
 	}
 
     @Override
     public void onFeedUpdate(List<LectureReviewItem> items) {
         mFeedAdapter.setReviewItems(items);
-        hideProgressBar();
+        onUpdateCompleted();
     }
 
 
@@ -116,13 +113,4 @@ public class FeedFragment extends UpdateableFragment
 
         startActivity(intent);
     }
-
-	
-	private void showProgressBar() {
-		mProgressBar.setVisibility(View.VISIBLE);
-	}
-	
-	private void hideProgressBar() {
-		mProgressBar.setVisibility(View.GONE);
-	}
 }
