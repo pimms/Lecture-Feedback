@@ -1,8 +1,13 @@
 package chipmunk.unlimited.feedback;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+
+import uk.co.senab.actionbarpulltorefresh.library.*;
+import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
 /**
  * Common superclass shared by FeedFragment,
@@ -13,10 +18,34 @@ import android.support.v4.app.ListFragment;
  * call "onFragmentInitialized()" after all init has
  * been performed.
  */
-
-public abstract class UpdateableFragment extends ListFragment {
+public abstract class UpdateableFragment extends ListFragment
+        implements OnRefreshListener {
     private boolean mInitialized;
     private boolean mScheduledUpdate;
+
+    private PullToRefreshLayout mPtrLayout;
+
+
+    @Override
+    public void onViewCreated(View view, Bundle bundle) {
+        super.onActivityCreated(bundle);
+        onFragmentInitialized();
+
+        ViewGroup viewGroup = (ViewGroup)view;
+        mPtrLayout = new PullToRefreshLayout(getActivity());
+
+        ActionBarPullToRefresh.from(getActivity())
+                .insertLayoutInto(viewGroup)
+                .theseChildrenArePullable(android.R.id.list)
+                .listener(this)
+                .setup(mPtrLayout);
+    }
+
+
+    @Override
+    public void onRefreshStarted(View view) {
+        Log.d("YOLO", "YOOOLOOO");
+    }
 
 
     protected void onFragmentInitialized() {
@@ -26,12 +55,6 @@ public abstract class UpdateableFragment extends ListFragment {
             doRefresh();
             mScheduledUpdate = false;
         }
-    }
-
-    @Override
-    public void onActivityCreated(Bundle bundle) {
-        onFragmentInitialized();
-        super.onActivityCreated(bundle);
     }
 
     public final void refreshContents() {
