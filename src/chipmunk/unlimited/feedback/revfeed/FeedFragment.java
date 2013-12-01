@@ -38,9 +38,12 @@ public class FeedFragment extends UpdateableFragment
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {		
 		View rootView = inflater.inflate(R.layout.fragment_main_feed, container, false);
-
-   		mListView = (ListView)rootView.findViewById(R.id.list);
-		mProgressBar = (ProgressBar)rootView.findViewById(R.id.feed_progress_bar);
+		return rootView;
+	}
+    @Override
+    public void onActivityCreated(Bundle bundle) {
+        mListView = getListView();
+        mProgressBar = (ProgressBar)getView().findViewById(R.id.feed_progress_bar);
 
         /* Create the Feed */
         if (mFeed == null) {
@@ -48,17 +51,15 @@ public class FeedFragment extends UpdateableFragment
         }
 
         /* Create the adapter and adjust it to mFeed's state */
-        mFeedAdapter = new FeedAdapter(container.getContext());
+        mFeedAdapter = new FeedAdapter(getActivity());
         mFeedAdapter.setFeedState(mFeed.getState());
 
-		mListView.setAdapter(mFeedAdapter);
-		mListView.setOnItemClickListener(this);
+        mListView.setAdapter(mFeedAdapter);
+        mListView.setOnItemClickListener(this);
 
         refreshContents();
-		onFragmentInitialized();
-		return rootView;
-	}
-
+        super.onActivityCreated(bundle);
+    }
 
     public void setFeed(Feed feed) {
         mFeed = feed;

@@ -1,6 +1,8 @@
 package chipmunk.unlimited.feedback;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.ListFragment;
 
 /**
  * Common superclass shared by FeedFragment,
@@ -12,7 +14,7 @@ import android.support.v4.app.Fragment;
  * been performed.
  */
 
-public abstract class UpdateableFragment extends Fragment {
+public abstract class UpdateableFragment extends ListFragment {
     private boolean mInitialized;
     private boolean mScheduledUpdate;
 
@@ -24,6 +26,12 @@ public abstract class UpdateableFragment extends Fragment {
             doRefresh();
             mScheduledUpdate = false;
         }
+    }
+
+    @Override
+    public void onActivityCreated(Bundle bundle) {
+        onFragmentInitialized();
+        super.onActivityCreated(bundle);
     }
 
     public final void refreshContents() {

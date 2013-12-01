@@ -38,21 +38,20 @@ public class TodayFragment extends UpdateableFragment
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_main_today, container, false);
-
-		mListView = (ListView)rootView.findViewById(R.id.today_list_view);
-		mProgressBar = (ProgressBar)rootView.findViewById(R.id.today_progress_bar);
-		
-		mListAdapter = new DailyLectureAdapter(rootView.getContext());
-		mListView.setAdapter(mListAdapter);
-		mListView.setOnItemClickListener(this);
-		
-		Log.d(TAG, "TodayFragment # onCreateView()");
-
-        refreshContents();
-        onFragmentInitialized();
 		return rootView;
 	}
+    @Override
+    public void onActivityCreated(Bundle bundle) {
+        mListView = getListView();
+        mProgressBar = (ProgressBar)getView().findViewById(R.id.today_progress_bar);
 
+        mListAdapter = new DailyLectureAdapter(getActivity());
+        mListView.setAdapter(mListAdapter);
+        mListView.setOnItemClickListener(this);
+
+        refreshContents();
+        super.onActivityCreated(bundle);
+    }
     @Override
     protected void doRefresh() {
         showProgressBar();
