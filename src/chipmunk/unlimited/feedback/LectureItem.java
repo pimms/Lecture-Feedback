@@ -12,6 +12,11 @@ import chipmunk.unlimited.feedback.webapi.SHA1;
  * Representation of a lecture retrieved from TimeEdit.
  */
 public class LectureItem implements Comparable<LectureItem> {
+    /**
+     * How many days is a Lecture reviewable?
+     */
+    private static final int REVIEWABLE_PERIOD_DAYS = 10;
+
 	protected Date mStartTime;
 	protected Date mEndTime;
 	protected String mDate;
@@ -139,8 +144,21 @@ public class LectureItem implements Comparable<LectureItem> {
 	public String getCourseHigCode() {
 		return mCourseHigCode;
 	}
-	
-	
+
+
+    /**
+     * Is the lecture recent enough to be reviewable?
+     *
+     * @return
+     * true if the lecture can be reviewed
+     */
+    public boolean canReviewLecture() {
+        Calendar limit = Calendar.getInstance();
+        limit.add(Calendar.DAY_OF_MONTH, -REVIEWABLE_PERIOD_DAYS);
+        return mEndTime.after(limit.getTime());
+    }
+
+
 	/**
 	 * Set mStartTime and mEndTime based on "date" and "time".
 	 * 
@@ -177,7 +195,6 @@ public class LectureItem implements Comparable<LectureItem> {
 		cal.set(Calendar.SECOND, 0);
 		mEndTime = cal.getTime();
 	}
-	
 	/**
 	 * Remove leading zeroes and spaces from the string 
 	 * before parsing it as an int.
@@ -207,7 +224,6 @@ public class LectureItem implements Comparable<LectureItem> {
 		SimpleDateFormat format = new SimpleDateFormat("HH:mm", Locale.getDefault());
 		return format.format(date);
 	}
-	
 	/**
 	 * Calculate the hash for this lecture.
      * The hash used on both the client application
@@ -234,12 +250,10 @@ public class LectureItem implements Comparable<LectureItem> {
 		
 		return SHA1.hash(sb.toString());
 	}
-	
 	@Override
 	public String toString() {
 		return "[" + mStartTime + "-" + mEndTime + "] " + mCourseName + ", " + mRoom + ", " + mLecturer;
 	}
-
 
     @Override
     public int compareTo(LectureItem o) {
