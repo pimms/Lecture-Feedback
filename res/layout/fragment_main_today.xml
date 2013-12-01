@@ -13,10 +13,10 @@
         android:visibility="gone"
         style="@android:style/Widget.ProgressBar.Large"/>
 
-    <com.costum.android.widget.LoadMoreListView
+    <ListView
         android:id="@+id/today_list_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
-    </com.costum.android.widget.LoadMoreListView>
+    </ListView>
 
 </LinearLayout>
