@@ -54,7 +54,7 @@ class GetFeed extends WebAPICall {
 						int first, int count)
 	{
 		if (subscriptions.size() == 0) {
-			mCallback.onGetFeedFailure("No subscriptions defined.");
+			mCallback.onGetFeedSuccess(null);
 			return;
 		}
 		
