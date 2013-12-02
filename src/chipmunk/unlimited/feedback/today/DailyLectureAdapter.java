@@ -268,7 +268,7 @@ public class DailyLectureAdapter extends BaseAdapter {
 		
 		// Return the date on proper format
         String strFormat = mContext.getResources().getString(R.string.format_date_today_sep);
-		SimpleDateFormat format = new SimpleDateFormat("EE, dd MMM", Locale.getDefault());
+		SimpleDateFormat format = new SimpleDateFormat(strFormat, Locale.getDefault());
 		return format.format(date.getTime());
 	}
 	/**

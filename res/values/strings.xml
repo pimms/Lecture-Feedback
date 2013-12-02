@@ -16,9 +16,9 @@
 
 
     <!-- DATES -->
-    <string name="format_date_today_sep">EE, ddd MMM</string>
-    <string name="format_date_pretty_old">MMM dd, yyyy</string>
-    <string name="format_date_pretty">EEEE, MMM dd</string>
+    <string name="format_date_today_sep">EEEE, MMM d</string>
+    <string name="format_date_pretty_old">MMM d, yyyy</string>
+    <string name="format_date_pretty">EEEE, MMM d</string>
 
 
     <!-- Main Activity -->
