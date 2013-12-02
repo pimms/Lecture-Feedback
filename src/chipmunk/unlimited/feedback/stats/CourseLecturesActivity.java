@@ -66,10 +66,12 @@ public class CourseLecturesActivity extends Activity implements OnItemClickListe
         LectureVote vote = (LectureVote)mAdapter.getItem(i);
         if (vote != null) {
             String hash = vote.getLectureItem().getLectureHash();
+            String title = vote.getLectureItem().getPrettyDateString();
 
             Intent intent = new Intent(this, FeedActivity.class);
             intent.putExtra(FeedActivity.PARAM_SINGLE_LECTURE, true);
             intent.putExtra(FeedActivity.PARAM_LECTURE_HASH, hash);
+            intent.putExtra(FeedActivity.PARAM_ACTIONBAR_TITLE, title);
             startActivity(intent);
         }
     }
