@@ -84,12 +84,14 @@ public class WebAPI {
      */
     public static class CourseVote {
         private String mCourseCode;
+        private String mCourseName;
         private int mPositive;
         private int mNegative;
 
         public CourseVote(JSONObject item) {
             try {
                 mCourseCode = item.getString("course_code");
+                mCourseName = item.getString("course_name");
                 mPositive = item.getInt("positive");
                 mNegative = item.getInt("negative");
             } catch (JSONException ex) {
@@ -99,6 +101,10 @@ public class WebAPI {
 
         public String getCourseCode() {
             return mCourseCode;
+        }
+
+        public String getCourseName() {
+            return mCourseName;
         }
 
         public int getPositiveVoteCount() {

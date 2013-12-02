@@ -135,20 +135,20 @@ public class StatisticsAdapter extends BaseAdapter
 
 	
 	public void reloadSubscriptions() {
-		loadSubscriptions();
-		notifyDataSetChanged();
-	}
-	
-	private void loadSubscriptions() {
-		SubscriptionDatabase db = new SubscriptionDatabase(mContext);
-		mSubscriptions = db.getSubscriptionList();
+        loadSubscriptions();
+        notifyDataSetChanged();
+    }
+
+    private void loadSubscriptions() {
+        SubscriptionDatabase db = new SubscriptionDatabase(mContext);
+        mSubscriptions = db.getSubscriptionList();
 
         /* Display the tutorial view if no subs exists */
         mTutorial = (mSubscriptions.size() == 0);
 
         WebAPI webApi = new WebAPI();
         webApi.getCourseVotes(this, mSubscriptions);
-	}
+    }
 
 
     @Override
