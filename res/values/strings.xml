@@ -7,6 +7,14 @@
     <string name="clone_verb">Clone!</string>
     <string name="submit_verb">Submit</string>
     <string name="comment_hint">Comments...</string>
+    <string name="upcoming">Upcoming</string>
+    <string name="today">Today</string>
+    <string name="yesterday">Yesterday</string>
+
+    <!-- DATES -->
+    <string name="format_date_today_sep">EE, ddd MMM</string>
+    <string name="format_date_pretty_old">MMM dd, yyyy</string>
+    <string name="format_date_pretty">EEEE, MMM dd</string>
 
 
     <!-- Main Activity -->

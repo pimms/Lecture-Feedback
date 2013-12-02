@@ -244,9 +244,7 @@ public class DailyLectureAdapter extends BaseAdapter {
 	
 	/**
 	 * Get a suitable title for the date
-	 * 
-	 * TODO: Localize
-	 * 
+	 *
 	 * @return
 	 * "Mon, 01 Jan" if date is more than 2 days old, otherwise
 	 * "today" or "yesterday".
@@ -259,16 +257,17 @@ public class DailyLectureAdapter extends BaseAdapter {
 		
 		// Compare against today
 		if (equalDates(compare, date)) {
-			return "Today";
+			return mContext.getResources().getString(R.string.today);
 		}
 		
 		// Compare against yesterday
 		compare.add(Calendar.DAY_OF_MONTH, -1);
 		if (equalDates(compare, date)) {
-			return "Yesterday";
+			return mContext.getResources().getString(R.string.yesterday);
 		}
 		
 		// Return the date on proper format
+        String strFormat = mContext.getResources().getString(R.string.format_date_today_sep);
 		SimpleDateFormat format = new SimpleDateFormat("EE, dd MMM", Locale.getDefault());
 		return format.format(date.getTime());
 	}

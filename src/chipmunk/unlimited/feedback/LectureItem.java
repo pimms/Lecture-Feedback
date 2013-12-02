@@ -78,11 +78,14 @@ public class LectureItem implements Comparable<LectureItem> {
         then.setTime(mStartTime);
         
         String format = "";
-        
+
+        // TODO: Localize
+        // Find a way to retrieve the string format_date_pretty_old
+        // and format_date_pretty.
         if (now.get(Calendar.YEAR) != then.get(Calendar.YEAR)) {
-            format = "dd MMM, yyyy";
+            format = "MMM dd, yyyy";
         } else {
-        	format = "EEEE, dd MMM";
+        	format = "EEEE, MMM dd";
         }
 
         SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.US);
