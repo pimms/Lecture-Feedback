@@ -350,8 +350,15 @@ public class LectureRatingActivity extends Activity
             TextView textClone = (TextView)findViewById(R.id.rating_text_view_clone_count);
 
             if (cloneCount > 0) {
+                String cloneStr;
+                if (cloneCount == 1) {
+                    cloneStr = getResources().getString(R.string.clone_count_singular);
+                } else {
+                    cloneStr = getResources().getString(R.string.clone_count_plural);
+                }
+
                 textClone.setVisibility(View.VISIBLE);
-                textClone.setText(cloneCount + " clone" + ((cloneCount != 1) ? "s" : ""));
+                textClone.setText(cloneCount + " " + cloneStr);
             } else {
                 textClone.setVisibility(View.GONE);
             }
