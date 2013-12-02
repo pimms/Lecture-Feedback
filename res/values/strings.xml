@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- GENERAL -->
+    <string name="clone_count_singular">clone</string>
+    <string name="clone_count_plural">clones</string>
+    <string name="clone_verb">Clone!</string>
+
+
     <!-- Main Activity -->
     <string name="app_name">HIG Lecture Review</string>
     <string name="action_refresh">Refresh</string>
@@ -39,6 +45,15 @@
     <string name="frag_stats_tutorial_title_no_subs">NO COURSES</string>
     <string name="frag_stats_tutorial_desc_no_subs">Your courses will be listed here.</string>
 
+    <!-- Lecture Rating Activity -->
+    <string name="rating_attr_overall">Overall</string>
+    <string name="rating_attr_clarity">Clarity</string>
+    <string name="rating_attr_progression">Progression</string>
+    <string name="rating_attr_engagement">Engagement</string>
+    <string name="rating_attr_coverage">Material Coverage</string>
+    <string name="rating_clone_desc">
+        If you fully agree with this review you may clone it instead of submitting your own.
+    </string>
 
 
 </resources>

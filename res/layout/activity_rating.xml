@@ -15,7 +15,7 @@
             android:background="@drawable/action_bar_extension"
             android:gravity="center"
             android:id="@+id/rating_text_view_clone_count"
-            android:text="9 clones"/>
+            android:text="@string/clone_count_singular"/>
 		<ScrollView 
 		    android:id="@+id/rating_scroll_content"
 		    android:layout_width="match_parent"
@@ -36,7 +36,7 @@
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
 		    android:layout_marginTop="10dp"
-		    android:text="Clone review" />
+		    android:text="@string/clone_verb" />
 
 		<TextView
 		    android:id="@+id/rating_text_view_clone_desc"
@@ -48,7 +48,7 @@
 		    android:layout_marginBottom="15dp"
 		    android:gravity="center"
 		    android:maxLines="4"
-		    android:text="If you fully agree with this review you may clone it instead of submitting your own review."
+		    android:text="@string/rating_clone_desc"
 		    android:textAlignment="center" />
 		
 	</LinearLayout>
