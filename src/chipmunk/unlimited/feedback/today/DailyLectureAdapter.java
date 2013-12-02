@@ -43,8 +43,7 @@ public class DailyLectureAdapter extends BaseAdapter {
 	 * in the order in which they appear.
 	 */
 	private List<Integer> mListItemTypes;
-	
-	
+
 	/**
 	 * The lectures to be displayed in the view.
 	 */
@@ -88,7 +87,6 @@ public class DailyLectureAdapter extends BaseAdapter {
             return 1;
         }
 	}
-	
 	@Override
 	public Object getItem(int position) {
         if (!mTutorial) {
@@ -97,17 +95,14 @@ public class DailyLectureAdapter extends BaseAdapter {
 
         return null;
 	}
-	
 	@Override
 	public long getItemId(int position) {
 		return position;
 	}
-	
 	@Override
 	public boolean areAllItemsEnabled() {
 		return false;
 	}
-	
 	@Override
 	public boolean isEnabled(int position) {
         if (!mTutorial) {
@@ -198,7 +193,6 @@ public class DailyLectureAdapter extends BaseAdapter {
 			}
 		}
 	}
-
 	/**
 	 * Insert separators into mItemTypes when appropriate.
 	 */
@@ -264,7 +258,6 @@ public class DailyLectureAdapter extends BaseAdapter {
 		SimpleDateFormat format = new SimpleDateFormat("EE, dd MMM", Locale.getDefault());
 		return format.format(date.getTime());
 	}
-	
 	/**
 	 * @return
 	 * Whether or not the DATES of the two Date-objects are equal.
@@ -303,7 +296,6 @@ public class DailyLectureAdapter extends BaseAdapter {
 			return null;
 		}
 	}
-	
 	/**
 	 * Get the listItemIndex-th separator title.
 	 * 
