@@ -9,6 +9,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import java.security.InvalidParameterException;
+
 import chipmunk.unlimited.feedback.R;
 import chipmunk.unlimited.feedback.revfeed.FeedActivity;
 import chipmunk.unlimited.feedback.webapi.WebAPI.*;
@@ -16,11 +18,16 @@ import chipmunk.unlimited.feedback.webapi.WebAPI.*;
 /**
  * Required intent parameter:
  * PARAM_COURSE_CODE:      The HiG course code.
+ * PARAM_COURSE_NAME:      The course name
  */
 public class CourseLecturesActivity extends Activity implements OnItemClickListener {
     public static final String PARAM_COURSE_CODE = "course_code";
+    public static final String PARAM_COURSE_NAME = "course_name";
 
     private CourseLectureAdapter mAdapter;
+
+    private String mCourseCode;
+    private String mCourseName;
 
 
     @Override
@@ -28,13 +35,29 @@ public class CourseLecturesActivity extends Activity implements OnItemClickListe
         super.onCreate(savedInstance);
         setContentView(R.layout.activity_listview);
 
-        String course = getIntent().getStringExtra(PARAM_COURSE_CODE);
-        mAdapter = new CourseLectureAdapter(this, course);
+        getIntentParameters();
+
+        mAdapter = new CourseLectureAdapter(this, mCourseCode);
         mAdapter.reloadItems(0, 25);
 
         ListView listView = (ListView)findViewById(android.R.id.list);
         listView.setAdapter(mAdapter);
         listView.setOnItemClickListener(this);
+
+        getActionBar().setTitle(mCourseName);
+    }
+
+    private void getIntentParameters() {
+        mCourseCode = getIntent().getStringExtra(PARAM_COURSE_CODE);
+        mCourseName = getIntent().getStringExtra(PARAM_COURSE_NAME);
+
+        if (mCourseCode == null || mCourseCode.length() == 0) {
+            throw new InvalidParameterException("PARAM_COURSE_CODE cannot be undefined");
+        }
+
+        if (mCourseName == null || mCourseName.length() == 0) {
+            throw new InvalidParameterException("PARAM_COURSE_NAME cannot be undefined");
+        }
     }
 
 
