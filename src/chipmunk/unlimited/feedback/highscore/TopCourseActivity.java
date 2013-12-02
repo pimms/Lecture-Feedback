@@ -37,7 +37,7 @@ public class TopCourseActivity extends ListActivity {
 
         Intent intent = new Intent(this, CourseLecturesActivity.class);
         intent.putExtra(CourseLecturesActivity.PARAM_COURSE_CODE, vote.getCourseCode());
-
+        intent.putExtra(CourseLecturesActivity.PARAM_COURSE_NAME, vote.getCourseName());
         startActivity(intent);
     }
 }
