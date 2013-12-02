@@ -10,5 +10,35 @@
     <string name="main_tab_today">Review today's lectures</string>
     <string name="main_tab_feed">Classmate's reviews</string>
     <string name="main_tab_stats">Overview</string>
+
+
+    <!-- Today Fragment -->
+    <string name="frag_today_tutorial_title_no_subs">NO COURSES</string>
+    <string name="frag_today_tutorial_title_no_lectures">NO RECENT LECTURES</string>
+
+    <string name="frag_today_tutorial_desc_no_subs">
+        You have not added any courses. You can add courses by pressing the star icon.
+    </string>
+    <string name="frag_today_tutorial_desc_no_lectures">
+        You have no recent lectures. Recent lectures will appear here.
+    </string>
+
+    <!-- Feed Fragment -->
+    <string name="frag_feed_tutorial_title_no_subs">NO COURSES</string>
+    <string name="frag_feed_tutorial_title_no_items">NO ITEMS</string>
+
+    <string name="frag_feed_tutorial_desc_no_subs">
+        Reviewed lectures in your subscribed courses will appear here. You can add courses
+        by pressing the star icon.
+    </string>
+    <string name="frag_feed_tutorial_desc_no_items">
+        No lectures in your courses have been reviewed.
+    </string>
+
+    <!-- Stats Fragment -->
+    <string name="frag_stats_tutorial_title_no_subs">NO COURSES</string>
+    <string name="frag_stats_tutorial_desc_no_subs">Your courses will be listed here.</string>
+
     
+
 </resources>
