@@ -49,7 +49,7 @@ public class TimeEditHTTP {
 		String endDate = dateFormat.format(calendar.getTime());
 		
 		// Subtract 14 as we added 7 earlier
-		calendar.add(Calendar.DAY_OF_YEAR, -14);
+		calendar.add(Calendar.DAY_OF_YEAR, -31);
 		String startDate = dateFormat.format(calendar.getTime());
 		
 		/* Get the TimeEdit URL */
