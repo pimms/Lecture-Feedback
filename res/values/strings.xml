@@ -7,8 +7,8 @@
     <string name="action_top_courses">Top courses</string>
     <string name="action_subscriptions">Subscriptions</string>
 
-    <string name="main_tab_today">Review today's lectures</string>
-    <string name="main_tab_feed">Classmate's reviews</string>
+    <string name="main_tab_today">Review today\'s lectures</string>
+    <string name="main_tab_feed">Classmate\'s reviews</string>
     <string name="main_tab_stats">Overview</string>
 
 

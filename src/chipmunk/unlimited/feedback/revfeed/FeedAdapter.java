@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import chipmunk.unlimited.feedback.database.SubscriptionDatabase;
 import chipmunk.unlimited.feedback.webapi.WebAPI.*;
 import chipmunk.unlimited.feedback.LectureReviewItem;
 import chipmunk.unlimited.feedback.R;
@@ -32,6 +33,7 @@ public class FeedAdapter extends BaseAdapter implements GetLectureVotesAllCallba
 	private List<LectureReviewItem> mReviewItems;
     private List<LectureVote> mLectureVotes;
 	private int mFeedState = Feed.STATE_DEFAULT;
+    private Context mContext;
 
     private boolean mTutorial;
 
@@ -45,6 +47,8 @@ public class FeedAdapter extends BaseAdapter implements GetLectureVotesAllCallba
 
 	
 	public FeedAdapter(Context context) {
+        mContext = context;
+
 		sInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mListItemTypes = new ArrayList<Integer>();
 	}
@@ -343,8 +347,21 @@ public class FeedAdapter extends BaseAdapter implements GetLectureVotesAllCallba
             convertView = sInflater.inflate(R.layout.tutorial, null);
         }
 
-        // TODO:
-        // Put the proper tutorial text in the item
+        TextView tvTitle = (TextView)convertView.findViewById(R.id.tutorial_text_view_title);
+        TextView tvDesc  = (TextView)convertView.findViewById(R.id.tutorial_text_view_desc);
+        SubscriptionDatabase db = new SubscriptionDatabase(mContext);
+
+        if (db.getSubscriptionList().size() != 0) {
+            tvTitle.setText(mContext.getResources().getString(
+                    R.string.frag_feed_tutorial_title_no_items));
+            tvDesc.setText(mContext.getResources().getString(
+                    R.string.frag_feed_tutorial_desc_no_items));
+        } else {
+            tvTitle.setText(mContext.getResources().getString(
+                    R.string.frag_feed_tutorial_title_no_subs));
+            tvDesc.setText(mContext.getResources().getString(
+                    R.string.frag_feed_tutorial_desc_no_subs));
+        }
 
         return convertView;
     }

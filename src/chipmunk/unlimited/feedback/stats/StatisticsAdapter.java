@@ -111,8 +111,13 @@ public class StatisticsAdapter extends BaseAdapter
             convertView = mInflater.inflate(R.layout.tutorial, null);
         }
 
-        // TODO:
-        // Put the proper text in the tutorial view
+        TextView tvTitle = (TextView)convertView.findViewById(R.id.tutorial_text_view_title);
+        TextView tvDesc  = (TextView)convertView.findViewById(R.id.tutorial_text_view_desc);
+
+        tvTitle.setText(mContext.getResources().getString(
+                R.string.frag_stats_tutorial_title_no_subs));
+        tvDesc.setText(mContext.getResources().getString(
+                R.string.frag_stats_tutorial_desc_no_subs));
 
         return convertView;
     }
