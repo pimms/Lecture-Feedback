@@ -10,8 +10,6 @@ import android.widget.TextView;
 import java.util.List;
 
 import chipmunk.unlimited.feedback.R;
-import chipmunk.unlimited.feedback.database.SubscriptionDatabase;
-import chipmunk.unlimited.feedback.subscription.SubscriptionItem;
 import chipmunk.unlimited.feedback.webapi.WebAPI;
 import chipmunk.unlimited.feedback.webapi.WebAPI.*;
 
@@ -20,24 +18,31 @@ public class TopCourseAdapter extends BaseAdapter
     private LayoutInflater mInflater;
     private Context mContext;
 
-    private List<SubscriptionItem> mCourses;
     private List<CourseVote> mCourseVotes;
 
 
     public TopCourseAdapter(Context context) {
         mContext = context;
         mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        reloadSubscriptions();
+        reloadCourses();
     }
 
 
     @Override
     public int getCount() {
-        return mCourses.size();
+        if (mCourseVotes != null) {
+            return mCourseVotes.size();
+        }
+
+        return 0;
     }
     @Override
     public Object getItem(int i) {
-        return mCourses.get(i);
+        if (mCourseVotes != null) {
+            return mCourseVotes.get(i);
+        }
+
+        return null;
     }
     @Override
     public long getItemId(int i) {
@@ -53,10 +58,9 @@ public class TopCourseAdapter extends BaseAdapter
         TextView tvPos  = (TextView)view.findViewById(R.id.course_text_view_positive);
         TextView tvNeg  = (TextView)view.findViewById(R.id.course_text_view_negative);
 
-        SubscriptionItem sub = mCourses.get(i);
-        CourseVote vote = getCourseVote(sub.getHigCode());
+        CourseVote vote = (CourseVote)getItem(i);
 
-        tvName.setText(sub.getName());
+        tvName.setText(vote.getCourseName());
 
         if (vote == null) {
             tvPos.setText("?");
@@ -70,31 +74,7 @@ public class TopCourseAdapter extends BaseAdapter
     }
 
 
-    public CourseVote getCourseVote(String higCode) {
-        CourseVote vote = null;
-
-        if (mCourseVotes != null) {
-            // Attempt to find the vote object
-            for (CourseVote cv : mCourseVotes) {
-                if (cv.getCourseCode().equals(higCode)) {
-                    vote = cv;
-                    break;
-                }
-            }
-        }
-
-        return vote;
-    }
-
-    public void reloadSubscriptions() {
-        loadSubscriptions();
-        notifyDataSetChanged();
-    }
-
-    private void loadSubscriptions() {
-        SubscriptionDatabase db = new SubscriptionDatabase(mContext);
-        mCourses = db.getSubscriptionList();
-
+    public void reloadCourses() {
         WebAPI webApi = new WebAPI();
         webApi.getTopCourses(this, 0, 25);
     }
