@@ -27,8 +27,7 @@ public class TopCourseActivity extends ListActivity {
         mAdapter = new TopCourseAdapter(this);
         getListView().setAdapter(mAdapter);
 
-        // TODO: Localize
-        getActionBar().setTitle("Top courses");
+        getActionBar().setTitle(getResources().getString(R.string.activity_top_course_title));
     }
 
     @Override

@@ -10,6 +10,10 @@
     <string name="upcoming">Upcoming</string>
     <string name="today">Today</string>
     <string name="yesterday">Yesterday</string>
+    <string name="activity_top_course_title">Top courses</string>
+    <string name="clone_successful_toast">This review will be treated as your own</string>
+    <string name="submit_dialog_wait_text">Submitting...</string>
+
 
     <!-- DATES -->
     <string name="format_date_today_sep">EE, ddd MMM</string>

@@ -170,10 +170,9 @@ public class LectureRatingActivity extends Activity
     }
 
     private void showCloneSuccessfulToast() {
-        // TODO: Localize
         Toast toast = Toast.makeText(
                 this,
-                "This review will be treated as your own",
+                getResources().getString(R.string.clone_successful_toast),
                 3500);
         toast.show();
     }
@@ -216,9 +215,8 @@ public class LectureRatingActivity extends Activity
 	private void showProgressDialog() {
 		hideProgressDialog();
 
-		// TODO: Localization
 		mProgressDialog = new ProgressDialog(this);
-		mProgressDialog.setTitle("Submitting...");
+		mProgressDialog.setTitle(getResources().getString(R.string.submit_dialog_wait_text));
 		mProgressDialog.setIndeterminate(true);
 		mProgressDialog.show();
 	}
