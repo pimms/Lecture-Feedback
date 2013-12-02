@@ -228,11 +228,11 @@ public class MainActivity extends FragmentActivity implements
             Locale l = Locale.getDefault();
             switch (position) {
                 case 0:
-                    return "Review today's lectures";
+                    return getResources().getString(R.string.main_tab_today);
                 case 1:
-                    return "Classmate's reviews";
+                    return getResources().getString(R.string.main_tab_feed);
                 case 2:
-                    return "Overview";
+                    return getResources().getString(R.string.main_tab_stats);
             }
             return null;
         }

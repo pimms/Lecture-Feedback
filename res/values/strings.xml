@@ -6,5 +6,10 @@
     <string name="title_section1">Section 1</string>
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
+
+    <!-- Main Activity Tab String -->
+    <string name="main_tab_today">Review today's lectures</string>
+    <string name="main_tab_feed">Classmate's reviews</string>
+    <string name="main_tab_stats">Overview</string>
     
 </resources>
