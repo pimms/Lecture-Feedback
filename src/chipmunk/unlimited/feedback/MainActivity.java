@@ -3,10 +3,12 @@ package chipmunk.unlimited.feedback;
 import java.util.Locale;
 
 import chipmunk.unlimited.feedback.database.SubscriptionDatabase;
+import chipmunk.unlimited.feedback.highscore.TopCourseActivity;
 import chipmunk.unlimited.feedback.stats.StatisticsFragment;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -112,6 +114,9 @@ public class MainActivity extends FragmentActivity implements
 			case R.id.action_main_refresh:
 				refreshFragments();
 				break;
+            case R.id.action_topcourses:
+                showTopCoursesActivity();
+                break;
 		}
 		
 		return true;
@@ -167,6 +172,12 @@ public class MainActivity extends FragmentActivity implements
         mFeedFragment.refreshContents();
         mStatsFragment.refreshContents();
 	}
+
+
+    private void showTopCoursesActivity() {
+        Intent intent = new Intent(this, TopCourseActivity.class);
+        startActivity(intent);
+    }
 
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
