@@ -88,7 +88,7 @@ public class LectureItem implements Comparable<LectureItem> {
         	format = "EEEE, MMM dd";
         }
 
-        SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.US);
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
         return sdf.format(mStartTime);
     }
 
