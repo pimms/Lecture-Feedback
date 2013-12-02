@@ -19,18 +19,6 @@ import chipmunk.unlimited.feedback.R;
 public class LectureRatingView extends LinearLayout
                         implements  AttributeView.OnRatingChangeListener,
                                     View.OnClickListener {
-    private static final String[] LECTURE_ATTRIBUTES = new String[] {
-        "Overall", "Clarity", "Progression", "Engagement", "Material coverage"
-    };
-    private static final String[] LECTURE_ATTRIBUTE_DESC = new String[] {
-        "How would you rate the lecture in total?",
-        "Was the material presented clearly and unambiguously?",
-        "Was the lecture properly paced?",
-        "Did the lecturers engagement spread?",
-        "Was the presented material covered thoroughly enough?"
-    };
-
-
     public interface RatingListener {
         /**
          * Called when the Submit-button is pressed
@@ -42,20 +30,27 @@ public class LectureRatingView extends LinearLayout
 
     private ArrayList<AttributeView> mAttributeViews;
     private RatingListener mCallback;
+    private Context mContext;
 
 
     public LectureRatingView(Context context) {
         super(context);
+
+        mContext = context;
         initialize();
     }
 
     public LectureRatingView(Context context, AttributeSet attrs) {
         super(context, attrs);
+
+        mContext = context;
         initialize();
     }
 
     public LectureRatingView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+
+        mContext = context;
         initialize();
     }
 
@@ -72,9 +67,9 @@ public class LectureRatingView extends LinearLayout
         LinearLayout wrapper = (LinearLayout)findViewById(R.id.rating_attribute_wrapper);
         mAttributeViews = new ArrayList<AttributeView>();
 
-        for (int i=0; i<5; i++) {
+        for (int i=0; i<getAttributeCount(); i++) {
             AttributeView attributeView = new AttributeView(getContext());
-            attributeView.setAttributeName(LECTURE_ATTRIBUTES[i]);
+            attributeView.setAttributeName(getAttributeName(i));
             attributeView.setOnRatingChangeListener(this);
 
             mAttributeViews.add(attributeView);
@@ -123,8 +118,24 @@ public class LectureRatingView extends LinearLayout
         return editText.getText().toString();
     }
 
+
     public int getAttributeCount() {
-        return mAttributeViews.size();
+        return 5;
+    }
+
+    public String getAttributeName(int i) {
+        int id = -1;
+
+        switch (i) {
+            case 0: id = R.string.rating_attr_overall;      break;
+            case 1: id = R.string.rating_attr_clarity;      break;
+            case 2: id = R.string.rating_attr_progression;  break;
+            case 3: id = R.string.rating_attr_engagement;   break;
+            case 4: id = R.string.rating_attr_coverage;     break;
+            default:return "UNKOWN";
+        }
+
+        return mContext.getResources().getString(id);
     }
 
 
@@ -140,7 +151,6 @@ public class LectureRatingView extends LinearLayout
             }
         }
     }
-
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.rating_button_submit) {
