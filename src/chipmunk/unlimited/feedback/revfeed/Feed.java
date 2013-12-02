@@ -101,25 +101,25 @@ public class Feed implements WebAPI.GetFeedCallback {
         webApi.getFeed(this, subs, first, count);
     }
 
-    private void updateWithSingleLecture(int first, int count) {
-        WebAPI webApi = new WebAPI();
-        webApi.getFeed(this, mLectureHash, first, count);
-    }
-
-
-    @Override
-    public void onGetFeedSuccess(List<LectureReviewItem> items) {
-        if (mCallback != null) {
-            mCallback.onFeedUpdate(items);
-        }
-    }
-
     @Override
     public void onGetFeedFailure(String errorMessage) {
         Log.e(TAG, "GetFeed failed: " + errorMessage);
 
         if (mCallback != null) {
             mCallback.onFeedUpdate(new ArrayList<LectureReviewItem>());
+        }
+    }
+
+
+    private void updateWithSingleLecture(int first, int count) {
+        WebAPI webApi = new WebAPI();
+        webApi.getFeed(this, mLectureHash, first, count);
+    }
+
+    @Override
+    public void onGetFeedSuccess(List<LectureReviewItem> items) {
+        if (mCallback != null) {
+            mCallback.onFeedUpdate(items);
         }
     }
 }
