@@ -65,5 +65,19 @@
         If you fully agree with this review you may clone it instead of submitting your own.
     </string>
 
+    <!-- Subscription Fragment -->
+    <string name="frag_sub_title">Your courses</string>
+    <string name="frag_sub_add">Add another</string>
+    <string name="frag_sub_back">Cancel</string>
+    <string name="frag_sub_toast_removed">Removed course: </string>
+
+    <!-- Add Subscription Fragment -->
+    <string name="frag_subadd_title">Search for courses</string>
+    <string name="frag_subadd_search">Search</string>
+    <string name="frag_subadd_no_res">No courses found</string>
+    <string name="frag_subadd_cancel">Retry</string>
+    <string name="frag_subadd_error">Unable to connect</string>
+    <string name="frag_subadd_notext">Cannot search for that!</string>
+    <string name="frag_subadd_invalid">Letters and numbers only, please</string>
 
 </resources>
