@@ -26,13 +26,13 @@ public class CourseLecturesActivity extends Activity implements OnItemClickListe
     @Override
     public void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
-        setContentView(R.layout.activity_course_lectures);
+        setContentView(R.layout.activity_listview);
 
         String course = getIntent().getStringExtra(PARAM_COURSE_CODE);
         mAdapter = new CourseLectureAdapter(this, course);
         mAdapter.reloadItems(0, 25);
 
-        ListView listView = (ListView)findViewById(R.id.listView);
+        ListView listView = (ListView)findViewById(android.R.id.list);
         listView.setAdapter(mAdapter);
         listView.setOnItemClickListener(this);
     }
