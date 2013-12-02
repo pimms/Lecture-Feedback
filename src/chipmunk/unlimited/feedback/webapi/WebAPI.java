@@ -60,6 +60,15 @@ public class WebAPI {
     }
 
     /**
+     * Interface for the getStats webAPI call "top_courses".
+     */
+    public interface GetTopCoursesCallback {
+        public void onGetTopCoursesSuccess(List<CourseVote> courses);
+        public void onGetTopCoursesFailure(String errorMessage);
+    }
+
+
+    /**
      * Callback interface for the api-call "vote
      */
     public interface VoteCallback {
@@ -254,6 +263,23 @@ public class WebAPI {
                                    String course, int first, int count) {
         GetStats getStats = new GetStats();
         getStats.apiCallLectureVotesAll(callback, API_URL, course, first, count);
+    }
+
+    /**
+     * Get the highest rated courses.
+     *
+     * @param callback
+     * The callback.
+     *
+     * @param first
+     * The first item in the total set to be included
+     *
+     * @param count
+     * The maximum number of items to be returned.
+     */
+    public void getTopCourses(GetTopCoursesCallback callback, int first, int count) {
+        GetStats getStats = new GetStats();
+        getStats.apiCallTopCourses(callback, API_URL, first, count);
     }
 
 
