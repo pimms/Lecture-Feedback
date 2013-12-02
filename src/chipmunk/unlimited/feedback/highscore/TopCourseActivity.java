@@ -18,7 +18,7 @@ public class TopCourseActivity extends ListActivity {
         super.onCreate(bundle);
         setContentView(R.layout.activity_listview);
 
-        mAdapter = new TopCourseAdapter();
+        mAdapter = new TopCourseAdapter(this);
         getListView().setAdapter(mAdapter);
     }
 }
