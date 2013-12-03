@@ -102,10 +102,7 @@ public class TopCourseAdapter extends BaseAdapter
         mLoadingMore = true;
 
         WebAPI webApi = new WebAPI();
-        webApi.getTopCourses(
-                this,
-                0,   //mCourseVotes.size(),
-                25);
+        webApi.getTopCourses(this, mCourseVotes.size(), 25);
     }
 
 
@@ -121,22 +118,7 @@ public class TopCourseAdapter extends BaseAdapter
                 }
             }
         } else {
-            mCourseVotes = new ArrayList<CourseVote>();
-
-            for (CourseVote cv : courses) {
-                mCourseVotes.add(cv);
-                mCourseVotes.add(cv);
-                mCourseVotes.add(cv);
-                mCourseVotes.add(cv);
-                mCourseVotes.add(cv);
-                mCourseVotes.add(cv);
-                mCourseVotes.add(cv);
-                mCourseVotes.add(cv);
-                mCourseVotes.add(cv);
-                mCourseVotes.add(cv);
-                mCourseVotes.add(cv);
-                mCourseVotes.add(cv);
-            }
+            mCourseVotes = courses;
         }
 
         notifyDataSetChanged();
