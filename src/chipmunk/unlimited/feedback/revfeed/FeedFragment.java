@@ -42,6 +42,7 @@ public class FeedFragment extends UpdateableFragment
     @Override
     public void onActivityCreated(Bundle bundle) {
         mRefreshListView = (ScrollToRefreshListView)getListView();
+        mRefreshListView.setOnScrollToRefreshListener(this);
 
         /* Create the Feed */
         if (mFeed == null) {
