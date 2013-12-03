@@ -48,10 +48,13 @@ class GetFeed extends WebAPICall {
 	 * 
 	 * @param count
 	 * The maximum number of items to be returned.
+     *
+     * @param lastId
+     * All returned reviews will have a lower ID than this parameter.
+     * Set to negative value to ignore this parameter.
 	 */
 	public void apiCall(String baseUrl, 
-						List<SubscriptionItem> subscriptions,
-						int first, int count)
+						List<SubscriptionItem> subscriptions, int first, int count, int lastId)
 	{
 		if (subscriptions.size() == 0) {
 			mCallback.onGetFeedSuccess(null);
@@ -61,7 +64,7 @@ class GetFeed extends WebAPICall {
 		baseUrl += "/getFeed.php?";
 		baseUrl += "filter=" + createFilterString(subscriptions);
 
-        apiCall(baseUrl, first, count);
+        apiCall(baseUrl, first, count, lastId);
 	}
 
     /**
@@ -79,18 +82,22 @@ class GetFeed extends WebAPICall {
      * @param count
      * The maximum number of items to be returned.
      *
-     * @return
+     * @param lastId
+     * All returned reviews will have a lower ID than this parameter.
+     * Set to negative value to ignore this parameter.
      */
-    public void apiCall(String baseUrl, String lectureHash, int first, int count) {
+    public void apiCall(String baseUrl, String lectureHash, int first, int count, int lastId) {
         baseUrl += "/getFeed.php?hash=" + lectureHash;
-        apiCall(baseUrl, first, count);
+        apiCall(baseUrl, first, count, lastId);
     }
 
-    private void apiCall(String baseUrl, int first, int count) {
+    private void apiCall(String baseUrl, int first, int count, int lastId) {
         baseUrl += "&first=" + first;
         baseUrl += "&count=" + count;
 
-        Log.d(TAG, baseUrl);
+        if (lastId > 0) {
+            baseUrl += "&lastid=" + lastId;
+        }
 
         new AsyncHttpClient().get(baseUrl, this);
     }

@@ -183,7 +183,7 @@ public class WebAPI {
 						int first, int count) 
 	{
 		GetFeed getFeed = new GetFeed(callback);
-		getFeed.apiCall(API_URL, subscriptions, first, count);
+		getFeed.apiCall(API_URL, subscriptions, first, count, -1);
 	}
 
     /**
@@ -206,7 +206,7 @@ public class WebAPI {
     public void getFeed(GetFeedCallback callback,
                         String lectureHash, int first, int count) {
         GetFeed getFeed = new GetFeed(callback);
-        getFeed.apiCall(API_URL, lectureHash, first, count);
+        getFeed.apiCall(API_URL, lectureHash, first, count, -1);
     }
 
 
