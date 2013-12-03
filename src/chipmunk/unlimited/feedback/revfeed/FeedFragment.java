@@ -26,7 +26,7 @@ import chipmunk.unlimited.feedback.rating.LectureRatingActivity;
  * does.
  */
 public class FeedFragment extends UpdateableFragment
-        implements OnItemClickListener,Feed.FeedListener {
+        implements Feed.FeedListener {
 	private static final String TAG = "FeedFragment";
 
     private Feed mFeed;
@@ -80,7 +80,7 @@ public class FeedFragment extends UpdateableFragment
 
 
 	@Override
-	public void onItemClick(AdapterView<?> adapter, View item, int position, long id) {		
+	public void onListItemClick(ListView list, View item, int position, long id) {
         if (mFeedAdapter.getFeedState() == Feed.STATE_DEFAULT ||
             mFeedAdapter.getFeedState() == Feed.STATE_LECTURE) {
             startReadOnlyLectureRatingActivity(position);
