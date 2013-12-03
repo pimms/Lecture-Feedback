@@ -57,8 +57,10 @@ public class AddSubscriptionFragment extends DialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.fragment_add_subscription, null);
 
-        // TODO: Localization
-        builder.setView(view).setTitle("Search for courses").setNeutralButton("Search", null);
+        String title = getActivity().getResources().getString(R.string.frag_subadd_title);
+        String search = getActivity().getResources().getString(R.string.frag_subadd_search);
+
+        builder.setView(view).setTitle(title).setNeutralButton(search, null);
         return builder.create();
     }
 
@@ -192,7 +194,9 @@ public class AddSubscriptionFragment extends DialogFragment {
                             }
                             @Override
                             public void onFailure(Throwable e, String response){
-                                Toast.makeText(getActivity(), "TOP NET", Toast.LENGTH_LONG).show();
+                                String msg = getActivity().getResources().getString(
+                                        R.string.frag_subadd_error);
+                                Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
                                 Log.d("NET", e.toString());
                             }
                         });
@@ -201,11 +205,15 @@ public class AddSubscriptionFragment extends DialogFragment {
                             dismiss();
                     }else{
                         //If search string contains illegal characters, this will show up
-                        Toast.makeText(getActivity(), "ILLEGAL", Toast.LENGTH_SHORT).show();
+                        String msg = getActivity().getResources().getString(
+                                R.string.frag_subadd_invalid);
+                        Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
                     }
                 }else{
                     //If nothing is written in search field, this will show up
-                    Toast.makeText(getActivity(), "DUNNO", Toast.LENGTH_SHORT).show();
+                    String msg = getActivity().getResources().getString(
+                            R.string.frag_subadd_notext);
+                    Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
                 }
             }
         });

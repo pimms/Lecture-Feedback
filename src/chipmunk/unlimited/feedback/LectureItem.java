@@ -17,7 +17,7 @@ public class LectureItem implements Comparable<LectureItem> {
     /**
      * How many days is a Lecture reviewable?
      */
-    private static final int REVIEWABLE_PERIOD_DAYS = 5;
+    private static final int REVIEWABLE_PERIOD_DAYS = 42;
 
 	protected Date mStartTime;
 	protected Date mEndTime;
@@ -78,14 +78,17 @@ public class LectureItem implements Comparable<LectureItem> {
         then.setTime(mStartTime);
         
         String format = "";
-        
+
+        // TODO: Localize
+        // Find a way to retrieve the string format_date_pretty_old
+        // and format_date_pretty.
         if (now.get(Calendar.YEAR) != then.get(Calendar.YEAR)) {
-            format = "dd MMM, yyyy";
+            format = "MMM dd, yyyy";
         } else {
-        	format = "EEEE, dd MMM";
+        	format = "EEEE, MMM dd";
         }
 
-        SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.US);
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
         return sdf.format(mStartTime);
     }
 

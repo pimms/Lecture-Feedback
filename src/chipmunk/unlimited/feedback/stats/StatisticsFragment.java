@@ -53,6 +53,7 @@ public class StatisticsFragment extends UpdateableFragment
         if (subItem != null) {
             Intent intent = new Intent(getActivity(), CourseLecturesActivity.class);
             intent.putExtra(CourseLecturesActivity.PARAM_COURSE_CODE, subItem.getHigCode());
+            intent.putExtra(CourseLecturesActivity.PARAM_COURSE_NAME, subItem.getName());
             startActivity(intent);
         }
     }

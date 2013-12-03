@@ -3,10 +3,12 @@ package chipmunk.unlimited.feedback;
 import java.util.Locale;
 
 import chipmunk.unlimited.feedback.database.SubscriptionDatabase;
+import chipmunk.unlimited.feedback.highscore.TopCourseActivity;
 import chipmunk.unlimited.feedback.stats.StatisticsFragment;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -112,6 +114,9 @@ public class MainActivity extends FragmentActivity implements
 			case R.id.action_main_refresh:
 				refreshFragments();
 				break;
+            case R.id.action_topcourses:
+                showTopCoursesActivity();
+                break;
 		}
 		
 		return true;
@@ -169,6 +174,12 @@ public class MainActivity extends FragmentActivity implements
 	}
 
 
+    private void showTopCoursesActivity() {
+        Intent intent = new Intent(this, TopCourseActivity.class);
+        startActivity(intent);
+    }
+
+
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
@@ -217,11 +228,11 @@ public class MainActivity extends FragmentActivity implements
             Locale l = Locale.getDefault();
             switch (position) {
                 case 0:
-                    return "Review today's lectures";
+                    return getResources().getString(R.string.main_tab_today);
                 case 1:
-                    return "Classmate's reviews";
+                    return getResources().getString(R.string.main_tab_feed);
                 case 2:
-                    return "Overview";
+                    return getResources().getString(R.string.main_tab_stats);
             }
             return null;
         }

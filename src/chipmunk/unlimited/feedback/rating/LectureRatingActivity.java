@@ -170,10 +170,9 @@ public class LectureRatingActivity extends Activity
     }
 
     private void showCloneSuccessfulToast() {
-        // TODO: Localize
         Toast toast = Toast.makeText(
                 this,
-                "This review will be treated as your own",
+                getResources().getString(R.string.clone_successful_toast),
                 3500);
         toast.show();
     }
@@ -216,9 +215,8 @@ public class LectureRatingActivity extends Activity
 	private void showProgressDialog() {
 		hideProgressDialog();
 
-		// TODO: Localization
 		mProgressDialog = new ProgressDialog(this);
-		mProgressDialog.setTitle("Submitting...");
+		mProgressDialog.setTitle(getResources().getString(R.string.submit_dialog_wait_text));
 		mProgressDialog.setIndeterminate(true);
 		mProgressDialog.show();
 	}
@@ -352,8 +350,15 @@ public class LectureRatingActivity extends Activity
             TextView textClone = (TextView)findViewById(R.id.rating_text_view_clone_count);
 
             if (cloneCount > 0) {
+                String cloneStr;
+                if (cloneCount == 1) {
+                    cloneStr = getResources().getString(R.string.clone_count_singular);
+                } else {
+                    cloneStr = getResources().getString(R.string.clone_count_plural);
+                }
+
                 textClone.setVisibility(View.VISIBLE);
-                textClone.setText(cloneCount + " clone" + ((cloneCount != 1) ? "s" : ""));
+                textClone.setText(cloneCount + " " + cloneStr);
             } else {
                 textClone.setVisibility(View.GONE);
             }

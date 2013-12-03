@@ -35,8 +35,10 @@ public class StatisticsAdapter extends BaseAdapter
     private List<CourseVote> mCourseVotes;
 	private LayoutInflater mInflater;
 	private Context mContext;
+    private boolean mTutorial;
 
     private StatisticsAdapterUpdateListener mListener;
+
 
 	
 	public StatisticsAdapter(Context context) {
@@ -54,15 +56,21 @@ public class StatisticsAdapter extends BaseAdapter
 		if (mSubscriptions == null) {
 			loadSubscriptions();
 		}
-		
-		return mSubscriptions.size();
-	}
 
+        if (!mTutorial) {
+            return mSubscriptions.size();
+        }
+
+        return 1;
+	}
 	@Override
 	public Object getItem(int position) {
-		return mSubscriptions.get(position);
-	}
+        if (!mTutorial) {
+		    return mSubscriptions.get(position);
+        }
 
+        return null;
+	}
 	@Override
 	public long getItemId(int position) {
 		return position;
@@ -70,7 +78,11 @@ public class StatisticsAdapter extends BaseAdapter
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parentGroup) {
-		if (convertView == null) {
+        if (mTutorial) {
+            return getTutorialView(convertView);
+        }
+
+		if (convertView == null || convertView.getId() != R.layout.list_item_course) {
 			convertView = mInflater.inflate(R.layout.list_item_course, null);
 		}
 		
@@ -94,6 +106,22 @@ public class StatisticsAdapter extends BaseAdapter
 		return convertView;
 	}
 
+    private View getTutorialView(View convertView) {
+        if (convertView == null || convertView.getId() != R.layout.tutorial) {
+            convertView = mInflater.inflate(R.layout.tutorial, null);
+        }
+
+        TextView tvTitle = (TextView)convertView.findViewById(R.id.tutorial_text_view_title);
+        TextView tvDesc  = (TextView)convertView.findViewById(R.id.tutorial_text_view_desc);
+
+        tvTitle.setText(mContext.getResources().getString(
+                R.string.frag_stats_tutorial_title_no_subs));
+        tvDesc.setText(mContext.getResources().getString(
+                R.string.frag_stats_tutorial_desc_no_subs));
+
+        return convertView;
+    }
+
     public CourseVote getCourseVote(String higCode) {
         CourseVote vote = null;
 
@@ -112,17 +140,20 @@ public class StatisticsAdapter extends BaseAdapter
 
 	
 	public void reloadSubscriptions() {
-		loadSubscriptions();
-		notifyDataSetChanged();
-	}
-	
-	private void loadSubscriptions() {
-		SubscriptionDatabase db = new SubscriptionDatabase(mContext);
-		mSubscriptions = db.getSubscriptionList();
+        loadSubscriptions();
+        notifyDataSetChanged();
+    }
+
+    private void loadSubscriptions() {
+        SubscriptionDatabase db = new SubscriptionDatabase(mContext);
+        mSubscriptions = db.getSubscriptionList();
+
+        /* Display the tutorial view if no subs exists */
+        mTutorial = (mSubscriptions.size() == 0);
 
         WebAPI webApi = new WebAPI();
         webApi.getCourseVotes(this, mSubscriptions);
-	}
+    }
 
 
     @Override

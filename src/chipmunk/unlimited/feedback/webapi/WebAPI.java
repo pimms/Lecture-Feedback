@@ -60,6 +60,15 @@ public class WebAPI {
     }
 
     /**
+     * Interface for the getStats webAPI call "top_courses".
+     */
+    public interface GetTopCoursesCallback {
+        public void onGetTopCoursesSuccess(List<CourseVote> courses);
+        public void onGetTopCoursesFailure(String errorMessage);
+    }
+
+
+    /**
      * Callback interface for the api-call "vote
      */
     public interface VoteCallback {
@@ -75,12 +84,14 @@ public class WebAPI {
      */
     public static class CourseVote {
         private String mCourseCode;
+        private String mCourseName;
         private int mPositive;
         private int mNegative;
 
         public CourseVote(JSONObject item) {
             try {
                 mCourseCode = item.getString("course_code");
+                mCourseName = item.getString("course_name");
                 mPositive = item.getInt("positive");
                 mNegative = item.getInt("negative");
             } catch (JSONException ex) {
@@ -90,6 +101,10 @@ public class WebAPI {
 
         public String getCourseCode() {
             return mCourseCode;
+        }
+
+        public String getCourseName() {
+            return mCourseName;
         }
 
         public int getPositiveVoteCount() {
@@ -168,8 +183,37 @@ public class WebAPI {
 						int first, int count) 
 	{
 		GetFeed getFeed = new GetFeed(callback);
-		getFeed.apiCall(API_URL, subscriptions, first, count);
+		getFeed.apiCall(API_URL, subscriptions, first, count, -1);
 	}
+
+    /**
+     * Method using the web-API call "getFeed.php". The returned set of
+     * data is a reverse-chronological list of reviews, and is based
+     * on ONE or MULTIPLE courses. The "first" parameter is ignored, and all
+     * returned items will have a lower ID than "lastId".
+     *
+     * @param callback
+     * The object to receive the finish-notifications.
+     *
+     * @param subscriptions
+     * The list of subscription items to be included in the result set.
+     *
+     * @param first
+     * Value is irrelevant as it is ignored by the web API.
+     *
+     * @param count
+     * The maximum number of items to be returned.
+     *
+     * @param lastId
+     * The ID of the last review the web API should ignore.
+     */
+    public void getFeed(GetFeedCallback callback,
+                        List<SubscriptionItem> subscriptions,
+                        int first, int count, int lastId)
+    {
+        GetFeed getFeed = new GetFeed(callback);
+        getFeed.apiCall(API_URL, subscriptions, first, count, lastId);
+    }
 
     /**
      * Method using the web-API call "getFeed.php". The returned set of
@@ -191,7 +235,34 @@ public class WebAPI {
     public void getFeed(GetFeedCallback callback,
                         String lectureHash, int first, int count) {
         GetFeed getFeed = new GetFeed(callback);
-        getFeed.apiCall(API_URL, lectureHash, first, count);
+        getFeed.apiCall(API_URL, lectureHash, first, count, -1);
+    }
+
+    /**
+     * Method using the web-API call "getFeed.php". The returned set of
+     * data is a reverse-chronological list of reviews, and is based
+     * on a SINGLE lecture. The "first" parameter is ignored, and all
+     * returned items will have a lower ID than "lastId".
+     *
+     * @param callback
+     * The object to receive the finish-notifications.
+     *
+     * @param lectureHash
+     * The hash of the lecture from which to retrieve a feed.
+     *
+     * @param first
+     * Value is irrelevant as it is ignored by the web API.
+     *
+     * @param count
+     * The maximum number of items to be returned.
+     *
+     * @param lastId
+     * The ID of the last review the web API should ignore.
+     */
+    public void getFeed(GetFeedCallback callback, String lectureHash,
+                        int first, int count, int lastId) {
+        GetFeed getFeed = new GetFeed(callback);
+        getFeed.apiCall(API_URL, lectureHash, first, count, lastId);
     }
 
 
@@ -254,6 +325,23 @@ public class WebAPI {
                                    String course, int first, int count) {
         GetStats getStats = new GetStats();
         getStats.apiCallLectureVotesAll(callback, API_URL, course, first, count);
+    }
+
+    /**
+     * Get the highest rated courses.
+     *
+     * @param callback
+     * The callback.
+     *
+     * @param first
+     * The first item in the total set to be included
+     *
+     * @param count
+     * The maximum number of items to be returned.
+     */
+    public void getTopCourses(GetTopCoursesCallback callback, int first, int count) {
+        GetStats getStats = new GetStats();
+        getStats.apiCallTopCourses(callback, API_URL, first, count);
     }
 
 

@@ -106,13 +106,47 @@ public class Feed implements WebAPI.GetFeedCallback {
         webApi.getFeed(this, mLectureHash, first, count);
     }
 
-
-    @Override
-    public void onGetFeedSuccess(List<LectureReviewItem> items) {
-        if (mCallback != null) {
-            mCallback.onFeedUpdate(items);
+    /**
+     * Load more items.
+     *
+     * @param lastId
+     * The ID of the last item in the previously returned set.
+     *
+     * @param count
+     * The maximum amount of items to be returned.
+     */
+    public void loadMore(int lastId, int count) {
+        if (mState == STATE_DEFAULT) {
+            loadMoreDefault(lastId, count);
+        } else if (mState == STATE_COURSE) {
+            loadMoreSingleCourse(lastId, count);
+        } else if (mState == STATE_LECTURE) {
+            loadMoreSingleLecture(lastId, count);
+        } else {
+            onGetFeedFailure("State not supported: " + mState);
         }
     }
+
+    private void loadMoreDefault(int lastId, int count) {
+        SubscriptionDatabase subDb = new SubscriptionDatabase(mContext);
+
+        WebAPI webApi = new WebAPI();
+        webApi.getFeed(this, subDb.getSubscriptionList(), 0, count, lastId);
+    }
+
+    private void loadMoreSingleCourse(int lastId, int count) {
+        ArrayList<SubscriptionItem> subs = new ArrayList<SubscriptionItem>();
+        subs.add(mSubItem);
+
+        WebAPI webApi = new WebAPI();
+        webApi.getFeed(this, subs, 0, count, lastId);
+    }
+
+    private void loadMoreSingleLecture(int lastId, int count) {
+        WebAPI webApi = new WebAPI();
+        webApi.getFeed(this, mLectureHash, 0, count, lastId);
+    }
+
 
     @Override
     public void onGetFeedFailure(String errorMessage) {
@@ -120,6 +154,12 @@ public class Feed implements WebAPI.GetFeedCallback {
 
         if (mCallback != null) {
             mCallback.onFeedUpdate(new ArrayList<LectureReviewItem>());
+        }
+    }
+    @Override
+    public void onGetFeedSuccess(List<LectureReviewItem> items) {
+        if (mCallback != null) {
+            mCallback.onFeedUpdate(items);
         }
     }
 }

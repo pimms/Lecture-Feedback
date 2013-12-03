@@ -1,10 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- GENERAL -->
+    <string name="clone_count_singular">clone</string>
+    <string name="clone_count_plural">clones</string>
+    <string name="clone_verb">Clone!</string>
+    <string name="submit_verb">Submit</string>
+    <string name="comment_hint">Comments...</string>
+    <string name="upcoming">Upcoming</string>
+    <string name="today">Today</string>
+    <string name="yesterday">Yesterday</string>
+    <string name="activity_top_course_title">Top courses</string>
+    <string name="clone_successful_toast">This review will be treated as your own</string>
+    <string name="submit_dialog_wait_text">Submitting...</string>
+
+
+    <!-- DATES -->
+    <string name="format_date_today_sep">EEEE, MMM d</string>
+    <string name="format_date_pretty_old">MMM d, yyyy</string>
+    <string name="format_date_pretty">EEEE, MMM d</string>
+
+
+    <!-- Main Activity -->
     <string name="app_name">HIG Lecture Review</string>
-    <string name="action_settings">Settings</string>
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
-    
+    <string name="action_refresh">Refresh</string>
+    <string name="action_top_courses">Top courses</string>
+    <string name="action_subscriptions">Subscriptions</string>
+
+    <string name="main_tab_today">Review today\'s lectures</string>
+    <string name="main_tab_feed">Classmate\'s reviews</string>
+    <string name="main_tab_stats">Overview</string>
+
+
+    <!-- Today Fragment -->
+    <string name="frag_today_tutorial_title_no_subs">NO COURSES</string>
+    <string name="frag_today_tutorial_title_no_lectures">NO RECENT LECTURES</string>
+
+    <string name="frag_today_tutorial_desc_no_subs">
+        You have not added any courses. You can add courses by pressing the star icon.
+    </string>
+    <string name="frag_today_tutorial_desc_no_lectures">
+        You have no recent lectures. Recent lectures will appear here.
+    </string>
+
+    <!-- Feed Fragment -->
+    <string name="frag_feed_tutorial_title_no_subs">NO COURSES</string>
+    <string name="frag_feed_tutorial_title_no_items">NO ITEMS</string>
+
+    <string name="frag_feed_tutorial_desc_no_subs">
+        Reviewed lectures in your subscribed courses will appear here. You can add courses
+        by pressing the star icon.
+    </string>
+    <string name="frag_feed_tutorial_desc_no_items">
+        No lectures in your courses have been reviewed.
+    </string>
+
+    <!-- Stats Fragment -->
+    <string name="frag_stats_tutorial_title_no_subs">NO COURSES</string>
+    <string name="frag_stats_tutorial_desc_no_subs">Your courses will be listed here.</string>
+
+    <!-- Lecture Rating Activity -->
+    <string name="rating_attr_overall">Overall</string>
+    <string name="rating_attr_clarity">Clarity</string>
+    <string name="rating_attr_progression">Progression</string>
+    <string name="rating_attr_engagement">Engagement</string>
+    <string name="rating_attr_coverage">Material Coverage</string>
+    <string name="rating_clone_desc">
+        If you fully agree with this review you may clone it instead of submitting your own.
+    </string>
+
+    <!-- Subscription Fragment -->
+    <string name="frag_sub_title">Your courses</string>
+    <string name="frag_sub_add">Add another</string>
+    <string name="frag_sub_back">Cancel</string>
+    <string name="frag_sub_toast_removed">Removed course: </string>
+
+    <!-- Add Subscription Fragment -->
+    <string name="frag_subadd_title">Search for courses</string>
+    <string name="frag_subadd_search">Search</string>
+    <string name="frag_subadd_no_res">No courses found</string>
+    <string name="frag_subadd_cancel">Retry</string>
+    <string name="frag_subadd_error">Unable to connect</string>
+    <string name="frag_subadd_notext">Cannot search for that!</string>
+    <string name="frag_subadd_invalid">Letters and numbers only, please</string>
+
 </resources>

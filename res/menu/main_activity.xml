@@ -4,18 +4,18 @@
     <item
         android:id="@+id/action_topcourses"
         android:showAsAction="always"
-        android:title="Highscores"
+        android:title="@string/action_top_courses"
         android:icon="@drawable/navigation_trophy"/>
 
     <item 
         android:id="@+id/action_subscriptions"
         android:showAsAction="always"
-        android:title="Subscriptions"
+        android:title="@string/action_subscriptions"
         android:icon="@drawable/navigation_star"/>
 
     <item
         android:id="@+id/action_main_refresh"
         android:showAsAction="never"
-        android:title="Refresh"
+        android:title="@string/action_refresh"
         android:icon="@drawable/navigation_refresh"/>
 </menu>

@@ -100,7 +100,6 @@ public class FeedFragment extends UpdateableFragment
             startReadOnlyLectureRatingActivity(position);
         }
 	}
-
     /**
      * Start an instance of the LectureRatingActivity in a read-only state.
      */

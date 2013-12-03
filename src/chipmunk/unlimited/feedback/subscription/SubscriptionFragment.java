@@ -53,16 +53,12 @@ public class SubscriptionFragment extends DialogFragment {
             }
         });
 
-        // TODO: Localization
+        String title = getActivity().getResources().getString(R.string.frag_sub_title);
+        String cancel = getActivity().getResources().getString(R.string.frag_sub_back);
+
         builder.setView(view)
-                .setTitle("Your courses")
-                .setNeutralButton("Go back", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                    }
-                });
-
+                .setTitle(title)
+                .setNeutralButton(cancel, null);
         return builder.create();
     }
 
