@@ -1,6 +1,7 @@
 package chipmunk.unlimited.feedback.highscore;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +16,14 @@ import chipmunk.unlimited.feedback.webapi.WebAPI.*;
 
 public class TopCourseAdapter extends BaseAdapter
         implements GetTopCoursesCallback {
+    private static final String TAG = "TopCourseAdapter";
+
+
     private LayoutInflater mInflater;
     private Context mContext;
 
     private List<CourseVote> mCourseVotes;
+    private boolean mLoadingMore;
 
 
     public TopCourseAdapter(Context context) {
@@ -79,14 +84,35 @@ public class TopCourseAdapter extends BaseAdapter
         webApi.getTopCourses(this, 0, 25);
     }
 
+    public void loadMoreCourses() {
+        mLoadingMore = true;
+
+        WebAPI webApi = new WebAPI();
+        webApi.getTopCourses(this, mCourseVotes.size(), 25);
+    }
+
 
     @Override
-    public void onGetTopCoursesSuccess(List<WebAPI.CourseVote> courses) {
-        mCourseVotes = courses;
+    public void onGetTopCoursesSuccess(List<CourseVote> courses) {
+        if (mLoadingMore) {
+            Log.d(TAG, "Loaded "+courses.size()+" more, dunno what to do");
+            if (mCourseVotes == null) {
+                mCourseVotes = courses;
+            } else {
+                for (CourseVote cv : courses) {
+                    mCourseVotes.add(cv);
+                }
+            }
+        } else {
+            mCourseVotes = courses;
+        }
+
         notifyDataSetChanged();
+        mLoadingMore = false;
     }
     @Override
     public void onGetTopCoursesFailure(String errorMessage) {
         mCourseVotes = null;
+        mLoadingMore = false;
     }
 }

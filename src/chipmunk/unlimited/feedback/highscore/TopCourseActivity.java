@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ListView;
 
 import chipmunk.unlimited.feedback.R;
+import chipmunk.unlimited.feedback.ScrollToRefreshListView;
 import chipmunk.unlimited.feedback.revfeed.FeedActivity;
 import chipmunk.unlimited.feedback.stats.CourseLecturesActivity;
 import chipmunk.unlimited.feedback.webapi.WebAPI.*;
@@ -15,14 +16,16 @@ import chipmunk.unlimited.feedback.webapi.WebAPI.*;
  * Activity displaying the highest rated courses in descending
  * order.
  */
-public class TopCourseActivity extends ListActivity {
+public class TopCourseActivity extends ListActivity
+        implements ScrollToRefreshListView.OnScrollToRefreshListener {
     TopCourseAdapter mAdapter;
+    ScrollToRefreshListView mRefreshListView;
 
 
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-        setContentView(R.layout.activity_listview);
+        setContentView(R.layout.activity_scroll2refresh_listview);
 
         mAdapter = new TopCourseAdapter(this);
         getListView().setAdapter(mAdapter);
@@ -38,5 +41,11 @@ public class TopCourseActivity extends ListActivity {
         intent.putExtra(CourseLecturesActivity.PARAM_COURSE_CODE, vote.getCourseCode());
         intent.putExtra(CourseLecturesActivity.PARAM_COURSE_NAME, vote.getCourseName());
         startActivity(intent);
+    }
+
+
+    @Override
+    public void onScrollRefreshBegin(ScrollToRefreshListView view) {
+        mAdapter.loadMoreCourses();
     }
 }
