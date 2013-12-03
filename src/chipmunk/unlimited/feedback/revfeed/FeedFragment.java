@@ -79,6 +79,7 @@ public class FeedFragment extends UpdateableFragment
         if (lastId >= 0) {
             mLoadingMore = true;
             mFeed.loadMore(lastId, 25);
+            getPullToRefreshLayout().setRefreshing(true);
         } else {
             // Nothing to be done
             refreshView.onRefreshComplete();
@@ -89,6 +90,7 @@ public class FeedFragment extends UpdateableFragment
         if (mLoadingMore) {
             mFeedAdapter.appendReviewItems(items);
             mRefreshListView.onRefreshComplete();
+            getPullToRefreshLayout().setRefreshing(false);
         } else {
             mFeedAdapter.setReviewItems(items);
             onUpdateCompleted();
