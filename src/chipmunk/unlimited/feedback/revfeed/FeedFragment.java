@@ -53,7 +53,6 @@ public class FeedFragment extends UpdateableFragment
         mFeedAdapter.setFeedState(mFeed.getState());
 
         mListView.setAdapter(mFeedAdapter);
-        mListView.setOnItemClickListener(this);
 
         refreshContents();
         super.onActivityCreated(bundle);
