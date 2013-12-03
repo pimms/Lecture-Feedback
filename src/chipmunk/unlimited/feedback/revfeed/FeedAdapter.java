@@ -72,6 +72,15 @@ public class FeedAdapter extends BaseAdapter implements GetLectureVotesAllCallba
         notifyDataSetChanged();
 	}
 
+    public void appendReviewItems(List<LectureReviewItem> appendItems) {
+        if (mReviewItems == null) {
+            setReviewItems(appendItems);
+        } else {
+            mReviewItems.addAll(appendItems);
+            notifyDataSetChanged();
+        }
+    }
+
 
     /**
      * Define in which order Review-items and separator-items
