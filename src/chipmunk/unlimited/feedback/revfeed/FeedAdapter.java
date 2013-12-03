@@ -217,6 +217,19 @@ public class FeedAdapter extends BaseAdapter implements GetLectureVotesAllCallba
 		return position;
 	}
 
+    /**
+     * @return
+     * The ID of the last LectureReviewItem in the list.
+     * A negative value is returned if the list is empty.
+     */
+    public int getLastReviewID() {
+        if (mReviewItems != null && mReviewItems.size() != 0) {
+            return mReviewItems.get(mReviewItems.size()-1).getId();
+        }
+
+        return -1;
+    }
+
 
     @Override
     public boolean areAllItemsEnabled() {
