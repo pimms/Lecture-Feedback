@@ -2,6 +2,7 @@ package chipmunk.unlimited.feedback;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.AbsListView;
 import android.widget.ListView;
 
@@ -65,7 +66,6 @@ public class ScrollToRefreshListView extends ListView implements AbsListView.OnS
         if (view == this && !mIsRefreshing) {
             if (firstVisibleItem + visibleItemCount == totalItemCount &&
                 mScrollState == SCROLL_STATE_TOUCH_SCROLL) {
-
                 if (mListener != null) {
                     onRefreshBegin();
                 }

@@ -13,10 +13,10 @@
         android:visibility="gone"
         style="@android:style/Widget.ProgressBar.Large"/>
 
-    <ListView
+    <chipmunk.unlimited.feedback.ScrollToRefreshListView
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
-    </ListView>
+    </chipmunk.unlimited.feedback.ScrollToRefreshListView>
 
 </LinearLayout>
