@@ -72,6 +72,16 @@ public class FeedAdapter extends BaseAdapter implements GetLectureVotesAllCallba
         notifyDataSetChanged();
 	}
 
+    public void appendReviewItems(List<LectureReviewItem> appendItems) {
+        if (mReviewItems == null) {
+            setReviewItems(appendItems);
+        } else if (appendItems != null) {
+            mReviewItems.addAll(appendItems);
+            defineItemOrder();
+            notifyDataSetChanged();
+        }
+    }
+
 
     /**
      * Define in which order Review-items and separator-items
@@ -216,6 +226,19 @@ public class FeedAdapter extends BaseAdapter implements GetLectureVotesAllCallba
 	public long getItemId(int position) {
 		return position;
 	}
+
+    /**
+     * @return
+     * The ID of the last LectureReviewItem in the list.
+     * A negative value is returned if the list is empty.
+     */
+    public int getLastReviewID() {
+        if (mReviewItems != null && mReviewItems.size() != 0) {
+            return mReviewItems.get(mReviewItems.size()-1).getId();
+        }
+
+        return -1;
+    }
 
 
     @Override

@@ -4,19 +4,18 @@ import java.util.List;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 
 import chipmunk.unlimited.feedback.LectureReviewItem;
+import chipmunk.unlimited.feedback.ScrollToRefreshListView;
 import chipmunk.unlimited.feedback.UpdateableFragment;
 import chipmunk.unlimited.feedback.R;
 import chipmunk.unlimited.feedback.rating.LectureRatingActivity;
+import chipmunk.unlimited.feedback.ScrollToRefreshListView.*;
 
 /**
  * Fragment containing a list view which displays 
@@ -26,12 +25,13 @@ import chipmunk.unlimited.feedback.rating.LectureRatingActivity;
  * does.
  */
 public class FeedFragment extends UpdateableFragment
-        implements Feed.FeedListener {
+        implements Feed.FeedListener, OnScrollToRefreshListener {
 	private static final String TAG = "FeedFragment";
 
     private Feed mFeed;
 	private FeedAdapter mFeedAdapter;
-	private ListView mListView;
+	private ScrollToRefreshListView mRefreshListView;
+    private boolean mLoadingMore;
 
 	
 	@Override
@@ -41,7 +41,8 @@ public class FeedFragment extends UpdateableFragment
 	}
     @Override
     public void onActivityCreated(Bundle bundle) {
-        mListView = getListView();
+        mRefreshListView = (ScrollToRefreshListView)getListView();
+        mRefreshListView.setOnScrollToRefreshListener(this);
 
         /* Create the Feed */
         if (mFeed == null) {
@@ -52,7 +53,7 @@ public class FeedFragment extends UpdateableFragment
         mFeedAdapter = new FeedAdapter(getActivity());
         mFeedAdapter.setFeedState(mFeed.getState());
 
-        mListView.setAdapter(mFeedAdapter);
+        mRefreshListView.setAdapter(mFeedAdapter);
 
         refreshContents();
         super.onActivityCreated(bundle);
@@ -72,9 +73,30 @@ public class FeedFragment extends UpdateableFragment
         mFeed.update(0, 25);
 	}
     @Override
+    public void onScrollRefreshBegin(ScrollToRefreshListView refreshView) {
+        int lastId = mFeedAdapter.getLastReviewID();
+
+        if (lastId >= 0) {
+            mLoadingMore = true;
+            mFeed.loadMore(lastId, 25);
+            getPullToRefreshLayout().setRefreshing(true);
+        } else {
+            // Nothing to be done
+            refreshView.onRefreshComplete();
+        }
+    }
+    @Override
     public void onFeedUpdate(List<LectureReviewItem> items) {
-        mFeedAdapter.setReviewItems(items);
-        onUpdateCompleted();
+        if (mLoadingMore) {
+            mFeedAdapter.appendReviewItems(items);
+            mRefreshListView.onRefreshComplete();
+            getPullToRefreshLayout().setRefreshing(false);
+        } else {
+            mFeedAdapter.setReviewItems(items);
+            onUpdateCompleted();
+        }
+
+        mLoadingMore = false;
     }
 
 

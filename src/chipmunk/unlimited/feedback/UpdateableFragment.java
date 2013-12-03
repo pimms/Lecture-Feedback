@@ -50,6 +50,11 @@ public abstract class UpdateableFragment extends ListFragment
     }
 
 
+    public PullToRefreshLayout getPullToRefreshLayout() {
+        return mPtrLayout;
+    }
+
+
     protected void onFragmentInitialized() {
         mInitialized = true;
 
