@@ -17,7 +17,6 @@ public class ScrollToRefreshListView extends ListView implements AbsListView.OnS
         public void onScrollRefreshBegin(ScrollToRefreshListView view);
     }
 
-    private View mProgressView;
     private int mScrollState;
     private OnScrollToRefreshListener mListener;
     private boolean mIsRefreshing;
@@ -45,19 +44,6 @@ public class ScrollToRefreshListView extends ListView implements AbsListView.OnS
 
     private void init() {
         setOnScrollListener(this);
-
-        ViewGroup vg = (ViewGroup)getParent();
-        Context context = getContext();
-
-        if (vg != null && context != null) {
-            LayoutInflater inflater = (LayoutInflater)context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            mProgressView = inflater.inflate(R.layout.progressbar_view, null);
-            mProgressView.setVisibility(View.GONE);
-            vg.addView(mProgressView);
-        } else {
-            Log.e(TAG, "No progress view will be created");
-        }
     }
 
     public void setOnScrollToRefreshListener(OnScrollToRefreshListener listener) {
@@ -67,10 +53,6 @@ public class ScrollToRefreshListView extends ListView implements AbsListView.OnS
 
     private void onRefreshBegin() {
         mIsRefreshing = true;
-        if (mProgressView != null) {
-            mProgressView.setVisibility(View.VISIBLE);
-        }
-
 
         if (mListener != null) {
             mListener.onScrollRefreshBegin(this);
@@ -79,10 +61,6 @@ public class ScrollToRefreshListView extends ListView implements AbsListView.OnS
 
     public void onRefreshComplete() {
         mIsRefreshing = false;
-
-        if (mProgressView != null) {
-            mProgressView.setVisibility(View.GONE);
-        }
     }
 
     @Override
