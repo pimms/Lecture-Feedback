@@ -72,7 +72,6 @@ public class FeedFragment extends UpdateableFragment
     public void doRefresh() {
         mFeed.update(0, 25);
 	}
-
     @Override
     public void onFeedUpdate(List<LectureReviewItem> items) {
         mFeedAdapter.setReviewItems(items);
@@ -87,7 +86,6 @@ public class FeedFragment extends UpdateableFragment
             startReadOnlyLectureRatingActivity(position);
         }
 	}
-
     /**
      * Start an instance of the LectureRatingActivity in a read-only state.
      */
