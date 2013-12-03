@@ -3,6 +3,7 @@ package chipmunk.unlimited.feedback;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListView;
 
@@ -15,6 +16,7 @@ public class ScrollToRefreshListView extends ListView implements AbsListView.OnS
     private int mScrollState;
     private OnScrollToRefreshListener mListener;
     private boolean mIsRefreshing;
+    private boolean mAtBottom;
 
 
     public ScrollToRefreshListView(Context context, AttributeSet attrs, int defStyle) {
@@ -34,6 +36,10 @@ public class ScrollToRefreshListView extends ListView implements AbsListView.OnS
 
     private void init() {
         setOnScrollListener(this);
+
+
+        ViewGroup vg = (ViewGroup)getParent();
+
     }
 
     public void setOnScrollToRefreshListener(OnScrollToRefreshListener listener) {
@@ -63,11 +69,15 @@ public class ScrollToRefreshListView extends ListView implements AbsListView.OnS
     }
     @Override
     public void onScroll (AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-        if (view == this && !mIsRefreshing) {
-            if (firstVisibleItem + visibleItemCount == totalItemCount &&
-                mScrollState == SCROLL_STATE_TOUCH_SCROLL) {
-                if (mListener != null) {
-                    onRefreshBegin();
+        if (view == this) {
+            boolean wasAtBottom = mAtBottom;
+            mAtBottom = (firstVisibleItem + visibleItemCount == totalItemCount);
+
+            if (!mIsRefreshing && !wasAtBottom && mAtBottom) {
+                if (mScrollState != SCROLL_STATE_IDLE) {
+                    if (mListener != null) {
+                        onRefreshBegin();
+                    }
                 }
             }
         }

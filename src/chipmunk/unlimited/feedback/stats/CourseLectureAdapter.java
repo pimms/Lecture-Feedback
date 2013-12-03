@@ -68,8 +68,8 @@ public class CourseLectureAdapter extends BaseAdapter implements GetLectureVotes
     }
 
     private View getLoadingView(View view) {
-        if (view == null || view.getId() != R.layout.list_item_loading) {
-            view = mInflater.inflate(R.layout.list_item_loading, null);
+        if (view == null || view.getId() != R.layout.progressbar_view) {
+            view = mInflater.inflate(R.layout.progressbar_view, null);
         }
 
         return view;
