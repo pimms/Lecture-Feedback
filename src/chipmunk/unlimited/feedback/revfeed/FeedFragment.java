@@ -4,15 +4,11 @@ import java.util.List;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 
 import chipmunk.unlimited.feedback.LectureReviewItem;
 import chipmunk.unlimited.feedback.ScrollToRefreshListView;
@@ -34,7 +30,7 @@ public class FeedFragment extends UpdateableFragment
 
     private Feed mFeed;
 	private FeedAdapter mFeedAdapter;
-	private ListView mListView;
+	private ScrollToRefreshListView mRefreshListView;
     private boolean mLoadingMore;
 
 	
@@ -45,7 +41,7 @@ public class FeedFragment extends UpdateableFragment
 	}
     @Override
     public void onActivityCreated(Bundle bundle) {
-        mListView = getListView();
+        mRefreshListView = (ScrollToRefreshListView)getListView();
 
         /* Create the Feed */
         if (mFeed == null) {
@@ -56,7 +52,7 @@ public class FeedFragment extends UpdateableFragment
         mFeedAdapter = new FeedAdapter(getActivity());
         mFeedAdapter.setFeedState(mFeed.getState());
 
-        mListView.setAdapter(mFeedAdapter);
+        mRefreshListView.setAdapter(mFeedAdapter);
 
         refreshContents();
         super.onActivityCreated(bundle);
@@ -76,14 +72,22 @@ public class FeedFragment extends UpdateableFragment
         mFeed.update(0, 25);
 	}
     @Override
-    public void onScrollRefreshBegin(ScrollToRefreshListView view) {
-        mLoadingMore = true;
+    public void onScrollRefreshBegin(ScrollToRefreshListView refreshView) {
+        int lastId = mFeedAdapter.getLastReviewID();
 
+        if (lastId >= 0) {
+            mLoadingMore = true;
+            mFeed.loadMore(lastId, 25);
+        } else {
+            // Nothing to be done
+            refreshView.onRefreshComplete();
+        }
     }
     @Override
     public void onFeedUpdate(List<LectureReviewItem> items) {
         if (mLoadingMore) {
             Log.d(TAG, "Loaded " + items.size() + " more, dunno what to do now yo");
+            mRefreshListView.onRefreshComplete();
         } else {
             mFeedAdapter.setReviewItems(items);
             onUpdateCompleted();
