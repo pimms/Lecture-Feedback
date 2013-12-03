@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import chipmunk.unlimited.feedback.R;
@@ -88,7 +89,10 @@ public class TopCourseAdapter extends BaseAdapter
         mLoadingMore = true;
 
         WebAPI webApi = new WebAPI();
-        webApi.getTopCourses(this, mCourseVotes.size(), 25);
+        webApi.getTopCourses(
+                this,
+                0,   //mCourseVotes.size(),
+                25);
     }
 
 
@@ -104,7 +108,22 @@ public class TopCourseAdapter extends BaseAdapter
                 }
             }
         } else {
-            mCourseVotes = courses;
+            mCourseVotes = new ArrayList<CourseVote>();
+
+            for (CourseVote cv : courses) {
+                mCourseVotes.add(cv);
+                mCourseVotes.add(cv);
+                mCourseVotes.add(cv);
+                mCourseVotes.add(cv);
+                mCourseVotes.add(cv);
+                mCourseVotes.add(cv);
+                mCourseVotes.add(cv);
+                mCourseVotes.add(cv);
+                mCourseVotes.add(cv);
+                mCourseVotes.add(cv);
+                mCourseVotes.add(cv);
+                mCourseVotes.add(cv);
+            }
         }
 
         notifyDataSetChanged();

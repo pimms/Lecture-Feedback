@@ -31,6 +31,9 @@ public class TopCourseActivity extends ListActivity
         getListView().setAdapter(mAdapter);
 
         getActionBar().setTitle(getResources().getString(R.string.activity_top_course_title));
+
+        mRefreshListView = (ScrollToRefreshListView)getListView();
+        mRefreshListView.setOnScrollToRefreshListener(this);
     }
 
     @Override
