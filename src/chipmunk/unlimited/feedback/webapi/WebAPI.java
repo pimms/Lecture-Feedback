@@ -189,6 +189,35 @@ public class WebAPI {
     /**
      * Method using the web-API call "getFeed.php". The returned set of
      * data is a reverse-chronological list of reviews, and is based
+     * on ONE or MULTIPLE courses. The "first" parameter is ignored, and all
+     * returned items will have a lower ID than "lastId".
+     *
+     * @param callback
+     * The object to receive the finish-notifications.
+     *
+     * @param subscriptions
+     * The list of subscription items to be included in the result set.
+     *
+     * @param first
+     * Value is irrelevant as it is ignored by the web API.
+     *
+     * @param count
+     * The maximum number of items to be returned.
+     *
+     * @param lastId
+     * The ID of the last review the web API should ignore.
+     */
+    public void getFeed(GetFeedCallback callback,
+                        List<SubscriptionItem> subscriptions,
+                        int first, int count, int lastId)
+    {
+        GetFeed getFeed = new GetFeed(callback);
+        getFeed.apiCall(API_URL, subscriptions, first, count, lastId);
+    }
+
+    /**
+     * Method using the web-API call "getFeed.php". The returned set of
+     * data is a reverse-chronological list of reviews, and is based
      * on a SINGLE lecture.
      *
      * @param callback
@@ -207,6 +236,33 @@ public class WebAPI {
                         String lectureHash, int first, int count) {
         GetFeed getFeed = new GetFeed(callback);
         getFeed.apiCall(API_URL, lectureHash, first, count, -1);
+    }
+
+    /**
+     * Method using the web-API call "getFeed.php". The returned set of
+     * data is a reverse-chronological list of reviews, and is based
+     * on a SINGLE lecture. The "first" parameter is ignored, and all
+     * returned items will have a lower ID than "lastId".
+     *
+     * @param callback
+     * The object to receive the finish-notifications.
+     *
+     * @param lectureHash
+     * The hash of the lecture from which to retrieve a feed.
+     *
+     * @param first
+     * Value is irrelevant as it is ignored by the web API.
+     *
+     * @param count
+     * The maximum number of items to be returned.
+     *
+     * @param lastId
+     * The ID of the last review the web API should ignore.
+     */
+    public void getFeed(GetFeedCallback callback, String lectureHash,
+                        int first, int count, int lastId) {
+        GetFeed getFeed = new GetFeed(callback);
+        getFeed.apiCall(API_URL, lectureHash, first, count, lastId);
     }
 
 
