@@ -48,7 +48,7 @@ public class FeedFragment extends UpdateableFragment
             mFeed = new Feed(getActivity(), this);
         }
 
-        /* Create the adapter and adjust it to mFeed's state */
+        /* Create the adapter and adjust it to mFeeds state */
         mFeedAdapter = new FeedAdapter(getActivity());
         mFeedAdapter.setFeedState(mFeed.getState());
 
