@@ -17,12 +17,21 @@ import chipmunk.unlimited.feedback.webapi.WebAPI.*;
 
 public class TopCourseAdapter extends BaseAdapter
         implements GetTopCoursesCallback {
+    /**
+     * Notification interface for when the adapter has retrieved
+     * more CourseVote items from the web API.
+     */
+    public interface OnTopCourseAdapterUpdateListener {
+        public void onTopCourseAdapterUpdateComplete(TopCourseAdapter tpa);
+    }
+
+
     private static final String TAG = "TopCourseAdapter";
 
 
     private LayoutInflater mInflater;
     private Context mContext;
-
+    private OnTopCourseAdapterUpdateListener mListener;
     private List<CourseVote> mCourseVotes;
     private boolean mLoadingMore;
 
@@ -31,6 +40,10 @@ public class TopCourseAdapter extends BaseAdapter
         mContext = context;
         mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         reloadCourses();
+    }
+
+    public void setCallback(OnTopCourseAdapterUpdateListener listener) {
+        mListener = listener;
     }
 
 
@@ -128,10 +141,18 @@ public class TopCourseAdapter extends BaseAdapter
 
         notifyDataSetChanged();
         mLoadingMore = false;
+
+        if (mListener != null) {
+            mListener.onTopCourseAdapterUpdateComplete(this);
+        }
     }
     @Override
     public void onGetTopCoursesFailure(String errorMessage) {
         mCourseVotes = null;
         mLoadingMore = false;
+
+        if (mListener != null) {
+            mListener.onTopCourseAdapterUpdateComplete(this);
+        }
     }
 }

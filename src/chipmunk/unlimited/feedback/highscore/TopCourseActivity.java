@@ -17,7 +17,8 @@ import chipmunk.unlimited.feedback.webapi.WebAPI.*;
  * order.
  */
 public class TopCourseActivity extends ListActivity
-        implements ScrollToRefreshListView.OnScrollToRefreshListener {
+        implements  ScrollToRefreshListView.OnScrollToRefreshListener,
+                    TopCourseAdapter.OnTopCourseAdapterUpdateListener {
     TopCourseAdapter mAdapter;
     ScrollToRefreshListView mRefreshListView;
 
@@ -28,6 +29,7 @@ public class TopCourseActivity extends ListActivity
         setContentView(R.layout.activity_scroll2refresh_listview);
 
         mAdapter = new TopCourseAdapter(this);
+        mAdapter.setCallback(this);
         getListView().setAdapter(mAdapter);
 
         getActionBar().setTitle(getResources().getString(R.string.activity_top_course_title));
@@ -50,5 +52,9 @@ public class TopCourseActivity extends ListActivity
     @Override
     public void onScrollRefreshBegin(ScrollToRefreshListView view) {
         mAdapter.loadMoreCourses();
+    }
+    @Override
+    public void onTopCourseAdapterUpdateComplete(TopCourseAdapter tpa) {
+        mRefreshListView.onRefreshComplete();
     }
 }
