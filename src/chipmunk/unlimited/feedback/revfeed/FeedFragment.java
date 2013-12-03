@@ -87,7 +87,7 @@ public class FeedFragment extends UpdateableFragment
     @Override
     public void onFeedUpdate(List<LectureReviewItem> items) {
         if (mLoadingMore) {
-            Log.d(TAG, "Loaded " + items.size() + " more, dunno what to do now yo");
+            mFeedAdapter.appendReviewItems(items);
             mRefreshListView.onRefreshComplete();
         } else {
             mFeedAdapter.setReviewItems(items);
