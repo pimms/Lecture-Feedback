@@ -5,6 +5,7 @@ import java.util.List;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +15,11 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 
 import chipmunk.unlimited.feedback.LectureReviewItem;
+import chipmunk.unlimited.feedback.ScrollToRefreshListView;
 import chipmunk.unlimited.feedback.UpdateableFragment;
 import chipmunk.unlimited.feedback.R;
 import chipmunk.unlimited.feedback.rating.LectureRatingActivity;
+import chipmunk.unlimited.feedback.ScrollToRefreshListView.*;
 
 /**
  * Fragment containing a list view which displays 
@@ -26,12 +29,13 @@ import chipmunk.unlimited.feedback.rating.LectureRatingActivity;
  * does.
  */
 public class FeedFragment extends UpdateableFragment
-        implements Feed.FeedListener {
+        implements Feed.FeedListener, OnScrollToRefreshListener {
 	private static final String TAG = "FeedFragment";
 
     private Feed mFeed;
 	private FeedAdapter mFeedAdapter;
 	private ListView mListView;
+    private boolean mLoadingMore;
 
 	
 	@Override
@@ -71,11 +75,21 @@ public class FeedFragment extends UpdateableFragment
     public void doRefresh() {
         mFeed.update(0, 25);
 	}
+    @Override
+    public void onScrollRefreshBegin(ScrollToRefreshListView view) {
+        mLoadingMore = true;
 
+    }
     @Override
     public void onFeedUpdate(List<LectureReviewItem> items) {
-        mFeedAdapter.setReviewItems(items);
-        onUpdateCompleted();
+        if (mLoadingMore) {
+            Log.d(TAG, "Loaded " + items.size() + " more, dunno what to do now yo");
+        } else {
+            mFeedAdapter.setReviewItems(items);
+            onUpdateCompleted();
+        }
+
+        mLoadingMore = false;
     }
 
 
