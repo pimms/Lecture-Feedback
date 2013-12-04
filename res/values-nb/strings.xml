@@ -14,6 +14,15 @@
     <string name="clone_successful_toast">Omtalen vil regnes som din</string>
     <string name="submit_dialog_wait_text">Laster opp...</string>
 
+    <!-- ABOUT -->
+    <string name="about_title">Om</string>
+    <string name="about_back">Tilbake</string>
+    <string name="about_description">
+        HiG Lecture Review\n
+        \nUtviklet for IMT3672 av Joakim Stien, Knut Remi Løvli og Eskil Skotvold.\n
+        \nHar du en tilbakemelding eller har du funnet en bug? Send det til joakim.stien@gmail.com
+    </string>
+
 
     <!-- DATES -->
     <string name="format_date_today_sep">EEEE, d. MMM</string>
@@ -22,7 +31,6 @@
 
 
     <!-- Main Activity -->
-    <string name="app_name">HIG Lecture Review</string>
     <string name="action_refresh">Last inn på nytt</string>
     <string name="action_top_courses">Toppfag</string>
     <string name="action_subscriptions">Mine fag</string>
@@ -74,7 +82,7 @@
     <!-- Subscription Fragment -->
     <string name="frag_sub_title">Dine fag</string>
     <string name="frag_sub_add">Legg til flere</string>
-    <string name="frag_sub_back">Avbryg</string>
+    <string name="frag_sub_back">Avbryt</string>
     <string name="frag_sub_toast_removed">Fjernet fag: </string>
 
     <!-- Add Subscription Fragment -->

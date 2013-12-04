@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- APPLICATION INFORMATION -->
+    <string name="app_name">HIG Lecture Review</string>
+    <string name="app_version">1.0 RC</string>
+
     <!-- GENERAL -->
     <string name="clone_count_singular">clone</string>
     <string name="clone_count_plural">clones</string>
@@ -14,6 +18,15 @@
     <string name="clone_successful_toast">This review will be treated as your own</string>
     <string name="submit_dialog_wait_text">Submitting...</string>
 
+    <!-- ABOUT -->
+    <string name="about_title">About</string>
+    <string name="about_back">Back</string>
+    <string name="about_description">
+        HiG Lecture Review\n
+        \nDeveloped for IMT3672 by Joakim Stien, Knut Remi Løvli and Eskil Skotvold.\n
+        \nGot feedback or found a bug? Mail your thoughts to joakim.stien@gmail.com
+    </string>
+
 
     <!-- DATES -->
     <string name="format_date_today_sep">EEEE, MMM d</string>
@@ -22,7 +35,6 @@
 
 
     <!-- Main Activity -->
-    <string name="app_name">HIG Lecture Review</string>
     <string name="action_refresh">Refresh</string>
     <string name="action_top_courses">Top courses</string>
     <string name="action_subscriptions">Subscriptions</string>

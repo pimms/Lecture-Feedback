@@ -7,8 +7,10 @@ import chipmunk.unlimited.feedback.highscore.TopCourseActivity;
 import chipmunk.unlimited.feedback.stats.StatisticsFragment;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -117,6 +119,9 @@ public class MainActivity extends FragmentActivity implements
             case R.id.action_topcourses:
                 showTopCoursesActivity();
                 break;
+            case R.id.action_main_about:
+                showAboutDialog();
+                break;
 		}
 		
 		return true;
@@ -126,13 +131,9 @@ public class MainActivity extends FragmentActivity implements
 		mViewPager.setCurrentItem(tab.getPosition());
 	}
 	@Override
-	public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-
-	}
+	public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {}
 	@Override
-	public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-
-	}
+	public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {}
 
 
     private void showSubscriptionFragment() {
@@ -177,6 +178,17 @@ public class MainActivity extends FragmentActivity implements
     private void showTopCoursesActivity() {
         Intent intent = new Intent(this, TopCourseActivity.class);
         startActivity(intent);
+    }
+
+    private void showAboutDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        Resources r = getResources();
+
+        builder.setTitle(r.getString(R.string.about_title));
+        builder.setMessage(r.getString(R.string.about_description));
+        builder.setNegativeButton(r.getString(R.string.about_back), null);
+
+        builder.show();
     }
 
 
