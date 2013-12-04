@@ -1,5 +1,6 @@
 package chipmunk.unlimited.feedback;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -34,8 +35,11 @@ public class LaunchPrompt {
     }
 
 
-    private void displayPrompt() {
 
+    private void displayPrompt() {
+        if (shouldDisplayPrompt()) {
+            getAlertDialogBuilder().show();
+        }
     }
 
     private boolean shouldDisplayPrompt() {
@@ -64,5 +68,22 @@ public class LaunchPrompt {
 
         SharedPreferences.Editor editor = preferences.edit();
         editor.putInt(SHPREF_KEY_LAUNCH_COUNT, count + 1);
+    }
+
+    private AlertDialog.Builder getAlertDialogBuilder() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+
+
+
+        return builder;
+    }
+
+
+    private void neverAskAgain() {
+        // :(
+    }
+
+    private void goToMarketplace() {
+
     }
 }

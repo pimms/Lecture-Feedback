@@ -97,4 +97,11 @@
     <string name="frag_subadd_notext">Cannot search for that!</string>
     <string name="frag_subadd_invalid">Letters and numbers only, please</string>
 
+    <!-- Google Play Rating Promp -->
+    <string name="rating_prompt_title">Review us!</string>
+    <string name="rating_prompt_desc">You've reviewed %i lectures - want to give us a rating?</string>
+    <string name="rating_prompt_not_now">Not now</string>
+    <string name="rating_prompt_never">Don't ask again</string>
+    <string name="rating_prompt_yes">Yes!</string>
+
 </resources>

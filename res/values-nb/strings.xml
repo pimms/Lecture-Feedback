@@ -94,4 +94,11 @@
     <string name="frag_subadd_notext">Kan ikke søke på det!</string>
     <string name="frag_subadd_invalid">Kun tall og bokstaver, takk</string>
 
+    <!-- Google Play Rating Promp -->
+    <string name="rating_prompt_title">Vurder applikasjonen</string>
+    <string name="rating_prompt_desc">Du har vurdert %i forelesninger - hva med å vurdere oss?</string>
+    <string name="rating_prompt_not_now">Ikke nå</string>
+    <string name="rating_prompt_never">Aldri spør igjen</string>
+    <string name="rating_prompt_yes">Ja!</string>
+
 </resources>
