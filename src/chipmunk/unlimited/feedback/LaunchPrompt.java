@@ -14,7 +14,9 @@ import chipmunk.unlimited.feedback.database.ReviewedLectureDatabase;
 
 /**
  * Class tracking the number of times the
- * application has been launched.
+ * application has been launched. After a certain number
+ * of times, a dialog prompting the user to rate the
+ * application will be displayed.
  */
 public class LaunchPrompt {
     private static final String SHPREF_LAUNCH_TRACKER = "launchTracker";
