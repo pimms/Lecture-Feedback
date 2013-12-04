@@ -30,10 +30,26 @@ public class LaunchPrompt {
     public void onLaunch() {
         SharedPreferences shpref = mContext.getSharedPreferences(SHPREF_LAUNCH_TRACKER, 0);
         increment(shpref);
+        displayPrompt();
     }
 
 
-    public int getLaunchCount() {
+    private void displayPrompt() {
+
+    }
+
+    private boolean shouldDisplayPrompt() {
+        int count = getLaunchCount();
+
+        if (count >= PROMPT_INITIAL_COUNT) {
+            count -= PROMPT_INITIAL_COUNT;
+            return (count % PROMPT_INTERVAL) == 0;
+        }
+
+        return false;
+    }
+
+    private int getLaunchCount() {
         SharedPreferences shpref = mContext.getSharedPreferences(SHPREF_LAUNCH_TRACKER, 0);
 
         if (shpref.getBoolean(SHPREF_KEY_NEVER_RATE, false)) {
