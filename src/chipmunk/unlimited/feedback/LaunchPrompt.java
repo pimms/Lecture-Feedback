@@ -39,9 +39,26 @@ public class LaunchPrompt {
         displayPrompt();
     }
 
+    public void onPause() {
+        decrement();
+    }
+
 
     public SharedPreferences getSharedPreferences() {
         return mContext.getSharedPreferences(SHPREF_LAUNCH_TRACKER, 0);
+    }
+
+
+    private void increment() {
+        SharedPreferences pref = getSharedPreferences();
+        int count = pref.getInt(SHPREF_KEY_LAUNCH_COUNT, 0);
+        pref.edit().putInt(SHPREF_KEY_LAUNCH_COUNT, count + 1).commit();
+    }
+
+    private void decrement() {
+        SharedPreferences pref = getSharedPreferences();
+        int count = pref.getInt(SHPREF_KEY_LAUNCH_COUNT, 0);
+        pref.edit().putInt(SHPREF_KEY_LAUNCH_COUNT, count - 1).commit();
     }
 
 
@@ -70,14 +87,6 @@ public class LaunchPrompt {
         }
 
         return shpref.getInt(SHPREF_KEY_LAUNCH_COUNT, 0);
-    }
-
-    private void increment() {
-        SharedPreferences preferences = getSharedPreferences();
-        int count = preferences.getInt(SHPREF_KEY_LAUNCH_COUNT, 0);
-
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putInt(SHPREF_KEY_LAUNCH_COUNT, count + 1);
     }
 
     private AlertDialog.Builder getAlertDialogBuilder() {
