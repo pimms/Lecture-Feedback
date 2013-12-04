@@ -22,10 +22,10 @@ public class LaunchPrompt {
     public static final String SHPREF_KEY_NEVER_RATE = "never_rate";
 
     /* Initially prompt the user at the 20th launch */
-    private static final int PROMPT_INITIAL_COUNT = 0;
+    private static final int PROMPT_INITIAL_COUNT = 20;
 
     /* After the 20th launch, prompt every 5 launches */
-    private static final int PROMPT_INTERVAL = 1;
+    private static final int PROMPT_INTERVAL = 5;
 
 
     private Context mContext;
