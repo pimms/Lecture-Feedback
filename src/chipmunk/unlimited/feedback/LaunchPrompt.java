@@ -10,6 +10,8 @@ import android.net.Uri;
 
 import java.util.Date;
 
+import chipmunk.unlimited.feedback.database.ReviewedLectureDatabase;
+
 /**
  * Class tracking the number of times the
  * application has been launched.
@@ -48,6 +50,23 @@ public class LaunchPrompt {
         return mContext.getSharedPreferences(SHPREF_LAUNCH_TRACKER, 0);
     }
 
+    private int getLaunchCount() {
+        SharedPreferences shpref = mContext.getSharedPreferences(SHPREF_LAUNCH_TRACKER, 0);
+
+        if (shpref.getBoolean(SHPREF_KEY_NEVER_RATE, false)) {
+            return 0;
+        }
+
+        return shpref.getInt(SHPREF_KEY_LAUNCH_COUNT, 0);
+    }
+
+    private String getAlertMessage() {
+        ReviewedLectureDatabase db = new ReviewedLectureDatabase(mContext);
+
+        String message = mContext.getResources().getString(R.string.rating_prompt_desc);
+        return String.format(message, db.getNumberOfItems());
+    }
+
 
     private void increment() {
         SharedPreferences pref = getSharedPreferences();
@@ -83,25 +102,14 @@ public class LaunchPrompt {
         return false;
     }
 
-    private int getLaunchCount() {
-        SharedPreferences shpref = mContext.getSharedPreferences(SHPREF_LAUNCH_TRACKER, 0);
-
-        if (shpref.getBoolean(SHPREF_KEY_NEVER_RATE, false)) {
-            return 0;
-        }
-
-        return shpref.getInt(SHPREF_KEY_LAUNCH_COUNT, 0);
-    }
-
     private AlertDialog.Builder getAlertDialogBuilder() {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         Resources r = mContext.getResources();
 
-        String message = r.getString(R.string.rating_prompt_desc);
-        message = String.format(message, 15);
+
 
         builder.setTitle(r.getString(R.string.rating_prompt_title));
-        builder.setMessage(r.getString(R.string.rating_prompt_desc));
+        builder.setMessage(getAlertMessage());
         builder.setNeutralButton(r.getString(R.string.rating_prompt_not_now), null);
 
         /* Marketplace button */
