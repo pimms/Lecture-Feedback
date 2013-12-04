@@ -2,7 +2,13 @@ package chipmunk.unlimited.feedback;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.net.Uri;
+
+import java.util.Date;
 
 /**
  * Class tracking the number of times the
@@ -10,8 +16,8 @@ import android.content.SharedPreferences;
  */
 public class LaunchPrompt {
     private static final String SHPREF_LAUNCH_TRACKER = "launchTracker";
-    private static final String SHPREF_KEY_LAUNCH_COUNT = "launch_count";
-    private static final String SHPREF_KEY_NEVER_RATE = "never_rate";
+    public static final String SHPREF_KEY_LAUNCH_COUNT = "launch_count";
+    public static final String SHPREF_KEY_NEVER_RATE = "never_rate";
 
     /* Initially prompt the user at the 20th launch */
     private static final int PROMPT_INITIAL_COUNT = 20;
@@ -29,11 +35,14 @@ public class LaunchPrompt {
 
 
     public void onLaunch() {
-        SharedPreferences shpref = mContext.getSharedPreferences(SHPREF_LAUNCH_TRACKER, 0);
-        increment(shpref);
+        increment();
         displayPrompt();
     }
 
+
+    public SharedPreferences getSharedPreferences() {
+        return mContext.getSharedPreferences(SHPREF_LAUNCH_TRACKER, 0);
+    }
 
 
     private void displayPrompt() {
@@ -63,7 +72,8 @@ public class LaunchPrompt {
         return shpref.getInt(SHPREF_KEY_LAUNCH_COUNT, 0);
     }
 
-    private void increment(SharedPreferences preferences) {
+    private void increment() {
+        SharedPreferences preferences = getSharedPreferences();
         int count = preferences.getInt(SHPREF_KEY_LAUNCH_COUNT, 0);
 
         SharedPreferences.Editor editor = preferences.edit();
@@ -72,18 +82,44 @@ public class LaunchPrompt {
 
     private AlertDialog.Builder getAlertDialogBuilder() {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        Resources r = mContext.getResources();
 
+        builder.setTitle(r.getString(R.string.rating_prompt_title));
+        builder.setMessage(r.getString(R.string.rating_prompt_desc));
+        builder.setNeutralButton(r.getString(R.string.rating_prompt_not_now), null);
 
+        /* Marketplace button */
+        builder.setPositiveButton(r.getString(R.string.rating_prompt_yes),
+            new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    goToMarketplace();
+                }
+            });
+
+        /* Never ask me again button */
+        builder.setNegativeButton(r.getString(R.string.rating_prompt_never),
+            new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    neverAskAgain();
+                }
+            });
 
         return builder;
     }
 
 
     private void neverAskAgain() {
-        // :(
+        SharedPreferences.Editor editor = getSharedPreferences().edit();
+        editor.putBoolean(SHPREF_KEY_NEVER_RATE, true);
     }
 
     private void goToMarketplace() {
+        neverAskAgain();
 
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse("market://details?id=chipmunk.unlimited.feedback"));
+        mContext.startActivity(intent);
     }
 }
