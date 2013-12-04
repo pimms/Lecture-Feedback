@@ -26,6 +26,7 @@
     <string name="action_refresh">Last inn på nytt</string>
     <string name="action_top_courses">Toppfag</string>
     <string name="action_subscriptions">Mine fag</string>
+    <string name="action_about">Om</string>
 
     <string name="main_tab_today">Dagen i dag</string>
     <string name="main_tab_feed">Omtalelser</string>

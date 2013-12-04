@@ -26,6 +26,7 @@
     <string name="action_refresh">Refresh</string>
     <string name="action_top_courses">Top courses</string>
     <string name="action_subscriptions">Subscriptions</string>
+    <string name="action_about">About</string>
 
     <string name="main_tab_today">Review today\'s lectures</string>
     <string name="main_tab_feed">Classmate\'s reviews</string>
