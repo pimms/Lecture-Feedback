@@ -67,12 +67,14 @@ public abstract class UpdateableFragment extends ListFragment
     public final void refreshContents() {
         if (mInitialized) {
             doRefresh();
+            mPtrLayout.setRefreshing(true);
         } else {
             mScheduledUpdate = true;
         }
     }
 
     public final void onUpdateCompleted() {
+        mPtrLayout.setRefreshing(false);
         mPtrLayout.setRefreshComplete();
     }
 
