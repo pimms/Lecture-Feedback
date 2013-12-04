@@ -20,10 +20,10 @@ public class LaunchPrompt {
     public static final String SHPREF_KEY_NEVER_RATE = "never_rate";
 
     /* Initially prompt the user at the 20th launch */
-    private static final int PROMPT_INITIAL_COUNT = 3;
+    private static final int PROMPT_INITIAL_COUNT = 0;
 
     /* After the 20th launch, prompt every 5 launches */
-    private static final int PROMPT_INTERVAL = 2;
+    private static final int PROMPT_INTERVAL = 1;
 
 
     private Context mContext;
@@ -73,7 +73,11 @@ public class LaunchPrompt {
 
         if (count >= PROMPT_INITIAL_COUNT) {
             count -= PROMPT_INITIAL_COUNT;
-            return (count % PROMPT_INTERVAL) == 0;
+            if ((count % PROMPT_INTERVAL) == 0) {
+                SharedPreferences pref = getSharedPreferences();
+                boolean neverRate = pref.getBoolean(SHPREF_KEY_NEVER_RATE, false);
+                return !neverRate;
+            }
         }
 
         return false;
@@ -92,6 +96,9 @@ public class LaunchPrompt {
     private AlertDialog.Builder getAlertDialogBuilder() {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         Resources r = mContext.getResources();
+
+        String message = r.getString(R.string.rating_prompt_desc);
+        message = String.format(message, 15);
 
         builder.setTitle(r.getString(R.string.rating_prompt_title));
         builder.setMessage(r.getString(R.string.rating_prompt_desc));
@@ -121,7 +128,7 @@ public class LaunchPrompt {
 
     private void neverAskAgain() {
         SharedPreferences.Editor editor = getSharedPreferences().edit();
-        editor.putBoolean(SHPREF_KEY_NEVER_RATE, true);
+        editor.putBoolean(SHPREF_KEY_NEVER_RATE, true).commit();
     }
 
     private void goToMarketplace() {
