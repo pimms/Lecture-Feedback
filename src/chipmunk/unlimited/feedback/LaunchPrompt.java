@@ -37,13 +37,21 @@ public class LaunchPrompt {
         mContext = context;
     }
 
-
-    public void onLaunch() {
+    /**
+     * Call when the application has started. As "onCreate()" is called on
+     * Activities when the application launches AND when the activity is returned
+     * to from another activity, call "onActivityPause()" when the application is
+     * NOT terminating.
+     */
+    public void onActivityCreate() {
         increment();
         displayPrompt();
     }
 
-    public void onPause() {
+    /**
+     * Decrement non-terminating "onPause()" calls from the launch counter.
+     */
+    public void onActivityPause() {
         decrement();
     }
 
@@ -62,6 +70,10 @@ public class LaunchPrompt {
         return shpref.getInt(SHPREF_KEY_LAUNCH_COUNT, 0);
     }
 
+    /**
+     * @return
+     * The message to be contained in the AlertDialog.
+     */
     private String getAlertMessage() {
         ReviewedLectureDatabase db = new ReviewedLectureDatabase(mContext);
 

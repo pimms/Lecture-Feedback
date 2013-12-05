@@ -48,7 +48,7 @@ public class MainActivity extends FragmentActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main_activity);
 
-        new LaunchPrompt(this).onLaunch();
+        new LaunchPrompt(this).onActivityCreate();
 
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
@@ -103,7 +103,7 @@ public class MainActivity extends FragmentActivity implements
 		mShouldUpdateFragments = true;
 
         if (!isFinishing()) {
-            new LaunchPrompt(this).onPause();
+            new LaunchPrompt(this).onActivityPause();
         }
 	}
 	
