@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import chipmunk.unlimited.feedback.database.SubscriptionDatabase;
 import chipmunk.unlimited.feedback.webapi.WebAPI.*;
 import chipmunk.unlimited.feedback.LectureReviewItem;
 import chipmunk.unlimited.feedback.R;
@@ -25,12 +26,17 @@ public class FeedAdapter extends BaseAdapter implements GetLectureVotesAllCallba
     private static final String TAG = "FeedAdapter";
 
 	private static LayoutInflater sInflater;
+    private static final int LIST_ITEM_TYPE_UNDEFINED = 0;
     private static final int LIST_ITEM_TYPE_LECTURE_SEPARATOR = 1;
     private static final int LIST_ITEM_TYPE_REVIEW = 2;
 	
 	private List<LectureReviewItem> mReviewItems;
     private List<LectureVote> mLectureVotes;
 	private int mFeedState = Feed.STATE_DEFAULT;
+    private Context mContext;
+
+    private boolean mTutorial;
+
 
     /**
      * To differentiate between Lecture-list items and
@@ -41,6 +47,8 @@ public class FeedAdapter extends BaseAdapter implements GetLectureVotesAllCallba
 
 	
 	public FeedAdapter(Context context) {
+        mContext = context;
+
 		sInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mListItemTypes = new ArrayList<Integer>();
 	}
@@ -53,9 +61,26 @@ public class FeedAdapter extends BaseAdapter implements GetLectureVotesAllCallba
 	public void setReviewItems(List<LectureReviewItem> reviewItems) {
 		mReviewItems = reviewItems;
 
-        defineItemOrder();
+        if (mReviewItems != null && mReviewItems.size() != 0) {
+            mTutorial = false;
+            defineItemOrder();
+            notifyDataSetChanged();
+        } else {
+            mTutorial = true;
+        }
+
         notifyDataSetChanged();
 	}
+
+    public void appendReviewItems(List<LectureReviewItem> appendItems) {
+        if (mReviewItems == null) {
+            setReviewItems(appendItems);
+        } else if (appendItems != null) {
+            mReviewItems.addAll(appendItems);
+            defineItemOrder();
+            notifyDataSetChanged();
+        }
+    }
 
 
     /**
@@ -116,7 +141,11 @@ public class FeedAdapter extends BaseAdapter implements GetLectureVotesAllCallba
     }
 
     private int getItemType(int position) {
-        return mListItemTypes.get(position);
+        if (!mTutorial) {
+            return mListItemTypes.get(position);
+        }
+
+        return LIST_ITEM_TYPE_UNDEFINED;
     }
 
     private LectureReviewItem getReviewItem(int position) {
@@ -179,11 +208,15 @@ public class FeedAdapter extends BaseAdapter implements GetLectureVotesAllCallba
 
 	@Override
 	public int getCount() {
-		return mListItemTypes.size();
+        if (!mTutorial) {
+		    return mListItemTypes.size();
+        }
+
+        return 1;
 	}
 	@Override
 	public Object getItem(int position) {
-		if (mListItemTypes.get(position) == LIST_ITEM_TYPE_REVIEW) {
+		if (!mTutorial && mListItemTypes.get(position) == LIST_ITEM_TYPE_REVIEW) {
             return getReviewItem(position);
         }
 
@@ -194,6 +227,19 @@ public class FeedAdapter extends BaseAdapter implements GetLectureVotesAllCallba
 		return position;
 	}
 
+    /**
+     * @return
+     * The ID of the last LectureReviewItem in the list.
+     * A negative value is returned if the list is empty.
+     */
+    public int getLastReviewID() {
+        if (mReviewItems != null && mReviewItems.size() != 0) {
+            return mReviewItems.get(mReviewItems.size()-1).getId();
+        }
+
+        return -1;
+    }
+
 
     @Override
     public boolean areAllItemsEnabled() {
@@ -201,12 +247,20 @@ public class FeedAdapter extends BaseAdapter implements GetLectureVotesAllCallba
     }
     @Override
     public boolean isEnabled(int position) {
-        return mListItemTypes.get(position) != LIST_ITEM_TYPE_LECTURE_SEPARATOR;
+        if (!mTutorial) {
+            return mListItemTypes.get(position) != LIST_ITEM_TYPE_LECTURE_SEPARATOR;
+        }
+
+        return false;
     }
 
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+        if (mTutorial) {
+            return getTutorialView(convertView);
+        }
+
         int type = getItemType(position);
 
         if (type == LIST_ITEM_TYPE_REVIEW) {
@@ -256,16 +310,29 @@ public class FeedAdapter extends BaseAdapter implements GetLectureVotesAllCallba
             vi = sInflater.inflate(R.layout.list_item_review, null);
         }
 
-        TextView tvCourse = (TextView)vi.findViewById(R.id.feed_item_text_view_course);
+        TextView tvCourse   = (TextView)vi.findViewById(R.id.feed_item_text_view_course);
         TextView tvLecturer = (TextView)vi.findViewById(R.id.feed_item_text_view_lecturer);
         TextView tvPositive = (TextView)vi.findViewById(R.id.simple_thumb_text_view_positive);
         TextView tvNegative = (TextView)vi.findViewById(R.id.simple_thumb_text_view_negative);
-        TextView tvComment = (TextView)vi.findViewById(R.id.feed_item_text_view_comment);
+        TextView tvComment  = (TextView)vi.findViewById(R.id.feed_item_text_view_comment);
+        TextView tvClones   = (TextView)vi.findViewById(R.id.feed_item_text_view_clones);
 
         LectureReviewItem item = (LectureReviewItem)getItem(position);
         tvCourse.setText(item.getCourseName());
         tvLecturer.setText(item.getLecturer() + ", " + item.getRoom());
         tvComment.setText(item.getComment());
+
+        if (item.getCloneCount() != 0) {
+            String cloneText;
+            if (item.getCloneCount() == 1) {
+                cloneText = mContext.getResources().getString(R.string.clone_count_singular);
+            } else {
+                cloneText = mContext.getResources().getString(R.string.clone_count_plural);
+            }
+            tvClones.setText("" + item.getCloneCount() + " " + cloneText);
+        } else {
+            tvClones.setVisibility(View.GONE);
+        }
 
         boolean[] ratings = item.getRatings();
         int negative = 0;
@@ -302,6 +369,30 @@ public class FeedAdapter extends BaseAdapter implements GetLectureVotesAllCallba
             tvDate.setText(null);
             tvTime.setText(null);
         }
+    }
+
+    private View getTutorialView(View convertView) {
+        if (convertView == null || convertView.getId() != R.layout.tutorial) {
+            convertView = sInflater.inflate(R.layout.tutorial, null);
+        }
+
+        TextView tvTitle = (TextView)convertView.findViewById(R.id.tutorial_text_view_title);
+        TextView tvDesc  = (TextView)convertView.findViewById(R.id.tutorial_text_view_desc);
+        SubscriptionDatabase db = new SubscriptionDatabase(mContext);
+
+        if (db.getSubscriptionList().size() != 0) {
+            tvTitle.setText(mContext.getResources().getString(
+                    R.string.frag_feed_tutorial_title_no_items));
+            tvDesc.setText(mContext.getResources().getString(
+                    R.string.frag_feed_tutorial_desc_no_items));
+        } else {
+            tvTitle.setText(mContext.getResources().getString(
+                    R.string.frag_feed_tutorial_title_no_subs));
+            tvDesc.setText(mContext.getResources().getString(
+                    R.string.frag_feed_tutorial_desc_no_subs));
+        }
+
+        return convertView;
     }
 
 

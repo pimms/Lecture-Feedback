@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/action_bar_extension">
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:gravity="left"
+            android:maxLines="5"
+            android:id="@+id/tutorial_text_view_title"
+            android:text="TUTORIAL TITLE"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:maxLines="25"
+            android:layout_marginTop="5dp"
+            android:id="@+id/tutorial_text_view_desc"
+            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras volutpat malesuada magna nec consequat. Mauris luctus quam eget libero imperdiet, id accumsan dui fringilla. Donec sed venenatis leo. Aenean a urna quis nunc consequat aliquam eget sit amet massa. Duis non risus quis leo dignissim pharetra."/>
+    </LinearLayout>
+</LinearLayout>

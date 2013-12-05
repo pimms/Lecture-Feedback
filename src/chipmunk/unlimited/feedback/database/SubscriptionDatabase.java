@@ -39,7 +39,7 @@ public class SubscriptionDatabase extends DatabaseWrapper {
 	public static final String[] ALL_COLUMNS = {
 		COLUMN_ID, COLUMN_TE_CODE, COLUMN_HIG_CODE, COLUMN_NAME
 	};
-	
+
 	public static final String TABLE_CREATE = 
 			"CREATE TABLE IF NOT EXISTS "
 			+ TABLE_NAME + " ( "
@@ -49,7 +49,21 @@ public class SubscriptionDatabase extends DatabaseWrapper {
 			+ COLUMN_NAME + " TEXT NOT NULL "
 			+ ");";
 	
-	
+
+    static public boolean hasAnySubscriptions(Context context) {
+        SubscriptionDatabase db = new SubscriptionDatabase(context);
+        int subCount;
+
+        db.open();
+        Cursor cursor = db.getSubscriptionCursor();
+        subCount = cursor.getCount();
+        cursor.close();
+        db.close();
+
+        return subCount != 0;
+    }
+
+
 	public SubscriptionDatabase(Context context) {
 		super(context);
 	}

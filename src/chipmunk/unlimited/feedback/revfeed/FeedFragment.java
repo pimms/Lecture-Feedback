@@ -4,19 +4,18 @@ import java.util.List;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 
 import chipmunk.unlimited.feedback.LectureReviewItem;
-import chipmunk.unlimited.feedback.MainActivityFragmentInterface;
+import chipmunk.unlimited.feedback.ScrollToRefreshListView;
+import chipmunk.unlimited.feedback.UpdateableFragment;
 import chipmunk.unlimited.feedback.R;
 import chipmunk.unlimited.feedback.rating.LectureRatingActivity;
+import chipmunk.unlimited.feedback.ScrollToRefreshListView.*;
 
 /**
  * Fragment containing a list view which displays 
@@ -25,41 +24,40 @@ import chipmunk.unlimited.feedback.rating.LectureRatingActivity;
  * FeedFragment supports the same parameters FeedActivity
  * does.
  */
-public class FeedFragment extends Fragment implements OnItemClickListener,
-                                                      Feed.FeedListener,
-                                                      MainActivityFragmentInterface {
+public class FeedFragment extends UpdateableFragment
+        implements Feed.FeedListener, OnScrollToRefreshListener {
 	private static final String TAG = "FeedFragment";
 
     private Feed mFeed;
 	private FeedAdapter mFeedAdapter;
-	private ListView mListView;
-	private ProgressBar mProgressBar;
+	private ScrollToRefreshListView mRefreshListView;
+    private boolean mLoadingMore;
 
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {		
 		View rootView = inflater.inflate(R.layout.fragment_main_feed, container, false);
-
-   		mListView = (ListView)rootView.findViewById(R.id.list);
-		mProgressBar = (ProgressBar)rootView.findViewById(R.id.feed_progress_bar);
+		return rootView;
+	}
+    @Override
+    public void onActivityCreated(Bundle bundle) {
+        mRefreshListView = (ScrollToRefreshListView)getListView();
+        mRefreshListView.setOnScrollToRefreshListener(this);
 
         /* Create the Feed */
         if (mFeed == null) {
             mFeed = new Feed(getActivity(), this);
         }
 
-        /* Create the adapter and adjust it to mFeed's state */
-        mFeedAdapter = new FeedAdapter(container.getContext());
+        /* Create the adapter and adjust it to mFeeds state */
+        mFeedAdapter = new FeedAdapter(getActivity());
         mFeedAdapter.setFeedState(mFeed.getState());
 
-		mListView.setAdapter(mFeedAdapter);
-		mListView.setOnItemClickListener(this);
+        mRefreshListView.setAdapter(mFeedAdapter);
 
-		refreshContents();
-			
-		return rootView;
-	}
-
+        refreshContents();
+        super.onActivityCreated(bundle);
+    }
 
     public void setFeed(Feed feed) {
         mFeed = feed;
@@ -71,26 +69,44 @@ public class FeedFragment extends Fragment implements OnItemClickListener,
 	 * Refresh the list of items via the WebAPI's getFeed call.
 	 */
     @Override
-    public void refreshContents() {
-        showProgressBar();
+    public void doRefresh() {
         mFeed.update(0, 25);
 	}
+    @Override
+    public void onScrollRefreshBegin(ScrollToRefreshListView refreshView) {
+        int lastId = mFeedAdapter.getLastReviewID();
 
+        if (lastId >= 0) {
+            mLoadingMore = true;
+            mFeed.loadMore(lastId, 25);
+            getPullToRefreshLayout().setRefreshing(true);
+        } else {
+            // Nothing to be done
+            refreshView.onRefreshComplete();
+        }
+    }
     @Override
     public void onFeedUpdate(List<LectureReviewItem> items) {
-        mFeedAdapter.setReviewItems(items);
-        hideProgressBar();
+        if (mLoadingMore) {
+            mFeedAdapter.appendReviewItems(items);
+            mRefreshListView.onRefreshComplete();
+            getPullToRefreshLayout().setRefreshing(false);
+        } else {
+            mFeedAdapter.setReviewItems(items);
+            onUpdateCompleted();
+        }
+
+        mLoadingMore = false;
     }
 
 
 	@Override
-	public void onItemClick(AdapterView<?> adapter, View item, int position, long id) {		
+	public void onListItemClick(ListView list, View item, int position, long id) {
         if (mFeedAdapter.getFeedState() == Feed.STATE_DEFAULT ||
             mFeedAdapter.getFeedState() == Feed.STATE_LECTURE) {
             startReadOnlyLectureRatingActivity(position);
         }
 	}
-
     /**
      * Start an instance of the LectureRatingActivity in a read-only state.
      */
@@ -111,16 +127,9 @@ public class FeedFragment extends Fragment implements OnItemClickListener,
         intent.putExtra(LectureRatingActivity.PARAM_READ_ONLY, true);
         intent.putExtra(LectureRatingActivity.PARAM_RATINGS, reviewItem.getRatings());
         intent.putExtra(LectureRatingActivity.PARAM_COMMENT, reviewItem.getComment());
+        intent.putExtra(LectureRatingActivity.PARAM_REVIEW_ID, reviewItem.getId());
+        intent.putExtra(LectureRatingActivity.PARAM_CLONE_COUNT, reviewItem.getCloneCount());
 
         startActivity(intent);
     }
-
-	
-	private void showProgressBar() {
-		mProgressBar.setVisibility(View.VISIBLE);
-	}
-	
-	private void hideProgressBar() {
-		mProgressBar.setVisibility(View.GONE);
-	}
 }

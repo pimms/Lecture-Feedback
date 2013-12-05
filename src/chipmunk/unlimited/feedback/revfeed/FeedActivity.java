@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.security.InvalidParameterException;
+
 import chipmunk.unlimited.feedback.R;
 import chipmunk.unlimited.feedback.subscription.SubscriptionItem;
 
@@ -27,14 +29,13 @@ import chipmunk.unlimited.feedback.subscription.SubscriptionItem;
  *
  * If PARAM_SINGLE_COURSE is set, the following
  * parameters must also be set:
- *
- * Parameter name           Type    Value
  * PARAM_COURSE_NAME        String  The name of the course.
  * PARAM_COURSE_CODE        String  The HiG code of the course
  *
  * If PARAM_SINGLE_CODE is set, the following
  * parameters must also be set:
  * PARAM_LECTURE_HASH       String  The SHA1 of the lecture
+ * PARAM_ACTIONBAR_TITLE    String  The action bar title
  */
 public class FeedActivity extends FragmentActivity {
     public static final String PARAM_SINGLE_COURSE = "single_course";
@@ -46,6 +47,7 @@ public class FeedActivity extends FragmentActivity {
 
     /* PARAM_SINGLE_LECTURE attributes */
     public static final String PARAM_LECTURE_HASH = "lecture_hash";
+    public static final String PARAM_ACTIONBAR_TITLE = "ab_title";
 
     private static final String TAG = "FeedActivity";
 
@@ -70,8 +72,8 @@ public class FeedActivity extends FragmentActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_actionbar, menu);
-        return true;
+        //getMenuInflater().inflate(R.menu.main_activity, menu);
+        return false;
     }
 
     @Override
@@ -89,14 +91,16 @@ public class FeedActivity extends FragmentActivity {
     private void handleIntentParameters() {
         boolean course;
         boolean lecture;
+        String title;
 
         Intent intent = getIntent();
         course = intent.getBooleanExtra(PARAM_SINGLE_COURSE, false);
         lecture = intent.getBooleanExtra(PARAM_SINGLE_LECTURE, false);
 
         if (course == lecture) {
-            Log.e(TAG, "ONE PARAMETER MUST BE DEFINED.");
-            finish();
+            throw new InvalidParameterException("Either SINGLE_COURSE or SINGLE_LECTURE " +
+                                                " must be defined. (SINGLE_COURSE="+course+", " +
+                                                "SINGLE_LECTURE="+lecture+")");
         }
 
         if (course) {
@@ -112,9 +116,8 @@ public class FeedActivity extends FragmentActivity {
         String name = intent.getStringExtra(PARAM_COURSE_NAME);
         String code = intent.getStringExtra(PARAM_COURSE_CODE);
 
-        if (name == null || code == null) {
-            Log.e(TAG, "COURSE_NAME and COURSE_CODE must be defined!");
-            finish();
+        if (name == null ||  code == null) {
+            throw new InvalidParameterException("COURSE_NAME and COURSE_CODE must be defined!");
         }
 
         SubscriptionItem subItem = new SubscriptionItem(null, code, name);
@@ -129,17 +132,19 @@ public class FeedActivity extends FragmentActivity {
         Intent intent = getIntent();
 
         String hash = intent.getStringExtra(PARAM_LECTURE_HASH);
+        String title = intent.getStringExtra(PARAM_ACTIONBAR_TITLE);
 
-        if (hash == null) {
-            Log.e(TAG, "LECTURE_HASH must be defined!");
-            finish();
+        if (hash == null || hash.length() == 0) {
+            throw new InvalidParameterException("LECTURE_HASH must be defined!");
+        }
+        if (title == null || title.length() == 0) {
+            throw new InvalidParameterException("ACTIONBAR_TITLE must be defined!");
         }
 
         Feed feed = new Feed(this, mFeedFragment);
         feed.setStateLecture(hash);
         mFeedFragment.setFeed(feed);
 
-        // TODO
-        getActionBar().setTitle("totally bitchin'");
+        getActionBar().setTitle(title);
     }
 }

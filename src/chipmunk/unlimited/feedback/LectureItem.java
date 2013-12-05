@@ -1,5 +1,7 @@
 package chipmunk.unlimited.feedback;
 
+import android.util.Log;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -12,6 +14,11 @@ import chipmunk.unlimited.feedback.webapi.SHA1;
  * Representation of a lecture retrieved from TimeEdit.
  */
 public class LectureItem implements Comparable<LectureItem> {
+    /**
+     * How many days is a Lecture reviewable?
+     */
+    private static final int REVIEWABLE_PERIOD_DAYS = 42;
+
 	protected Date mStartTime;
 	protected Date mEndTime;
 	protected String mDate;
@@ -71,14 +78,17 @@ public class LectureItem implements Comparable<LectureItem> {
         then.setTime(mStartTime);
         
         String format = "";
-        
+
+        // TODO: Localize
+        // Find a way to retrieve the string format_date_pretty_old
+        // and format_date_pretty.
         if (now.get(Calendar.YEAR) != then.get(Calendar.YEAR)) {
-            format = "dd MMM, yyyy";
+            format = "MMM dd, yyyy";
         } else {
-        	format = "EEEE, dd MMM";
+        	format = "EEEE, MMM dd";
         }
 
-        SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.US);
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
         return sdf.format(mStartTime);
     }
 
@@ -139,8 +149,25 @@ public class LectureItem implements Comparable<LectureItem> {
 	public String getCourseHigCode() {
 		return mCourseHigCode;
 	}
-	
-	
+
+
+    /**
+     * Is the lecture recent enough to be reviewable?
+     *
+     * @return
+     * true if the lecture can be reviewed
+     */
+    public boolean canReviewLecture() {
+        Calendar limit = Calendar.getInstance();
+        limit.add(Calendar.DAY_OF_MONTH, -REVIEWABLE_PERIOD_DAYS);
+
+        Calendar now = Calendar.getInstance();
+
+        return mEndTime.after(limit.getTime()) &&
+               mStartTime.before(now.getTime());
+    }
+
+
 	/**
 	 * Set mStartTime and mEndTime based on "date" and "time".
 	 * 
@@ -177,7 +204,6 @@ public class LectureItem implements Comparable<LectureItem> {
 		cal.set(Calendar.SECOND, 0);
 		mEndTime = cal.getTime();
 	}
-	
 	/**
 	 * Remove leading zeroes and spaces from the string 
 	 * before parsing it as an int.
@@ -207,7 +233,6 @@ public class LectureItem implements Comparable<LectureItem> {
 		SimpleDateFormat format = new SimpleDateFormat("HH:mm", Locale.getDefault());
 		return format.format(date);
 	}
-	
 	/**
 	 * Calculate the hash for this lecture.
      * The hash used on both the client application
@@ -234,12 +259,10 @@ public class LectureItem implements Comparable<LectureItem> {
 		
 		return SHA1.hash(sb.toString());
 	}
-	
 	@Override
 	public String toString() {
 		return "[" + mStartTime + "-" + mEndTime + "] " + mCourseName + ", " + mRoom + ", " + mLecturer;
 	}
-
 
     @Override
     public int compareTo(LectureItem o) {

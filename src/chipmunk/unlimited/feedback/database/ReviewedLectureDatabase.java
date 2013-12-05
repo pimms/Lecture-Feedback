@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import chipmunk.unlimited.feedback.LectureItem;
 import chipmunk.unlimited.feedback.LectureReviewItem;
@@ -132,13 +133,28 @@ public class ReviewedLectureDatabase extends DatabaseWrapper {
 			String comment = cursor.getString(commentIdx);
 			
 			boolean[] rating = LectureReviewItem.getRatingArrayFromString(ratingStr);
-			review = new LectureReviewItem(item, rating, comment, -1, null);
+			review = new LectureReviewItem(item, rating, comment, -1, null, 0);
 			cursor.close();
 		}
 		
 		close();
 		return review;
 	}
+
+    /**
+     * @return
+     * The number of items in the database
+     */
+    public int getNumberOfItems() {
+        SQLiteDatabase db = getReadableDatabase();
+
+        Cursor mCount= db.rawQuery("select count(*) from " + TABLE_NAME, null);
+        mCount.moveToFirst();
+        int count= mCount.getInt(0);
+        mCount.close();
+
+        return count;
+    }
 }
 
 

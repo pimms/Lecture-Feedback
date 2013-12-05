@@ -16,6 +16,7 @@ public class LectureReviewItem extends LectureItem {
 	private String mComment;
 	private int mId;
 	private Date mReviewDate;
+    private int mCloneCount;
 	
 	
 	/**
@@ -90,12 +91,13 @@ public class LectureReviewItem extends LectureItem {
 	 */
 	public LectureReviewItem(String date, String time, String name, String higCode, 
 							String room, String lecturer, boolean[] ratings, 
-							String comment, int id, Date reviewDate) {
+							String comment, int id, Date reviewDate, int cloneCount) {
 		super(date, time, name, higCode, room, lecturer);
 		mRatings = ratings;
 		mComment = comment;
 		mId = id;
 		mReviewDate = reviewDate;
+        mCloneCount = cloneCount;
 		
 		if (mRatings.length != ATTRIBUTE_COUNT) {
 			Log.e(TAG, "Invalid attribute count in LectureReviewItem(): " 
@@ -126,7 +128,8 @@ public class LectureReviewItem extends LectureItem {
 	 * for submit-instances.
 	 */
 	public LectureReviewItem(LectureItem lecture, boolean[] ratings,
-							String comment, int id, Date reviewDate) {
+							String comment, int id, Date reviewDate,
+                            int cloneCount) {
 		super(lecture.getDateString(), lecture.getTimeString(), 
 			lecture.getCourseName(), lecture.getCourseHigCode(), 
 			lecture.getRoom(), lecture.getLecturer());
@@ -135,17 +138,19 @@ public class LectureReviewItem extends LectureItem {
 		mComment = comment;
 		mId = id;
 		mReviewDate = reviewDate;
+        mCloneCount = cloneCount;
 		
 		if (mRatings.length != ATTRIBUTE_COUNT) {
 			Log.e(TAG, "Invalid attribute count in LectureReviewItem(): " 
 					+ mRatings.length + " received, " + ATTRIBUTE_COUNT + " expected.");
 		}
 	}
-	
+
+
+
 	public boolean[] getRatings() {
 		return mRatings;
 	}
-	
 	/**
 	 * Stringify the rating-array.
 	 * 
@@ -180,4 +185,8 @@ public class LectureReviewItem extends LectureItem {
 	public Date getReviewDate() {
 		return mReviewDate;
 	}
+
+    public int getCloneCount() {
+        return mCloneCount;
+    }
 }

@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -40,12 +41,14 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 public class AddSubscriptionFragment extends DialogFragment {
 
     private SubscriptionDatabase datasource;
-    private SubscriptionsChangedListener mListener;
+    private SubscriptionProtocolListener mListener;
 
-    
-    public void setSubscriptionsChangedListener(SubscriptionsChangedListener listener) {
-    	mListener = listener;
+
+    public AddSubscriptionFragment(SubscriptionProtocolListener listener) {
+        assert(listener != null);
+        mListener = listener;
     }
+
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
@@ -54,19 +57,42 @@ public class AddSubscriptionFragment extends DialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.fragment_add_subscription, null);
 
-        // TODO: Localization
-        builder.setView(view)
-                .setTitle("Search for courses")
-                .setNeutralButton("Search", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
+        String title = getActivity().getResources().getString(R.string.frag_subadd_title);
+        String search = getActivity().getResources().getString(R.string.frag_subadd_search);
 
-                    }
-                });
-
+        builder.setView(view).setTitle(title).setNeutralButton(search, null);
         return builder.create();
     }
-    
+
+    private void showKeyboard(final EditText editText) {
+        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                editText.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        InputMethodManager imm = (InputMethodManager)
+                                getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
+                    }
+                });
+            }
+        });
+        editText.requestFocus();
+    }
+
+    private void hideKeyboard(final EditText editText) {
+        editText.setOnFocusChangeListener(null);
+        
+        InputMethodManager imm = (InputMethodManager)
+                getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+    }
+
+    private void dismissAddSubscriptionFragment() {
+        mListener.onAddSubscriptionFragmentDismiss(this);
+    }
+
     @Override
     public void onStart(){
         super.onStart();
@@ -77,23 +103,21 @@ public class AddSubscriptionFragment extends DialogFragment {
         final ListView lv = (ListView)dialog.findViewById(R.id.add_result_list);
         final TextView aerror = (TextView)dialog.findViewById(R.id.aerror_text);
         final Button abutton = (Button)dialog.findViewById(R.id.add_nores_button);
-
         final Button neutButton = (Button) dialog.getButton(Dialog.BUTTON_NEUTRAL);
 
-        et.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        showKeyboard(et);
+
+        abutton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                if(i == EditorInfo.IME_ACTION_DONE){
-                    neutButton.performClick();
-                    return true;
-                }
-                return false;
+            public void onClick(View v) {
+                AddSubscriptionFragment.this.dismissAddSubscriptionFragment();
             }
         });
 
-        assert neutButton != null;
-
-        //Set onClick Listener for dialog button
+        /**********************************************/
+        /** Stop reading at this point. I'm serious. **/
+        /**********************************************/
+        assert(neutButton != null);
         neutButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -122,6 +146,8 @@ public class AddSubscriptionFragment extends DialogFragment {
                             public void onSuccess(String response){
                                 Log.d("DIALOG", "onSuccess starting");
 
+                                hideKeyboard(et);
+
                                 //Get parsed results from parser
                                 final String[][] results = TimeEditParser.search(response, term);
                                 final String[] names = new String[results.length];
@@ -144,15 +170,15 @@ public class AddSubscriptionFragment extends DialogFragment {
                                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                         datasource = new SubscriptionDatabase(getActivity());
                                         datasource.open();
-                                        
+
                                         String[] split = results[position][1].split(",");
                                         String higCode = split[0];
-                                        
+
                                         String name = split[1];
                                         for (int i=2; i<split.length; i++) {
                                         	name += "," + split[i];
                                         }
-                                        
+
                                         datasource.addSubscription(results[position][0], higCode, name);
                                         datasource.close();
                                         mListener.onSubscriptionsChanged();
@@ -168,7 +194,9 @@ public class AddSubscriptionFragment extends DialogFragment {
                             }
                             @Override
                             public void onFailure(Throwable e, String response){
-                                Toast.makeText(getActivity(), "TOP NET", Toast.LENGTH_LONG).show();
+                                String msg = getActivity().getResources().getString(
+                                        R.string.frag_subadd_error);
+                                Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
                                 Log.d("NET", e.toString());
                             }
                         });
@@ -177,15 +205,18 @@ public class AddSubscriptionFragment extends DialogFragment {
                             dismiss();
                     }else{
                         //If search string contains illegal characters, this will show up
-                        Toast.makeText(getActivity(), "ILLEGAL", Toast.LENGTH_SHORT).show();
+                        String msg = getActivity().getResources().getString(
+                                R.string.frag_subadd_invalid);
+                        Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
                     }
                 }else{
                     //If nothing is written in search field, this will show up
-                    Toast.makeText(getActivity(), "DUNNO", Toast.LENGTH_SHORT).show();
+                    String msg = getActivity().getResources().getString(
+                            R.string.frag_subadd_notext);
+                    Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
     }
-
 }

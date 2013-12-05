@@ -20,8 +20,7 @@
         android:layout_gravity="center_horizontal"
         android:paddingTop="10dp"
         android:text="Retry"
-        android:visibility="gone"
-        android:onClick="dismissAddSubscriptionFragment" />
+        android:visibility="gone"/>
 
     <EditText
         android:id="@+id/add_edittext"

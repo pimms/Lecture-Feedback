@@ -13,15 +13,11 @@
         android:layout_width="fill_parent"
         android:background="#90AAAAAA"/>
 
-    
-    <!-- This button will ONLY call MainActivity.showAddSubscriptionFragment -->
-    <!-- TODO: Do the callback in a proper manner. This sucks. -->
     <Button
         android:id="@+id/subs_add_btn"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Add another"
-        android:onClick="showAddSubscriptionFragment"
         style="@android:style/Widget.Holo.Button.Borderless"/>
 
 </LinearLayout>

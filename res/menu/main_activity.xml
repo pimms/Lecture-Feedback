@@ -1,13 +1,27 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
+
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="@string/action_settings"/>
-    
+        android:id="@+id/action_topcourses"
+        android:showAsAction="always"
+        android:title="@string/action_top_courses"
+        android:icon="@drawable/navigation_trophy"/>
+
     <item 
         android:id="@+id/action_subscriptions"
-        android:title="Subscriptions"/>
+        android:showAsAction="always"
+        android:title="@string/action_subscriptions"
+        android:icon="@drawable/navigation_star"/>
 
+    <item
+        android:id="@+id/action_main_refresh"
+        android:showAsAction="never"
+        android:title="@string/action_refresh"
+        android:icon="@drawable/navigation_refresh"/>
+
+    <item
+        android:id="@+id/action_main_about"
+        android:showAsAction="never"
+        android:title="@string/action_about"
+        />
 </menu>

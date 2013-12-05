@@ -1,4 +1,4 @@
-package chipmunk.unlimited.feedback;
+package chipmunk.unlimited.feedback.today;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,7 +16,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import chipmunk.unlimited.feedback.LectureItem;
+import chipmunk.unlimited.feedback.R;
 import chipmunk.unlimited.feedback.database.ReviewedLectureDatabase;
+import chipmunk.unlimited.feedback.database.SubscriptionDatabase;
 
 /**
  * @class DailyLectureAdapter
@@ -27,10 +31,12 @@ import chipmunk.unlimited.feedback.database.ReviewedLectureDatabase;
  */
 public class DailyLectureAdapter extends BaseAdapter {
 	private static final String TAG = "DailyLectureAdapter";
-	
-	
+
 	private static final int LIST_ITEM_TYPE_LECTURE = 1;
 	private static final int LIST_ITEM_TYPE_SEPARATOR = 2;
+
+    private boolean mTutorial;
+
 	
 	/**
 	 * To differentiate between Lecture-list items and 
@@ -38,8 +44,7 @@ public class DailyLectureAdapter extends BaseAdapter {
 	 * in the order in which they appear.
 	 */
 	private List<Integer> mListItemTypes;
-	
-	
+
 	/**
 	 * The lectures to be displayed in the view.
 	 */
@@ -64,39 +69,57 @@ public class DailyLectureAdapter extends BaseAdapter {
 	
 	public void setLectureItems(List<LectureItem> items) {
 		mLectureItems = items;
-		stripIrrelevantLectures();
-		defineItemOrder();
+
+        if (mLectureItems == null || mLectureItems.size() == 0) {
+            mTutorial = true;
+        } else {
+            mTutorial = false;
+            stripIrrelevantLectures();
+            defineItemOrder();
+        }
 	}
 	
 	
 	@Override
 	public int getCount() {
-		return mListItemTypes.size();
+        if (!mTutorial) {
+		    return mListItemTypes.size();
+        } else {
+            return 1;
+        }
 	}
-	
 	@Override
 	public Object getItem(int position) {
-		return getLectureForListItem(position);
+        if (!mTutorial) {
+		    return getLectureForListItem(position);
+        }
+
+        return null;
 	}
-	
 	@Override
 	public long getItemId(int position) {
 		return position;
 	}
-	
 	@Override
 	public boolean areAllItemsEnabled() {
 		return false;
 	}
-	
 	@Override
 	public boolean isEnabled(int position) {
-		return mListItemTypes.get(position) == LIST_ITEM_TYPE_LECTURE;
+        if (!mTutorial) {
+		    return mListItemTypes.get(position) == LIST_ITEM_TYPE_LECTURE;
+        }
+
+        return false;
 	}
 	
 	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+        if (mTutorial) {
+            return getTutorialView(convertView);
+        }
+
 		LectureItem item = getLectureForListItem(position);
 		
 		if (item != null) {
@@ -111,7 +134,7 @@ public class DailyLectureAdapter extends BaseAdapter {
 	private View getLectureListItem(View convertView, LectureItem item) {
 		View vi = convertView;
 		if (vi == null || 
-			(vi != null && vi.getId() != R.layout.today_list_item_lecture)) 
+			(vi != null && vi.getId() != R.layout.today_list_item_lecture))
 		{
 			vi = mInflater.inflate(R.layout.today_list_item_lecture, null);
 		}
@@ -147,41 +170,43 @@ public class DailyLectureAdapter extends BaseAdapter {
 		return vi;
 	}
 
+    private View getTutorialView(View convertView) {
+        if (convertView == null || convertView.getId() != R.layout.tutorial) {
+            convertView = mInflater.inflate(R.layout.tutorial, null);
+        }
+
+        TextView tvTitle = (TextView)convertView.findViewById(R.id.tutorial_text_view_title);
+        TextView tvDesc  = (TextView)convertView.findViewById(R.id.tutorial_text_view_desc);
+        SubscriptionDatabase db = new SubscriptionDatabase(mContext);
+
+        if (db.getSubscriptionList().size() != 0) {
+            tvTitle.setText(mContext.getResources().getString(
+                    R.string.frag_today_tutorial_title_no_lectures));
+            tvDesc.setText(mContext.getResources().getString(
+                    R.string.frag_today_tutorial_desc_no_lectures));
+        } else {
+            tvTitle.setText(mContext.getResources().getString(
+                    R.string.frag_today_tutorial_title_no_subs));
+            tvDesc.setText(mContext.getResources().getString(
+                    R.string.frag_today_tutorial_desc_no_subs));
+        }
+
+        return convertView;
+    }
+
 	
 	/**
 	 * Remove all irrelevant lectures from the data set.
-	 * The relevant time-period is NOW and 24 hours back.
-	 * Only the start time OR the end time of the lecture
-	 * has to fit within this 24 hour period for the lecture
-	 * to be considered relevant.
-	 * 
-	 * TODO:
-	 * For development purposes, the cut-off limit has been
-	 * increased to 10 days. Lower this at an appropriate time.
+	 * If a lecture cannot be voted for, it is counted as
+     * irrelevant.
 	 */
 	private void stripIrrelevantLectures() {
-		Calendar cal = Calendar.getInstance();
-		
-		Date upperBounds = cal.getTime();
-		cal.add(Calendar.DAY_OF_YEAR, -10);
-		Date lowerBounds = cal.getTime();
-		
-		Log.d(TAG, "BOUNDS: " + lowerBounds + ", " + upperBounds);
-		
 		for (int i=0; i<mLectureItems.size(); i++) {
-			LectureItem lecture = mLectureItems.get(i);
-			
-			Date startTime = lecture.getStartTime();
-			Date endTime = lecture.getEndTime();
-			
-			//Log.d(TAG, "Lecture: " + startTime + ", " + endTime);
-			
-			if (!endTime.after(lowerBounds) || !startTime.before(upperBounds)) {
+			if (!mLectureItems.get(i).canReviewLecture()) {
 				mLectureItems.remove(i--);
 			}
 		}
 	}
-
 	/**
 	 * Insert separators into mItemTypes when appropriate.
 	 */
@@ -219,9 +244,7 @@ public class DailyLectureAdapter extends BaseAdapter {
 	
 	/**
 	 * Get a suitable title for the date
-	 * 
-	 * TODO: Localize
-	 * 
+	 *
 	 * @return
 	 * "Mon, 01 Jan" if date is more than 2 days old, otherwise
 	 * "today" or "yesterday".
@@ -234,20 +257,20 @@ public class DailyLectureAdapter extends BaseAdapter {
 		
 		// Compare against today
 		if (equalDates(compare, date)) {
-			return "Today";
+			return mContext.getResources().getString(R.string.today);
 		}
 		
 		// Compare against yesterday
 		compare.add(Calendar.DAY_OF_MONTH, -1);
 		if (equalDates(compare, date)) {
-			return "Yesterday";
+			return mContext.getResources().getString(R.string.yesterday);
 		}
 		
 		// Return the date on proper format
-		SimpleDateFormat format = new SimpleDateFormat("EE, dd MMM", Locale.getDefault());
+        String strFormat = mContext.getResources().getString(R.string.format_date_today_sep);
+		SimpleDateFormat format = new SimpleDateFormat(strFormat, Locale.getDefault());
 		return format.format(date.getTime());
 	}
-	
 	/**
 	 * @return
 	 * Whether or not the DATES of the two Date-objects are equal.
@@ -286,7 +309,6 @@ public class DailyLectureAdapter extends BaseAdapter {
 			return null;
 		}
 	}
-	
 	/**
 	 * Get the listItemIndex-th separator title.
 	 * 

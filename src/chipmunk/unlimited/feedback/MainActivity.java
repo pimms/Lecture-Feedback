@@ -2,10 +2,15 @@ package chipmunk.unlimited.feedback;
 
 import java.util.Locale;
 
+import chipmunk.unlimited.feedback.database.SubscriptionDatabase;
+import chipmunk.unlimited.feedback.highscore.TopCourseActivity;
 import chipmunk.unlimited.feedback.stats.StatisticsFragment;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -14,24 +19,19 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
+
 import chipmunk.unlimited.feedback.revfeed.FeedFragment;
 import chipmunk.unlimited.feedback.subscription.AddSubscriptionFragment;
 import chipmunk.unlimited.feedback.subscription.SubscriptionFragment;
-import chipmunk.unlimited.feedback.subscription.SubscriptionsChangedListener;
+import chipmunk.unlimited.feedback.subscription.SubscriptionProtocolListener;
+import chipmunk.unlimited.feedback.today.TodayFragment;
 
 
 public class MainActivity extends FragmentActivity implements
 		ActionBar.TabListener,
-		SubscriptionsChangedListener {
-
-
+        SubscriptionProtocolListener {
 	SectionsPagerAdapter mSectionsPagerAdapter;
 	ViewPager mViewPager;
-	
-	/* Fragments related to subscription management */
-	private SubscriptionFragment mSubscriptionFragment;
-	private AddSubscriptionFragment mAddSubscriptionFragment;
 	
 	/* Fragments included in the pane-view */
 	private FeedFragment mFeedFragment;
@@ -48,14 +48,15 @@ public class MainActivity extends FragmentActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main_activity);
 
+        new LaunchPrompt(this).onActivityCreate();
+
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the app.
-		mSectionsPagerAdapter = new SectionsPagerAdapter(
-				getSupportFragmentManager());
+		mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
 		// Set up the ViewPager with the sections adapter.
 		mViewPager = (ViewPager) findViewById(R.id.pager);
@@ -82,8 +83,12 @@ public class MainActivity extends FragmentActivity implements
 					.setText(mSectionsPagerAdapter.getPageTitle(i))
 					.setTabListener(this));
 		}
-	}
 
+        /* If no subscriptions exists, display the add-subscription fragment */
+        if (!SubscriptionDatabase.hasAnySubscriptions(this)) {
+            showSubscriptionFragment();
+        }
+	}
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -92,28 +97,22 @@ public class MainActivity extends FragmentActivity implements
 			mShouldUpdateFragments = false;
 		}
 	}
-	
 	@Override
 	protected void onPause() {
 		super.onPause();
 		mShouldUpdateFragments = true;
+
+        if (!isFinishing()) {
+            new LaunchPrompt(this).onActivityPause();
+        }
 	}
 	
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		/*
-		 * I have truly no idea why the second menu is
-		 * added to the action bar. It just works. 
-		 * 
-		 * TODO:
-		 * Figure out why this works.
-		 */
 		getMenuInflater().inflate(R.menu.main_activity, menu);
-		getMenuInflater().inflate(R.menu.main_actionbar, menu);
 		return true;
 	}
-
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -123,122 +122,137 @@ public class MainActivity extends FragmentActivity implements
 			case R.id.action_main_refresh:
 				refreshFragments();
 				break;
+            case R.id.action_topcourses:
+                showTopCoursesActivity();
+                break;
+            case R.id.action_main_about:
+                showAboutDialog();
+                break;
 		}
 		
 		return true;
 	}
-	
 	@Override
-	public void onTabSelected(ActionBar.Tab tab,
-			FragmentTransaction fragmentTransaction) {
-		// When the given tab is selected, switch to the corresponding page in
-		// the ViewPager.
+	public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
 		mViewPager.setCurrentItem(tab.getPosition());
 	}
-
 	@Override
-	public void onTabUnselected(ActionBar.Tab tab,
-			FragmentTransaction fragmentTransaction) {
-	}
-
+	public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {}
 	@Override
-	public void onTabReselected(ActionBar.Tab tab,
-			FragmentTransaction fragmentTransaction) {
-	}
-	
+	public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {}
 
-    /**
-	 * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-	 * one of the sections/tabs/pages.
-	 */
-	public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-		public SectionsPagerAdapter(FragmentManager fm) {
-			super(fm);
-		}
+    private void showSubscriptionFragment() {
+        SubscriptionFragment sub = new SubscriptionFragment(this);
+        sub.show(getFragmentManager(), "fragment_subscription");
+    }
+    @Override
+    public void onAddSubscriptionRequest(SubscriptionFragment toDismiss) {
+        toDismiss.dismiss();
 
-		@Override
-		public Fragment getItem(int position) {
-			Fragment fragment;
-			
-			switch (position) {
-			case 0:
-				mFeedFragment = new FeedFragment();
-				fragment = mFeedFragment;
-				break;
-			case 1:
-				mTodayFragment = new TodayFragment();
-				fragment = mTodayFragment;
-				break;
-			case 2:
-				mStatsFragment = new StatisticsFragment();
-				fragment = mStatsFragment;
-				break;
-			default:
-				/* TODO: Handle error */
-				fragment = null;
-			}
-
-			return fragment;
-		}
-
-		@Override
-		public int getCount() {
-			// Show 3 total pages.
-			return 3;
-		}
-
-		@Override
-		public CharSequence getPageTitle(int position) {
-			Locale l = Locale.getDefault();
-			switch (position) {
-			case 0:
-				return "Classmate's reviews";
-			case 1:
-				return "Review today's lectures";
-			case 2:
-				return "Overview";
-			}
-			return null;
-		}
-	}
-
-	
-	@Override
+        AddSubscriptionFragment addSub = new AddSubscriptionFragment(this);
+        addSub.show(getFragmentManager(), "add_subscription_fragment");
+    }
+    @Override
 	public void onSubscriptionsChanged() {
 		refreshFragments();
 	}
-	
-	private void refreshFragments() {
-		if (mTodayFragment != null) {
-			mTodayFragment.refreshContents();
+    @Override
+    public void onAddSubscriptionFragmentDismiss(AddSubscriptionFragment toDismiss) {
+        toDismiss.dismiss();
+    }
+
+    private void refreshFragments() {
+		if (mTodayFragment == null) {
+			mTodayFragment = (TodayFragment)mSectionsPagerAdapter.getItem(0);
 		}
 		
-		if (mFeedFragment != null) {
-			mFeedFragment.refreshContents();
+		if (mFeedFragment == null) {
+            mFeedFragment = (FeedFragment)mSectionsPagerAdapter.getItem(1);
 		}
 
-        if (mStatsFragment != null) {
-            mStatsFragment.refreshContents();
+        if (mStatsFragment == null) {
+            mStatsFragment = (StatisticsFragment)mSectionsPagerAdapter.getItem(2);
         }
+
+        mTodayFragment.refreshContents();
+        mFeedFragment.refreshContents();
+        mStatsFragment.refreshContents();
 	}
-	
-	
-	private void showSubscriptionFragment() {
-		mSubscriptionFragment = new SubscriptionFragment();
-		mSubscriptionFragment.setSubscriptionsChangedListener(this);
-		mSubscriptionFragment.show(getFragmentManager(), "fragment_subscription");
-	}
-	
-	public void showAddSubscriptionFragment(View view) {
-		mSubscriptionFragment.dismiss();
-		
-		mAddSubscriptionFragment = new AddSubscriptionFragment();
-		mAddSubscriptionFragment.setSubscriptionsChangedListener(this);
-		mAddSubscriptionFragment.show(getFragmentManager(), "add_subscription_fragment");
-	}
-	
-	public void dismissAddSubscriptionFragment(View view) {
-		mAddSubscriptionFragment.dismiss();
-	}
+
+
+    private void showTopCoursesActivity() {
+        Intent intent = new Intent(this, TopCourseActivity.class);
+        startActivity(intent);
+    }
+
+    private void showAboutDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        Resources r = getResources();
+
+        builder.setTitle(r.getString(R.string.about_title));
+        builder.setMessage(r.getString(R.string.about_description));
+        builder.setNegativeButton(r.getString(R.string.about_back), null);
+
+        builder.show();
+    }
+
+
+    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+
+        public SectionsPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            Fragment fragment;
+
+            switch (position) {
+                case 0:
+                    if (mTodayFragment == null) {
+                        mTodayFragment = new TodayFragment();
+                    }
+                    fragment = mTodayFragment;
+                    break;
+                case 1:
+                    if (mFeedFragment == null) {
+                        mFeedFragment = new FeedFragment();
+                    }
+                    fragment = mFeedFragment;
+                    break;
+                case 2:
+                    if (mStatsFragment == null) {
+                        mStatsFragment = new StatisticsFragment();
+                    }
+                    fragment = mStatsFragment;
+                    break;
+                default:
+				/* TODO: Handle error */
+                    fragment = null;
+            }
+
+            return fragment;
+        }
+
+        @Override
+        public int getCount() {
+            // Show 3 total pages.
+            return 3;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            Locale l = Locale.getDefault();
+            switch (position) {
+                case 0:
+                    return getResources().getString(R.string.main_tab_today);
+                case 1:
+                    return getResources().getString(R.string.main_tab_feed);
+                case 2:
+                    return getResources().getString(R.string.main_tab_stats);
+            }
+            return null;
+        }
+    }
 }

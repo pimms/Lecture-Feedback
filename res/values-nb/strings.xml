@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- GENERAL -->
+    <string name="clone_count_singular">kopi</string>
+    <string name="clone_count_plural">kopier</string>
+    <string name="clone_verb">Kopier!</string>
+    <string name="submit_verb">Send</string>
+    <string name="comment_hint">Kommentar...</string>
+    <string name="upcoming">Kommende</string>
+    <string name="today">I dag</string>
+    <string name="yesterday">I går</string>
+    <string name="activity_top_course_title">Toppfag</string>
+    <string name="clone_successful_toast">Omtalen vil regnes som din</string>
+    <string name="submit_dialog_wait_text">Laster opp...</string>
+
+    <!-- ABOUT -->
+    <string name="about_title">Om</string>
+    <string name="about_back">Tilbake</string>
+    <string name="about_description">
+        HiG Lecture Review\n
+        \nUtviklet for IMT3672 av Joakim Stien, Knut Remi Løvli og Eskil Skotvold.\n
+        \nHar du en tilbakemelding eller har du funnet en bug? Send det til joakim.stien@gmail.com
+    </string>
+
+
+    <!-- DATES -->
+    <string name="format_date_today_sep">EEEE, d. MMM</string>
+    <string name="format_date_pretty_old">d. MMM, yyyy</string>
+    <string name="format_date_pretty">EEEE, d. MMM</string>
+
+
+    <!-- Main Activity -->
+    <string name="action_refresh">Last inn på nytt</string>
+    <string name="action_top_courses">Toppfag</string>
+    <string name="action_subscriptions">Mine fag</string>
+    <string name="action_about">Om</string>
+
+    <string name="main_tab_today">Dagen i dag</string>
+    <string name="main_tab_feed">Omtalelser</string>
+    <string name="main_tab_stats">Oversikt</string>
+
+
+    <!-- Today Fragment -->
+    <string name="frag_today_tutorial_title_no_subs">INGEN FAG</string>
+    <string name="frag_today_tutorial_title_no_lectures">INGEN NYLIGE FORELESNINGER</string>
+
+    <string name="frag_today_tutorial_desc_no_subs">
+        Du har ikke lagt inn noen dag. Du kan legge inn fag ved å trykke på stjerneikonet.
+    </string>
+    <string name="frag_today_tutorial_desc_no_lectures">
+        Du har ingen nylige forelesninger. Nylige forelesninger vil dukke opp her.
+    </string>
+
+    <!-- Feed Fragment -->
+    <string name="frag_feed_tutorial_title_no_subs">INGEN FAG</string>
+    <string name="frag_feed_tutorial_title_no_items">INGEN OMTALER</string>
+
+    <string name="frag_feed_tutorial_desc_no_subs">
+        Dine og andres omtaler av dine fag vil dukke opp her. Du kan legge til fag ved å
+        trykke på stjerneikonet.
+    </string>
+    <string name="frag_feed_tutorial_desc_no_items">
+        Ingen av dine fag har en omtale.
+    </string>
+
+    <!-- Stats Fragment -->
+    <string name="frag_stats_tutorial_title_no_subs">INGEN FAG</string>
+    <string name="frag_stats_tutorial_desc_no_subs">Fag du legger til vil havne her.</string>
+
+    <!-- Lecture Rating Activity -->
+    <string name="rating_attr_overall">Generelt</string>
+    <string name="rating_attr_clarity">Tydelighet</string>
+    <string name="rating_attr_progression">Hastighet</string>
+    <string name="rating_attr_engagement">Engasjement</string>
+    <string name="rating_attr_coverage">Dekning av materialet</string>
+    <string name="rating_clone_desc">
+        Hvis du er helt enig med denne omtalen kan du kopiere den i stedet for å skrive
+        din egen.
+    </string>
+
+    <!-- Subscription Fragment -->
+    <string name="frag_sub_title">Dine fag</string>
+    <string name="frag_sub_add">Legg til flere</string>
+    <string name="frag_sub_back">Avbryt</string>
+    <string name="frag_sub_toast_removed">Fjernet fag: </string>
+
+    <!-- Add Subscription Fragment -->
+    <string name="frag_subadd_title">Søk opp fag</string>
+    <string name="frag_subadd_search">Søk</string>
+    <string name="frag_subadd_no_res">Ingen fag funnet</string>
+    <string name="frag_subadd_cancel">Prøv igjen</string>
+    <string name="frag_subadd_error">Klarte ikke koble til</string>
+    <string name="frag_subadd_notext">Kan ikke søke på det!</string>
+    <string name="frag_subadd_invalid">Kun tall og bokstaver, takk</string>
+
+    <!-- Google Play Rating Promp -->
+    <string name="rating_prompt_title">Vurder applikasjonen</string>
+    <string name="rating_prompt_desc">Du har vurdert %d forelesninger - hva med å vurdere oss?</string>
+    <string name="rating_prompt_not_now">Ikke nå</string>
+    <string name="rating_prompt_never">Aldri spør igjen</string>
+    <string name="rating_prompt_yes">Ja!</string>
+
+</resources>
