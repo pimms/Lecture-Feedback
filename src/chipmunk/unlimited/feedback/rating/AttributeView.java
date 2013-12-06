@@ -72,19 +72,22 @@ public class AttributeView extends LinearLayout implements OnClickListener {
 		mButtonPositive = (AttributeButton)findViewById(R.id.rating_button_positive);
 		
 		mButtonNegative.setOnClickListener(this);
-		mButtonNegative.setType(AttributeButton.NEGATIVE);
-		mButtonNegative.setState(AttributeButton.INACTIVE);
+		mButtonNegative.setEffectType(AttributeButton.EFFECT_NEGATIVE);
+		mButtonNegative.setState(AttributeButton.STATE_INACTIVE);
 		
 		mButtonPositive.setOnClickListener(this);
-		mButtonPositive.setType(AttributeButton.POSITIVE);
-		mButtonPositive.setState(AttributeButton.INACTIVE);
+		mButtonPositive.setEffectType(AttributeButton.EFFECT_POSITIVE);
+		mButtonPositive.setState(AttributeButton.STATE_INACTIVE);
 	}
 	
 	
 	public void setOnRatingChangeListener(OnRatingChangeListener callback) {
 		mCallback = callback;
 	}
-	
+    /**
+     * @param attributeName
+     * The new name of the attribute.
+     */
 	public void setAttributeName(String attributeName) {
 		mAttributeName = attributeName;
 		mTextViewAttributeName.setText(mAttributeName);
@@ -113,8 +116,8 @@ public class AttributeView extends LinearLayout implements OnClickListener {
 		}
 		
 		// Update the buttons
-		buttonActive.setState(AttributeButton.ACTIVE);
-		buttonInactive.setState(AttributeButton.INACTIVE);
+		buttonActive.setState(AttributeButton.STATE_ACTIVE);
+		buttonInactive.setState(AttributeButton.STATE_INACTIVE);
 		
 		// Notify the callback
 		mState = state;
@@ -122,7 +125,12 @@ public class AttributeView extends LinearLayout implements OnClickListener {
 			mCallback.onRatingStateChange(this, mState);
 		}
 	}
-	
+    /**
+     * Enable or disable button presses on child buttons.
+     *
+     * @param readOnly
+     * Whether or not to set the view to be read only.
+     */
 	public void setReadOnly(boolean readOnly) {
 		mReadOnly = readOnly;
 	}
@@ -134,6 +142,7 @@ public class AttributeView extends LinearLayout implements OnClickListener {
 	@Override
 	public void onClick(View view) {
 		if (mReadOnly == true) {
+            // HET! Return now!
 			return;
 		}
 		

@@ -21,6 +21,18 @@ import android.widget.TextView;
  * @class FeedAdapter
  * Adapter class preparing LectureReviewItem objects
  * for display in a ListView.
+ *
+ * The feed adapter is tightly knit with the Feed-class, and
+ * alters it's behaviour based on the Feed's state.
+ *
+ * Feed.STATE_DEFAULT:
+ * Feed.STATE_SINGLE_LECTURE:
+ *      Only reviews will be displayed.
+ *
+ * Feed.STATE_SINGLE_COURSE:
+ *      ( CURRENTLY NOT USED )
+ *      Separators will be placed between the separate
+ *      lectures.
  */
 public class FeedAdapter extends BaseAdapter implements GetLectureVotesAllCallback {
     private static final String TAG = "FeedAdapter";
@@ -226,7 +238,6 @@ public class FeedAdapter extends BaseAdapter implements GetLectureVotesAllCallba
 	public long getItemId(int position) {
 		return position;
 	}
-
     /**
      * @return
      * The ID of the last LectureReviewItem in the list.

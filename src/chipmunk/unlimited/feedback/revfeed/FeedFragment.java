@@ -19,10 +19,7 @@ import chipmunk.unlimited.feedback.ScrollToRefreshListView.*;
 
 /**
  * Fragment containing a list view which displays 
- * recent reviews.
- *
- * FeedFragment supports the same parameters FeedActivity
- * does.
+ * reviews.
  */
 public class FeedFragment extends UpdateableFragment
         implements Feed.FeedListener, OnScrollToRefreshListener {
@@ -123,7 +120,7 @@ public class FeedFragment extends UpdateableFragment
         intent.putExtra(LectureRatingActivity.PARAM_DATE, reviewItem.getDateString());
         intent.putExtra(LectureRatingActivity.PARAM_ROOM, reviewItem.getRoom());
 
-		/* Optional, READ ONLY toggling parameters */
+		/* READ ONLY toggling parameters */
         intent.putExtra(LectureRatingActivity.PARAM_READ_ONLY, true);
         intent.putExtra(LectureRatingActivity.PARAM_RATINGS, reviewItem.getRatings());
         intent.putExtra(LectureRatingActivity.PARAM_COMMENT, reviewItem.getComment());

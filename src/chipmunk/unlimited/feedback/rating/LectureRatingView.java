@@ -81,7 +81,17 @@ public class LectureRatingView extends LinearLayout
     public void setRatingListener(RatingListener callback) {
         mCallback = callback;
     }
-
+    /**
+     * Set the state of an attribute view. The attribute rating view will
+     * also be flagged as read-only.
+     *
+     * @param index
+     * The index of the attribute rating view.
+     *
+     * @param state
+     * The new state of the rating view. Must be either AttributeView.STATE_POSITIVE
+     * or AttributeView.STATE_NEGATIVE.
+     */
     public void setAttributeViewState(int index, int state) {
         mAttributeViews.get(index).setState(state);
         mAttributeViews.get(index).setReadOnly(true);

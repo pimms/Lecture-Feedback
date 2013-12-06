@@ -34,13 +34,20 @@ public abstract class DatabaseWrapper extends SQLiteOpenHelper {
 	public void onUpgrade(SQLiteDatabase db, int old, int n) {
 		
 	}
-	
+
+    /**
+     * Open the database for read & write operations.
+     * This sets mDatabase to a non-nil value.
+     */
 	public void open() {
 		if (mDatabase == null) {
 			mDatabase = getWritableDatabase();
 		}
 	}
-	
+
+    /**
+     * Close the database handle and set mDatabase to nil.
+     */
 	public void close() {
 		mDatabase.close();
 		mDatabase = null;

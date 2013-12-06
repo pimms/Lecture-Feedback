@@ -11,16 +11,16 @@ public class AttributeButton extends ImageButton {
 	private static final String TAG = "AttributeButton";
 	
 	/* Does the button affect positively or negatively? */
-	public static final int NEGATIVE = 1;
-	public static final int POSITIVE = 2;
+	public static final int EFFECT_NEGATIVE = 1;
+	public static final int EFFECT_POSITIVE = 2;
 	
 	/* Is the button active or not? */
-	public static final int ACTIVE   = 1;
-	public static final int INACTIVE = 2;
+	public static final int STATE_ACTIVE = 1;
+	public static final int STATE_INACTIVE = 2;
 	
 	
-	private int mType = NEGATIVE;
-	private int mState = INACTIVE;
+	private int mType = EFFECT_NEGATIVE;
+	private int mState = STATE_INACTIVE;
 	
 	
 	public AttributeButton(Context context) {
@@ -34,20 +34,32 @@ public class AttributeButton extends ImageButton {
 	public AttributeButton(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 	}
-	
-	
-	public void setType(int type) {
-		mType = type;
+
+    /**
+     * Change the effect the button has on the attribute.
+     *
+     * @param effectType
+     * The new effect type. Must be either EFFECT_POSITIVE
+     * or EFFECT_NEGATIVE.
+     */
+	public void setEffectType(int effectType) {
+		mType = effectType;
 		updateBackgroundDrawable();
 	}
-	
+    /**
+     * Change the state of the button.
+     *
+     * @param state
+     * The new state. Must be either STATE_ACTIVE or
+     * STATE_INACTIVE.
+     */
 	public void setState(int state) {
 		mState = state;
 		updateBackgroundDrawable();
 	}
 	
 	
-	public int getType() {
+	public int getEffectType() {
 		return mType;
 	}
 	
@@ -63,16 +75,16 @@ public class AttributeButton extends ImageButton {
 	private void updateBackgroundDrawable() {
 		int drawableId = 0;
 		
-		if (mType == NEGATIVE) {
-			if (mState == ACTIVE) {
+		if (mType == EFFECT_NEGATIVE) {
+			if (mState == STATE_ACTIVE) {
 				drawableId = R.drawable.attribute_rating_button_negative_active;
-			} else if (mState == INACTIVE) {
+			} else if (mState == STATE_INACTIVE) {
 				drawableId = R.drawable.attribute_rating_button_negative_inactive;
 			}
-		} else if (mType == POSITIVE) {
-			if (mState == ACTIVE) {
+		} else if (mType == EFFECT_POSITIVE) {
+			if (mState == STATE_ACTIVE) {
 				drawableId = R.drawable.attribute_rating_button_positive_active;
-			} else if (mState == INACTIVE) {
+			} else if (mState == STATE_INACTIVE) {
 				drawableId = R.drawable.attribute_rating_button_positive_inactive;
 			}
 		}

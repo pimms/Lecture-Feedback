@@ -62,9 +62,6 @@ public class LectureRatingActivity extends Activity
                         VoteCallback,
                         LectureRatingView.RatingListener,
                         View.OnClickListener {
-	/**
-	 * The keys through which values will be set through the Intent
-	 */
 	public static final String PARAM_COURSE_NAME 		= "param_course_name";
 	public static final String PARAM_COURSE_HIG_CODE 	= "param_course_hig_code";
 	public static final String PARAM_LECTURER_NAME 		= "param_lecturer_name";
@@ -189,7 +186,13 @@ public class LectureRatingActivity extends Activity
                 mReviewId, null, 0);
 		return mLectureReviewItem;
 	}
-
+    /**
+     * Create a boolean[] from the AttributeRatingView.
+     *
+     * @return
+     * Boolean array with length 5. "false" indicates a negative
+     * vote, "true" a positive.
+     */
 	private boolean[] getRatingArray() {
 		if (mLectureRatingView != null) {
             return mLectureRatingView.getRatingArray();
@@ -205,7 +208,13 @@ public class LectureRatingActivity extends Activity
 
         return null;
 	}
-
+    /**
+     * Store the currently displayed LectureReviewItem into the
+     * ReviewedLectureDatabase.
+     *
+     * @return
+     * True on insertion success, false on failure.
+     */
     private boolean insertReviewItemLocally() {
         ReviewedLectureDatabase db = new ReviewedLectureDatabase(this);
         return db.insertLectureItem(getReviewItem());
@@ -228,7 +237,10 @@ public class LectureRatingActivity extends Activity
 		}
 	}
 
-
+    /**
+     * Parse required and optional intent-extra-parameters.
+     * If an error occurs, the activity finishes.
+     */
 	private void handleIntentParameters() {
 		/* Required parameter handling */
 		try {

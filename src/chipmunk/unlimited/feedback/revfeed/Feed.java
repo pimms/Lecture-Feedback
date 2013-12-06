@@ -58,22 +58,46 @@ public class Feed implements WebAPI.GetFeedCallback {
     public int getState() {
         return mState;
     }
-
+    /**
+     * Set the current state to STATE_DEFAULT.
+     */
     public void setStateDefault() {
         mState = STATE_DEFAULT;
     }
-
+    /**
+     * Set the current state to STATE_SINGLE_COURSE.
+     * Only reviews from that course will be returned.
+     *
+     * @param subItem
+     * The course to be filtered.
+     */
     public void setStateCourse(SubscriptionItem subItem) {
         mState = STATE_COURSE;
         mSubItem = subItem;
     }
-
+    /**
+     * Set the current state to STATE_SINGLE_LECTURE.
+     * Only reviews from a single lecture will be included.
+     *
+     * @param hash
+     * The hash of the lecture to be filtered.
+     */
     public void setStateLecture(String hash) {
         mState = STATE_LECTURE;
         mLectureHash = hash;
     }
 
-
+    /**
+     * Update the current set of items based on the state. The FeedListener is
+     * notified via "onFeedUpdate()". If an error occurred, the passed
+     * ArrayList<..> will contain zero elements.
+     *
+     * @param first
+     * The number of items to ignore.
+     *
+     * @param count
+     * The maximum amount of items to be returned.
+     */
     public void update(int first, int count) {
         if (mState == STATE_DEFAULT) {
             updateDefault(first, count);
@@ -107,7 +131,9 @@ public class Feed implements WebAPI.GetFeedCallback {
     }
 
     /**
-     * Load more items.
+     * Load more items based on the current state. The FeedListener is
+     * notified via "onFeedUpdate()". If an error occurred, the passed
+     * ArrayList<..> will contain zero elements.
      *
      * @param lastId
      * The ID of the last item in the previously returned set.

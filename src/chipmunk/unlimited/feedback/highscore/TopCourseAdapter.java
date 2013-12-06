@@ -92,12 +92,16 @@ public class TopCourseAdapter extends BaseAdapter
         return view;
     }
 
-
+    /**
+     * Discard the existing set of items and reload them.
+     */
     public void reloadCourses() {
         WebAPI webApi = new WebAPI();
         webApi.getTopCourses(this, 0, 25);
     }
-
+    /**
+     * Load more items and append them to the set of existing items.
+     */
     public void loadMoreCourses() {
         mLoadingMore = true;
 
@@ -109,7 +113,7 @@ public class TopCourseAdapter extends BaseAdapter
     @Override
     public void onGetTopCoursesSuccess(List<CourseVote> courses) {
         if (mLoadingMore) {
-            Log.d(TAG, "Loaded "+courses.size()+" more, dunno what to do");
+            // Append the new items to the existing set.
             if (mCourseVotes == null) {
                 mCourseVotes = courses;
             } else {
@@ -118,6 +122,7 @@ public class TopCourseAdapter extends BaseAdapter
                 }
             }
         } else {
+            // Discard previous set, replace with new.
             mCourseVotes = courses;
         }
 
@@ -125,6 +130,7 @@ public class TopCourseAdapter extends BaseAdapter
         mLoadingMore = false;
 
         if (mListener != null) {
+            // Notify the callback that the update finished.
             mListener.onTopCourseAdapterUpdateComplete(this);
         }
     }
@@ -132,6 +138,8 @@ public class TopCourseAdapter extends BaseAdapter
     public void onGetTopCoursesFailure(String errorMessage) {
         mCourseVotes = null;
         mLoadingMore = false;
+
+        Log.e(TAG, "Failed to get top courses: " + errorMessage);
 
         if (mListener != null) {
             mListener.onTopCourseAdapterUpdateComplete(this);

@@ -48,11 +48,25 @@ public class TopCourseActivity extends ListActivity
         startActivity(intent);
     }
 
-
+    /**
+     * Notify the adapter to load more courses when the list view has scrolled
+     * all the way to the bottom.
+     *
+     * @param view
+     * The ScrollToRefreshView.
+     */
     @Override
     public void onScrollRefreshBegin(ScrollToRefreshListView view) {
         mAdapter.loadMoreCourses();
     }
+
+    /**
+     * When the adapter has finished loading, notify the list view that
+     * the refresh finished.
+     *
+     * @param tpa
+     * The adapter that finished updating.
+     */
     @Override
     public void onTopCourseAdapterUpdateComplete(TopCourseAdapter tpa) {
         mRefreshListView.onRefreshComplete();
