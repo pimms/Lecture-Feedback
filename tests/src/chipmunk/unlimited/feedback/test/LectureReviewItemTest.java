@@ -101,8 +101,22 @@ public class LectureReviewItemTest extends AndroidTestCase {
 		assertEquals(expected2, actual2);
 	}
 	
+	/**
+	 * Compares id's from our test to id's stored in the objects.
+	 */
 	public void TestGetId() {
 		
+		// Retrieve test id's and expected object id's.
+		
+		int expected1 = this.id1;
+		int actual1 = this.lectureReviewItem1.getId();
+		
+		int expected2 = this.id2;
+		int actual2 = this.lectureReviewItem2.getId();
+		
+		// Assert that it didn't change.
+		assertEquals(expected1, actual1);
+		assertEquals(expected2, actual2);
 	}
 	
 	public void TestGetRatings() {
