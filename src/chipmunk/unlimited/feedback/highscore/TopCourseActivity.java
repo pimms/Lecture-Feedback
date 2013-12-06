@@ -56,7 +56,7 @@ public class TopCourseActivity extends ListActivity
      * The ScrollToRefreshView.
      */
     @Override
-    public void onScrollRefreshBegin(ScrollToRefreshListView view) {
+    public void onScrollToLoad(ScrollToRefreshListView view) {
         mAdapter.loadMoreCourses();
     }
 

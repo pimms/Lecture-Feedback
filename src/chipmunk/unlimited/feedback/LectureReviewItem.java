@@ -56,22 +56,22 @@ public class LectureReviewItem extends LectureItem {
 	
 	/**
 	 * @param date
-	 * See LectureItem.
+	 * @see @class LectureItem
 	 * 
 	 * @param time
-	 * See LectureItem.
+	 * @see @class LectureItem
 	 * 
 	 * @param name
-	 * See LectureItem.
+	 * @see @class LectureItem
 	 * 
 	 * @param higCode
-	 * See LectureItem
+	 * @see @class LectureItem
 	 * 
 	 * @param room
-	 * See LectureItem.
+	 * @see @class LectureItem
 	 * 
 	 * @param lecturer
-	 * See LectureItem.
+	 * @see @class LectureItem
 	 * 
 	 * @param ratings
 	 * Array containing five values, where false is

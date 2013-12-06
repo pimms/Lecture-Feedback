@@ -59,7 +59,10 @@ public class LaunchPrompt {
     public SharedPreferences getSharedPreferences() {
         return mContext.getSharedPreferences(SHPREF_LAUNCH_TRACKER, 0);
     }
-
+    /**
+     * @return
+     * The number of times the application has been launched.
+     */
     private int getLaunchCount() {
         SharedPreferences shpref = mContext.getSharedPreferences(SHPREF_LAUNCH_TRACKER, 0);
 
@@ -69,7 +72,6 @@ public class LaunchPrompt {
 
         return shpref.getInt(SHPREF_KEY_LAUNCH_COUNT, 0);
     }
-
     /**
      * @return
      * The message to be contained in the AlertDialog.
@@ -81,26 +83,36 @@ public class LaunchPrompt {
         return String.format(message, db.getNumberOfItems());
     }
 
-
+    /**
+     * Increment the launch-counter
+     */
     private void increment() {
         SharedPreferences pref = getSharedPreferences();
         int count = pref.getInt(SHPREF_KEY_LAUNCH_COUNT, 0);
         pref.edit().putInt(SHPREF_KEY_LAUNCH_COUNT, count + 1).commit();
     }
-
+    /**
+     * Decrement the launch-counter
+     */
     private void decrement() {
         SharedPreferences pref = getSharedPreferences();
         int count = pref.getInt(SHPREF_KEY_LAUNCH_COUNT, 0);
         pref.edit().putInt(SHPREF_KEY_LAUNCH_COUNT, count - 1).commit();
     }
 
-
+    /**
+     * Display the prompt if the stars are right.
+     * @see LaunchPrompt#shouldDisplayPrompt()
+     */
     private void displayPrompt() {
         if (shouldDisplayPrompt()) {
             getAlertDialogBuilder().show();
         }
     }
-
+    /**
+     * @return
+     * true if a prompt should be displayed, false otherwise.
+     */
     private boolean shouldDisplayPrompt() {
         int count = getLaunchCount();
 
@@ -115,7 +127,10 @@ public class LaunchPrompt {
 
         return false;
     }
-
+    /**
+     * @return
+     * An AlertDialog.Builder containing an AlertDialog ready to be shown.
+     */
     private AlertDialog.Builder getAlertDialogBuilder() {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         Resources r = mContext.getResources();
@@ -147,12 +162,16 @@ public class LaunchPrompt {
         return builder;
     }
 
-
+    /**
+     * Set the "never ask again" flag.
+     */
     private void neverAskAgain() {
         SharedPreferences.Editor editor = getSharedPreferences().edit();
         editor.putBoolean(SHPREF_KEY_NEVER_RATE, true).commit();
     }
-
+    /**
+     * Open the link to Google Play and call neverAskAgain().
+     */
     private void goToMarketplace() {
         neverAskAgain();
 

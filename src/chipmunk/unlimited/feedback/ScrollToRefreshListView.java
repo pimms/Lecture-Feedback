@@ -2,19 +2,15 @@ package chipmunk.unlimited.feedback;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListView;
 
 
 public class ScrollToRefreshListView extends ListView implements AbsListView.OnScrollListener {
-    private static final String TAG = "ScrollToRefreshListView";
+    private static final String TAG = "ScrollToLoadListView";
 
     public interface OnScrollToRefreshListener {
-        public void onScrollRefreshBegin(ScrollToRefreshListView view);
+        public void onScrollToLoad(ScrollToRefreshListView view);
     }
 
     private int mScrollState;
@@ -43,7 +39,9 @@ public class ScrollToRefreshListView extends ListView implements AbsListView.OnS
     }
 
     private void init() {
-        setOnScrollListener(this);
+        // I am a strong, confident woman. I talk to myself. I listen
+        // to myself.
+        this.setOnScrollListener(this);
     }
 
     public void setOnScrollToRefreshListener(OnScrollToRefreshListener listener) {
@@ -55,7 +53,7 @@ public class ScrollToRefreshListView extends ListView implements AbsListView.OnS
         mIsRefreshing = true;
 
         if (mListener != null) {
-            mListener.onScrollRefreshBegin(this);
+            mListener.onScrollToLoad(this);
         }
     }
 
@@ -70,7 +68,7 @@ public class ScrollToRefreshListView extends ListView implements AbsListView.OnS
         }
     }
     @Override
-    public void onScroll (AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
         if (view == this) {
             boolean wasAtBottom = mAtBottom;
             mAtBottom = (firstVisibleItem + visibleItemCount == totalItemCount);

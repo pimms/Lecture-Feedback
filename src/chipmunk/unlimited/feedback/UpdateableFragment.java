@@ -21,6 +21,11 @@ import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
  * Subclasses must override "doRefresh()", and must
  * call "onUpdateCompleted()" once the update has
  * finalized.
+ *
+ * Updates are initiated using pull to refresh functionality.
+ *
+ * If a subclass wishes to have their list view pulled,
+ * it MUST have the id "android.R.id.list".
  */
 public abstract class UpdateableFragment extends ListFragment
         implements OnRefreshListener {
@@ -33,7 +38,6 @@ public abstract class UpdateableFragment extends ListFragment
     @Override
     public void onViewCreated(View view, Bundle bundle) {
         super.onActivityCreated(bundle);
-        onFragmentInitialized();
 
         ViewGroup viewGroup = (ViewGroup)view;
         mPtrLayout = new PullToRefreshLayout(getActivity());
@@ -43,6 +47,8 @@ public abstract class UpdateableFragment extends ListFragment
                 .theseChildrenArePullable(android.R.id.list)
                 .listener(this)
                 .setup(mPtrLayout);
+
+        onFragmentInitialized();
     }
     @Override
     public void onRefreshStarted(View view) {
@@ -54,8 +60,12 @@ public abstract class UpdateableFragment extends ListFragment
         return mPtrLayout;
     }
 
-
-    protected void onFragmentInitialized() {
+    /**
+     * Method called when the fragment is initialized.
+     * Will call refreshContents() if a call was made to that
+     * method before the Fragment was initialized.
+     */
+    private void onFragmentInitialized() {
         mInitialized = true;
 
         if (mScheduledUpdate) {
@@ -63,7 +73,14 @@ public abstract class UpdateableFragment extends ListFragment
             mScheduledUpdate = false;
         }
     }
-
+    /**
+     * Called when the list view is pulled, and can also be
+     * called externally to kick start a refresh.
+     *
+     * If the Fragment is not initialized at time of calling
+     * this method, it will be called as soon as the Fragment
+     * is initialized.
+     */
     public final void refreshContents() {
         if (mInitialized) {
             doRefresh();
@@ -72,12 +89,18 @@ public abstract class UpdateableFragment extends ListFragment
             mScheduledUpdate = true;
         }
     }
-
+    /**
+     * Called to indicate that the update finalized.
+     * Will stop the "updating" animation in the top bar.
+     */
     public final void onUpdateCompleted() {
         mPtrLayout.setRefreshing(false);
         mPtrLayout.setRefreshComplete();
     }
 
+    /**
+     * Abstract method that must be overidden by the subclass.
+     */
     protected abstract void doRefresh();
 }
 

@@ -65,6 +65,8 @@ public class CourseLecturesActivity extends Activity implements OnItemClickListe
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         LectureVote vote = (LectureVote)mAdapter.getItem(i);
         if (vote != null) {
+            // Open a FeedActivity displaying only the reviews
+            // of the clicked lecture.
             String hash = vote.getLectureItem().getLectureHash();
             String title = vote.getLectureItem().getPrettyDateString();
 

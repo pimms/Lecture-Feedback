@@ -25,6 +25,9 @@ import chipmunk.unlimited.feedback.database.SubscriptionDatabase;
 
 /**
  * Created by Tobias on 31.08.13, forked by Joakim on 11.11.2013
+ *
+ * The code in this file is largely unchanged since the fork, and
+ * is bar compatibility changes marginally altered for improved functinality.
  */
 public class SubscriptionFragment extends DialogFragment {	
     private SubscriptionProtocolListener mListener;

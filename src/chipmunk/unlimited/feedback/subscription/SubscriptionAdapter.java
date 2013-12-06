@@ -21,6 +21,9 @@ import chipmunk.unlimited.feedback.database.SubscriptionDatabase;
 
 /**
  * Created by Tobias on 02.09.13, forked by Joakim on 11.11.2013
+ *
+ * The code in this file is largely unchanged since the fork, and
+ * is bar compatibility changes marginally altered for improved functinality.
  */
 public class SubscriptionAdapter extends CursorAdapter {
 

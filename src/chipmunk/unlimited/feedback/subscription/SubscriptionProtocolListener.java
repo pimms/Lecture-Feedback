@@ -7,7 +7,7 @@ package chipmunk.unlimited.feedback.subscription;
  * cancelled at any time.
  *
  * The protocol has four steps:
- * 1. The SusbcriptionFragment is displayed
+ * 1. The SubscriptionFragment is displayed
  *    This step is initiated externally. No callback
  *    happens in this step.
  *

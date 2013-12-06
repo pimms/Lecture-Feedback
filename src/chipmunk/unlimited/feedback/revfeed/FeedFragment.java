@@ -70,7 +70,7 @@ public class FeedFragment extends UpdateableFragment
         mFeed.update(0, 25);
 	}
     @Override
-    public void onScrollRefreshBegin(ScrollToRefreshListView refreshView) {
+    public void onScrollToLoad(ScrollToRefreshListView refreshView) {
         int lastId = mFeedAdapter.getLastReviewID();
 
         if (lastId >= 0) {

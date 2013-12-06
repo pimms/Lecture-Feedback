@@ -54,7 +54,7 @@ public class StatisticsAdapter extends BaseAdapter
 	@Override
 	public int getCount() {
 		if (mSubscriptions == null) {
-			loadSubscriptions();
+			loadCourses();
 		}
 
         if (!mTutorial) {
@@ -138,13 +138,18 @@ public class StatisticsAdapter extends BaseAdapter
         return vote;
     }
 
-	
-	public void reloadSubscriptions() {
-        loadSubscriptions();
+    /**
+     * Public method for reloading the content of the List View.
+     */
+	public void reloadCourses() {
+        loadCourses();
         notifyDataSetChanged();
     }
-
-    private void loadSubscriptions() {
+    /**
+     * Load all the courses and their votes via the web API. This
+     * discards existing items.
+     */
+    private void loadCourses() {
         SubscriptionDatabase db = new SubscriptionDatabase(mContext);
         mSubscriptions = db.getSubscriptionList();
 

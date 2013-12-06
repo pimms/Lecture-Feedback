@@ -9,13 +9,17 @@ import android.util.Log;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
 /**
- * @class TimeEditParser
- * Parser of TimeEdit HTML. The parsing is done using XPath and
- * DOM traversal.
+ * The TimeEdit HTML is full of errors, causing the w3c.dom-parser to fail.
+ * As a result, scavenging the HTML for data is the only solution to
+ * integrate TimeEdit communication.
  * 
- * This class is heavily based on TobbenTM's implementation
- * of a TimeEdit parser. The TimeEdit HTML is full of invalid
- * HTML, causing the w3c.dom-parser to fail. 
+ * This class is forked from TobbenTM's implementation
+ * of a TimeEdit parser. Most of the code is poorly documented and hard to
+ * follow, and should in case of severe modification needs be replaced entirely.
+ *
+ * The source of the fork:
+ * https://github.com/TobbenTM/HiG-TimeEdit-Reader/blob/645e939dee31c249c135ea5b216890fcd92f8537/java/com/tobbentm/higreader/TimeParser.java
+ *
  */
 public class TimeEditParser extends AsyncHttpResponseHandler {	
 	/**
@@ -38,8 +42,12 @@ public class TimeEditParser extends AsyncHttpResponseHandler {
 	private int mContentType = 1;
 	
 	private OnParseCompleteListener mCallback;
-	
-	
+
+    /**
+     * @param contentType
+     * Definition of what the returned content type will be.
+     * Must be CONTENT_TIMETABLE.
+     */
 	public TimeEditParser(int contentType) {
 		mContentType = contentType;
 	}
@@ -51,7 +59,9 @@ public class TimeEditParser extends AsyncHttpResponseHandler {
 	
 	/**
 	 * The callback for successful HTTP requests.
-	 * @param response 	The contents of the webpage. Can be null.
+     *
+	 * @param response
+     * The contents of the webpage. Can be null.
 	 */
 	@Override 
 	public void onSuccess(String response) {
@@ -59,11 +69,21 @@ public class TimeEditParser extends AsyncHttpResponseHandler {
 			List<LectureItem> list = new ArrayList<LectureItem>();
 			
 			if (response != null) {
+                // Res will will be of size [n][5].
+                // It's contents are:
+                // INDEX    DESCRIPTION                     EXAMPLE
+                // [n][0]   The date of the lecture         "yyyy-MM-dd"
+                // [n][1]   The time of the lecture         "HH:mm - HH-mm"
+                // [n][2]   Course code and course name     "IMTxoxo, Heisann sveisann"
+                // [n][3]   The room of the lecture         "D101"
+                // [n][4]   The lecturer                    "McCallum"
+
 				String[][] res = parseTimeTable(response);
-				Log.d("ITEM", res.length + " items.");
 				for (int i=1; i<res.length; i++) {
 					String[] arr = res[i];
-					
+
+                    // Split the course code and course name.
+                    // In case the course name contains any commas, rejoin them.
 					String[] split = arr[2].split(",");
 					String courseCode = split[0];
 					String courseName = split[1];
@@ -77,7 +97,6 @@ public class TimeEditParser extends AsyncHttpResponseHandler {
 					// 								   date    time    name        id          room    lecturer
 					LectureItem item = new LectureItem(arr[0], arr[1], courseName, courseCode, arr[3], arr[4]);
 					list.add(item);
-					//Log.d("parser", item.toString());
 				}
 			}
 			
@@ -236,9 +255,9 @@ public class TimeEditParser extends AsyncHttpResponseHandler {
     	}
     	
     	/*
-    	 * All valid lectures will be on the form "XXXyyyy, Course Name".
+    	 * All valid lectures will be on the form "IMTxxxx, Course Name".
     	 * If count(split(name, ",")) < 2, the course name is illegal and
-    	 * may be filtered out.
+    	 * may be filtered out. This will filter out "Demokratitid".
     	 */
     	for (int i=0; i<arraylist.size(); i++) {
     		if (arraylist.get(i).get(2).split(",").length < 2) {
@@ -266,6 +285,7 @@ public class TimeEditParser extends AsyncHttpResponseHandler {
     }
 
     private static ArrayList<String> dateEntry(String date){
+        // wtf
         ArrayList<String> arr = new ArrayList<String>();
         arr.add(date);
         arr.add("");
@@ -277,6 +297,7 @@ public class TimeEditParser extends AsyncHttpResponseHandler {
     }
 
     private static ArrayList<String> clearEntry(String date, String time){
+        // wtf
         ArrayList<String> arr = new ArrayList<String>();
         arr.add(date);
         arr.add(time);

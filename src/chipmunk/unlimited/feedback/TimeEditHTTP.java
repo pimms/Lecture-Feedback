@@ -22,12 +22,14 @@ public class TimeEditHTTP {
 	 * Get the time-table for the passed subscriptions. The timetable covers
 	 * the weeks containing YESTERDAY and TODAY. If this method is called
 	 * on a Monday, last week and this entire week is returned from TimeEdit.
+     *
+     * The callback will receive the entire TimeEdit HTML on success.
 	 * 
 	 * @param subscriptions
 	 * List of subscriptions (rooms, courses, classes)
 	 * 
 	 * @param callback
-	 * The callback for the HTTP-connection.
+	 * The callback that will receive the TimeEdit HTML.
 	 */
 	public static void getTimeTable(List<SubscriptionItem> subscriptions, AsyncHttpResponseHandler callback) {
 		if (subscriptions.size() == 0 || callback == null) {
@@ -49,7 +51,7 @@ public class TimeEditHTTP {
 		String endDate = dateFormat.format(calendar.getTime());
 		
 		// Subtract 14 as we added 7 earlier
-		calendar.add(Calendar.DAY_OF_YEAR, -31);
+		calendar.add(Calendar.DAY_OF_YEAR, -14);
 		String startDate = dateFormat.format(calendar.getTime());
 		
 		/* Get the TimeEdit URL */
@@ -113,13 +115,19 @@ public class TimeEditHTTP {
 	}
 	
 	/**
-	 * Only search for courses (183)
-	  */
+     * Search TimeEdit for raw text.
+     *
+     * The callback will receive the entire TimeEdit HTML on success.
+     *
+     * @param term
+     * Raw text to search TimeEdit for.
+     *
+     * @param handler
+     * The callback that will receive TimeEdit HTML.
+	 */
 	 public static void search(String term, AsyncHttpResponseHandler handler){
         final int iType = 183;
-
         final String baseURL = "https://web.timeedit.se/hig_no/db1/timeedit/p/open/objects.html?max=15&partajax=t&l=en&sid=3&types=" + iType + "&search_text=";
-        //Log.d("HIG.SEARCH", "URL: " + baseURL + term.replaceAll(" ", "%20"));
         new AsyncHttpClient().get(baseURL + term.replaceAll(" ", "%20"), handler);
     }
 }
