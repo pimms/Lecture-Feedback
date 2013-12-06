@@ -84,9 +84,10 @@ public class LectureReviewItemTest extends AndroidTestCase {
 	}
 	
 	/**
-	 * Compares comments from our test to comments stored in the objects.
+	 * Check if test comments and object comments are equal.
+	 * Retrieves test comments and expected object comments, followed by asserting that they didn't change.
 	 */
-	public void TestGetComment() {
+	public void testGetComment() {
 		
 		// Retrieve test comments and expected object comments.
 		
@@ -102,11 +103,10 @@ public class LectureReviewItemTest extends AndroidTestCase {
 	}
 	
 	/**
-	 * Compares id's from our test to id's stored in the objects.
+	 * Check if test id's and test comments are equal.
+	 * @see chipmunk.unlimited.feedback.test.LectureReviewItemTest#testGetComment An example of how we perform tests.
 	 */
-	public void TestGetId() {
-		
-		// Retrieve test id's and expected object id's.
+	public void testGetId() {
 		
 		int expected1 = this.id1;
 		int actual1 = this.lectureReviewItem1.getId();
@@ -114,25 +114,69 @@ public class LectureReviewItemTest extends AndroidTestCase {
 		int expected2 = this.id2;
 		int actual2 = this.lectureReviewItem2.getId();
 		
-		// Assert that it didn't change.
 		assertEquals(expected1, actual1);
 		assertEquals(expected2, actual2);
 	}
 	
+	/**
+	 * Are the test ratngs the same as the object ratings?
+	 * @see chipmunk.unlimited.feedback.test.LectureReviewItemTest#testGetComment An example of how we perform tests.
+	 */
 	public void TestGetRatings() {
 		
-	}
-	
-	public void TestGetRatingString() {
+		boolean[] expected1 = this.ratings1;
+		boolean[] actual1 = this.lectureReviewItem1.getRatings();
+		
+		boolean[] expected2 = this.ratings2;
+		boolean[] actual2 = this.lectureReviewItem2.getRatings();
+		
+		assertEquals(expected1, actual1);
+		assertEquals(expected2, actual2);
 		
 	}
 	
-	public void TestGetReviewDate() {
+	/**
+	 * Can we retrieve the correct stringified rating array from the method?
+	 * @see chipmunk.unlimited.feedback.test.LectureReviewItemTest#testGetComment An example of how we perform tests.
+	 */
+	public void testGetRatingString() {
+		
+		String expected1 = this.ratingString1;
+		String actual1 = this.lectureReviewItem1.getRatingString();
+				
+		assertEquals(expected1, actual1);
+	}
+	
+	/**
+	 * Can we retrieve the correct Date from the method?
+	 * @see chipmunk.unlimited.feedback.test.LectureReviewItemTest#testGetComment An example of how we perform tests.
+	 */
+	public void testGetReviewDate() {
+		
+		Date expected1 = this.reviewDate1;
+		Date actual1 = this.lectureReviewItem1.getReviewDate();
+		
+		Date expected2 = this.reviewDate2;
+		Date actual2 = this.lectureReviewItem2.getReviewDate();
+		
+		assertEquals(expected1, actual1);
+		assertEquals(expected2, actual2);
 		
 	}
 	
-	public void TestGetURIEncodedComment() {
+	/**
+	 * Is the method comment properly URIencoded?
+	 * @see chipmunk.unlimited.feedback.test.LectureReviewItemTest#testGetComment An example of how we perform tests.
+	 */
+	public void testGetURIEncodedComment() {
+		Date expected1 = this.reviewDate1;
+		Date actual1 = this.lectureReviewItem1.getReviewDate();
 		
+		Date expected2 = this.reviewDate2;
+		Date actual2 = this.lectureReviewItem2.getReviewDate();
+		
+		assertEquals(expected1, actual1);
+		assertEquals(expected2, actual2);
 	}
 
 }
