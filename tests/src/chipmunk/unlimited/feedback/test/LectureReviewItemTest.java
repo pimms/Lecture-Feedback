@@ -50,7 +50,7 @@ public class LectureReviewItemTest extends AndroidTestCase {
 	/**
 	 * Test if application was initialized properly.
 	 */
-	protected void testPreconditions() {
+	public void testPreconditions() {
 	}
 
 	/**
@@ -58,7 +58,7 @@ public class LectureReviewItemTest extends AndroidTestCase {
 	 * @see android.test.AndroidTestCase#setUp()
 	 */
 	@Override
-	protected void setUp() throws Exception {
+	public void setUp() throws Exception {
 		super.setUp();
 		
 		// Construct our first unit.
@@ -78,7 +78,7 @@ public class LectureReviewItemTest extends AndroidTestCase {
 	 * @see android.test.AndroidTestCase#tearDown()
 	 */
 	@Override
-	protected void tearDown() throws Exception {
+	public void tearDown() throws Exception {
 		// TODO Auto-generated method stub
 		super.tearDown();
 	}
