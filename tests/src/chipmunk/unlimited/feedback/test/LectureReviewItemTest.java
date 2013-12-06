@@ -59,11 +59,19 @@ public class LectureReviewItemTest extends AndroidTestCase {
 	 */
 	@Override
 	protected void setUp() throws Exception {
-		// TODO Auto-generated method stub
 		super.setUp();
-//		lectureReviewItem1 = new LectureReviewItem(new LectureItem(date, time, name, higCode, room, lecturer), ratings, comment, id, reviewDate);
-//		lectureReviewItem2 = new LectureReviewItem(date, time, name, higCode, room, lecturer, ratings, comment, id, reviewDate);
 		
+		// Construct our first unit.
+		this.lectureItem = new LectureItem(this.date1, this.time1, this.name1,
+				this.higCode1, this.room1, this.lecturer1);
+		
+		this.lectureReviewItem1 = new LectureReviewItem(this.lectureItem, 
+				this.ratings1, this.comment1, this.id1, this.reviewDate1);
+		
+		// Construct our second unit.
+		this.lectureReviewItem2 = new LectureReviewItem(this.date2, this.time2,
+				this.name2, this.higCode2, this.room2, this.lecturer2,
+				this.ratings2, this.comment2, this.id2, this.reviewDate2);
 	}
 
 	/** To control our test environment.
@@ -75,8 +83,22 @@ public class LectureReviewItemTest extends AndroidTestCase {
 		super.tearDown();
 	}
 	
+	/**
+	 * Compares comments from our test to comments stored in the objects.
+	 */
 	public void TestGetComment() {
 		
+		// Retrieve test comments and expected object comments.
+		
+		String expected1 = this.comment1;
+		String actual1 = this.lectureReviewItem1.getComment();
+		
+		String expected2 = this.comment2;
+		String actual2 = this.lectureReviewItem2.getComment();
+		
+		// Assert that they haven't changed.
+		assertEquals(expected1, actual1);
+		assertEquals(expected2, actual2);
 	}
 	
 	public void TestGetId() {
