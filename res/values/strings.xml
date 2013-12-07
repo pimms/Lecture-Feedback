@@ -24,6 +24,7 @@
     <string name="about_description">
         HiG Lecture Review\n
         \nDeveloped for IMT3672 by Joakim Stien, Knut Remi Løvli and Eskil Skotvold.\n
+        \nSome modules of the applications have been forked from TobbenTM\'s HiG Time Table Reader.\n
         \nGot feedback or found a bug? Mail your thoughts to joakim.stien@gmail.com
     </string>
 
