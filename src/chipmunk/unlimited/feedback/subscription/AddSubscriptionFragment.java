@@ -107,9 +107,6 @@ public class AddSubscriptionFragment extends DialogFragment {
             }
         });
 
-        /**********************************************/
-        /** Stop reading at this point. I'm serious. **/
-        /**********************************************/
         assert(neutButton != null);
         neutButton.setOnClickListener(new View.OnClickListener()
         {
