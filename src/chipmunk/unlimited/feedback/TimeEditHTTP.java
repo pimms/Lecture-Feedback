@@ -77,7 +77,7 @@ public class TimeEditHTTP {
 	 */
 	private static String getTimeEditTimeTableURL(List<SubscriptionItem>subscriptions, String startDate, String endDate) {
 		/* Generate the TimeEdit URL */
-		String webUrl = "https://web.timeedit.se/hig_no/db1/open/r.html?sid=3&h=t&p=";
+		String webUrl = "https://web.timeedit.se/hig_no/db1/open/r.csv?sid=3&h=t&p=";
 		
 		/* Add the start and end dates */
 		webUrl += startDate + ".x%2C" + endDate;
