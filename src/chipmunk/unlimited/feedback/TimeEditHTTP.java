@@ -41,17 +41,12 @@ public class TimeEditHTTP {
 		
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyMMdd", Locale.getDefault());
 		Calendar calendar = Calendar.getInstance();
-		
-		// TobbenTM's parser is extremely unreliable when searching with a 
-		// narrow scope. Set the search parameters to include ONE WEEK AGO
-		// to ONE WEEK AHEAD.
-		calendar.add(Calendar.DAY_OF_YEAR, 7);
-		
+
 		/* Calculate the bounding dates */
 		String endDate = dateFormat.format(calendar.getTime());
-		
-		// Subtract 14 as we added 7 earlier
-		calendar.add(Calendar.DAY_OF_YEAR, -42);
+
+        // Subtract the number of reviewable days 
+		calendar.add(Calendar.DAY_OF_YEAR, -LectureItem.REVIEWABLE_PERIOD_DAYS);
 		String startDate = dateFormat.format(calendar.getTime());
 		
 		/* Get the TimeEdit URL */
