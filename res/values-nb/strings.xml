@@ -9,7 +9,9 @@
     <string name="comment_hint">Kommentar...</string>
     <string name="upcoming">Kommende</string>
     <string name="today">I dag</string>
+    <string name="today_l">i dag</string>
     <string name="yesterday">I går</string>
+    <string name="yesterday_l">i går</string>
     <string name="activity_top_course_title">Toppfag</string>
     <string name="clone_successful_toast">Omtalen vil regnes som din</string>
     <string name="submit_dialog_wait_text">Laster opp...</string>
@@ -29,6 +31,7 @@
     <string name="format_date_today_sep">EEEE, d. MMM</string>
     <string name="format_date_pretty_old">d. MMM, yyyy</string>
     <string name="format_date_pretty">EEEE, d. MMM</string>
+    <string name="format_date_only_day">EEEE</string>
 
 
     <!-- Main Activity -->
@@ -54,6 +57,7 @@
     </string>
 
     <!-- Feed Fragment -->
+    <string name="frag_feed_separator_prefix">Omtaler postet </string>
     <string name="frag_feed_tutorial_title_no_subs">INGEN FAG</string>
     <string name="frag_feed_tutorial_title_no_items">INGEN OMTALER</string>
 

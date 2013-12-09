@@ -278,7 +278,10 @@ public class FeedAdapter extends BaseAdapter  {
 
         LectureReviewItem review = getLectureSeparatorItem(position);
         if (review != null) {
-            tv.setText(review.getRelativeReviewDateString());
+            String prefix = mContext.getResources().getString(R.string.frag_feed_separator_prefix);
+            String relative = review.getRelativeReviewDateString(mContext);
+
+            tv.setText(prefix + ' ' + relative);
         }
 
         return vi;

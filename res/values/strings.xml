@@ -13,7 +13,9 @@
     <string name="comment_hint">Comments...</string>
     <string name="upcoming">Upcoming</string>
     <string name="today">Today</string>
+    <string name="today_l">today</string>
     <string name="yesterday">Yesterday</string>
+    <string name="yesterday_l">yesterday</string>
     <string name="activity_top_course_title">Top courses</string>
     <string name="clone_successful_toast">This review will be treated as your own</string>
     <string name="submit_dialog_wait_text">Submitting...</string>
@@ -33,6 +35,7 @@
     <string name="format_date_today_sep">EEEE, MMM d</string>
     <string name="format_date_pretty_old">MMM d, yyyy</string>
     <string name="format_date_pretty">EEEE, MMM d</string>
+    <string name="format_date_only_day">EEEE</string>
 
 
     <!-- Main Activity -->
@@ -58,6 +61,7 @@
     </string>
 
     <!-- Feed Fragment -->
+    <string name="frag_feed_separator_prefix">Reviews posted </string>
     <string name="frag_feed_tutorial_title_no_subs">NO COURSES</string>
     <string name="frag_feed_tutorial_title_no_items">NO ITEMS</string>
 

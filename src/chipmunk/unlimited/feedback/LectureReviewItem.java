@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
@@ -204,22 +205,20 @@ public class LectureReviewItem extends LectureItem {
      *      "Monday"
      *      "Friday, Nov. 13th"
      */
-    public String getRelativeReviewDateString() {
+    public String getRelativeReviewDateString(Context context) {
         Calendar compare = Calendar.getInstance();
         Calendar revTime = Calendar.getInstance();
         revTime.setTime(mReviewDate);
 
         // Compare against today
         if (sameDate(compare, revTime)) {
-            return "today";
-            //return mContext.getResources().getString(R.string.today);
+            return context.getResources().getString(R.string.today_l);
         }
 
         // Compare against yesterday
         compare.add(Calendar.DAY_OF_MONTH, -1);
         if (sameDate(compare, revTime)) {
-            return "yesterday";
-            //return mContext.getResources().getString(R.string.yesterday);
+            return context.getResources().getString(R.string.yesterday_l);
         }
 
         /*
@@ -234,14 +233,12 @@ public class LectureReviewItem extends LectureItem {
         compare.set(Calendar.MINUTE, 0);
         if (compare.before(revTime)) {
             // Only display the weekday
-            format = "EEEE";
+            format = context.getResources().getString(R.string.format_date_only_day);
         } else {
             // Display the weekday and date
-            format = "EEEE, MMM d";
+            format = context.getResources().getString(R.string.format_date_pretty);
         }
 
-        // Return the date on proper format
-        //String strFormat = mContext.getResources().getString(R.string.format_date_today_sep);
         SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.getDefault());
         return dateFormat.format(revTime.getTime());
     }
