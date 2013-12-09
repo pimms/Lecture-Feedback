@@ -1,5 +1,6 @@
 package chipmunk.unlimited.feedback;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import android.net.Uri;
@@ -188,5 +189,28 @@ public class LectureReviewItem extends LectureItem {
 
     public int getCloneCount() {
         return mCloneCount;
+    }
+
+
+    public boolean reviewedSameDate(LectureReviewItem other) {
+        Calendar cal = Calendar.getInstance();
+        int myDay, myMonth, myYear;
+        int otherDay, otherMonth, otherYear;
+
+        // Get my values
+        cal.setTime(mReviewDate);
+        myDay = cal.get(Calendar.DAY_OF_MONTH);
+        myMonth = cal.get(Calendar.MONTH);
+        myYear = cal.get(Calendar.YEAR);
+
+        // Get the other values
+        cal.setTime(other.mReviewDate);
+        otherDay = cal.get(Calendar.DAY_OF_MONTH);
+        otherMonth = cal.get(Calendar.MONTH);
+        otherYear = cal.get(Calendar.YEAR);
+
+        return (myDay   == otherDay   &&
+                myMonth == otherMonth &&
+                myYear  == otherYear);
     }
 }
