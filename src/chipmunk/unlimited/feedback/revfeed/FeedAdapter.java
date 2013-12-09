@@ -34,7 +34,7 @@ import android.widget.TextView;
  *      Separators will be placed between the separate
  *      lectures.
  */
-public class FeedAdapter extends BaseAdapter implements GetLectureVotesAllCallback {
+public class FeedAdapter extends BaseAdapter  {
     private static final String TAG = "FeedAdapter";
 
 	private static LayoutInflater sInflater;
@@ -43,7 +43,6 @@ public class FeedAdapter extends BaseAdapter implements GetLectureVotesAllCallba
     private static final int LIST_ITEM_TYPE_REVIEW = 2;
 	
 	private List<LectureReviewItem> mReviewItems;
-    private List<LectureVote> mLectureVotes;
 	private int mFeedState = Feed.STATE_DEFAULT;
     private Context mContext;
 
@@ -202,24 +201,6 @@ public class FeedAdapter extends BaseAdapter implements GetLectureVotesAllCallba
         return null;
     }
 
-    private LectureVote getLectureVoteForSeparator(int position) {
-        LectureVote lectureVote = null;
-
-        if (mListItemTypes.get(position) == LIST_ITEM_TYPE_LECTURE_SEPARATOR &&
-                mLectureVotes != null) {
-            int offset = 0;
-            for (int i=0; i<position; i++) {
-                if (mListItemTypes.get(i) == LIST_ITEM_TYPE_LECTURE_SEPARATOR) {
-                    offset++;
-                }
-            }
-
-            lectureVote = mLectureVotes.get(offset);
-        }
-
-        return lectureVote;
-    }
-
 
 	@Override
 	public int getCount() {
@@ -289,29 +270,15 @@ public class FeedAdapter extends BaseAdapter implements GetLectureVotesAllCallba
 
     public View getLectureSeparatorView(int position, View convertView) {
         View vi = convertView;
-
-        if (vi == null || vi.getId() != R.layout.list_item_lecture_total) {
-            vi = sInflater.inflate(R.layout.list_item_lecture_total, null);
+        if (vi == null || vi.getId() != R.layout.list_item_separator) {
+            vi = LayoutInflater.from(mContext).inflate(R.layout.list_item_separator, null);
         }
 
-        TextView tvDate = (TextView)vi.findViewById(R.id.lecture_total_text_view_date);
-        TextView tvTime = (TextView)vi.findViewById(R.id.lecture_total_text_view_time);
-        TextView tvLecturer = (TextView)vi.findViewById(R.id.lecture_total_text_view_lecturer);
-        TextView tvPos  = (TextView)vi.findViewById(R.id.simple_thumb_text_view_positive);
-        TextView tvNeg  = (TextView)vi.findViewById(R.id.simple_thumb_text_view_negative);
+        TextView tv = (TextView)vi.findViewById(R.id.separator_text_view_title);
 
-        LectureReviewItem reviewItem = getLectureSeparatorItem(position);
-        tvDate.setText(reviewItem.getPrettyDateString());
-        tvTime.setText(reviewItem.getTimeString());
-        tvLecturer.setText(reviewItem.getLecturer());
-
-        LectureVote vote = getLectureVoteForSeparator(position);
-        if (vote != null) {
-            tvPos.setText("" + vote.getPositiveVoteCount());
-            tvPos.setText("" + vote.getNegativeVoteCount());
-        } else {
-            tvPos.setText("?");
-            tvNeg.setText("?");
+        LectureReviewItem review = getLectureSeparatorItem(position);
+        if (review != null) {
+            tv.setText(review.getRelativeReviewDateString());
         }
 
         return vi;
@@ -407,18 +374,5 @@ public class FeedAdapter extends BaseAdapter implements GetLectureVotesAllCallba
         }
 
         return convertView;
-    }
-
-
-
-    @Override
-    public void onGetLectureVotesAllSuccess(List<LectureVote> items) {
-        mLectureVotes = items;
-        notifyDataSetChanged();
-    }
-    @Override
-    public void onGetLectureVotesAllFailure(String errorMessage) {
-        mLectureVotes = null;
-        Log.e(TAG, "Failed to get lecture votes: " + errorMessage);
     }
 }

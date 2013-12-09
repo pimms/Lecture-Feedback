@@ -1,7 +1,9 @@
 package chipmunk.unlimited.feedback;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import android.net.Uri;
 import android.util.Log;
@@ -190,27 +192,67 @@ public class LectureReviewItem extends LectureItem {
     public int getCloneCount() {
         return mCloneCount;
     }
+    /**
+     * @return
+     * Returns a string based on the difference between the
+     * current date and the review date.
+     *
+     * Example returns:
+     *      "today"
+     *      "yesterday"
+     *      "Tuesday"
+     *      "Monday"
+     *      "Friday, Nov. 13th"
+     */
+    public String getRelativeReviewDateString() {
+        Calendar now = Calendar.getInstance();
+        Calendar revTime = Calendar.getInstance();
+        revTime.setTime(mReviewDate);
+
+        // Compare against today
+        if (sameDate(now, revTime)) {
+            return "today";
+            //return mContext.getResources().getString(R.string.today);
+        }
+
+        // Compare against yesterday
+        now.add(Calendar.DAY_OF_MONTH, -1);
+        if (sameDate(now, revTime)) {
+            return "yesterday";
+            //return mContext.getResources().getString(R.string.yesterday);
+        }
+
+        // Return the date on proper format
+        //String strFormat = mContext.getResources().getString(R.string.format_date_today_sep);
+        SimpleDateFormat format = new SimpleDateFormat("EEEE, MMM d", Locale.getDefault());
+        return format.format(revTime.getTime());
+    }
 
 
     public boolean reviewedSameDate(LectureReviewItem other) {
-        Calendar cal = Calendar.getInstance();
-        int myDay, myMonth, myYear;
-        int otherDay, otherMonth, otherYear;
+        Calendar mine = Calendar.getInstance();
+        Calendar now = Calendar.getInstance();
+
+        mine.setTime(mReviewDate);
+        return sameDate(mine, now);
+    }
+
+    private boolean sameDate(Calendar cal1, Calendar cal2) {
+        int c1day, c1mon, c1yr;
+        int c2day, c2mon, c2yr;
 
         // Get my values
-        cal.setTime(mReviewDate);
-        myDay = cal.get(Calendar.DAY_OF_MONTH);
-        myMonth = cal.get(Calendar.MONTH);
-        myYear = cal.get(Calendar.YEAR);
+        c1day = cal1.get(Calendar.DAY_OF_MONTH);
+        c1mon = cal1.get(Calendar.MONTH);
+        c1yr = cal1.get(Calendar.YEAR);
 
         // Get the other values
-        cal.setTime(other.mReviewDate);
-        otherDay = cal.get(Calendar.DAY_OF_MONTH);
-        otherMonth = cal.get(Calendar.MONTH);
-        otherYear = cal.get(Calendar.YEAR);
+        c2day = cal2.get(Calendar.DAY_OF_MONTH);
+        c2mon = cal2.get(Calendar.MONTH);
+        c2yr = cal2.get(Calendar.YEAR);
 
-        return (myDay   == otherDay   &&
-                myMonth == otherMonth &&
-                myYear  == otherYear);
+        return (c1day == c2day &&
+                c1mon == c2mon &&
+                c1yr  == c2yr);
     }
 }

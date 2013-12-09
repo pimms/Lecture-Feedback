@@ -81,7 +81,8 @@ public class LectureItem implements Comparable<LectureItem> {
 
         // TODO: Localize
         // Find a way to retrieve the string format_date_pretty_old
-        // and format_date_pretty.
+        // and format_date_pretty. The main issue is that in this
+        // scope, no Context is available.
         if (now.get(Calendar.YEAR) != then.get(Calendar.YEAR)) {
             format = "MMM dd, yyyy";
         } else {
