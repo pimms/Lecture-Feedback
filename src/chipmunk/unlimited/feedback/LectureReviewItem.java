@@ -205,36 +205,56 @@ public class LectureReviewItem extends LectureItem {
      *      "Friday, Nov. 13th"
      */
     public String getRelativeReviewDateString() {
-        Calendar now = Calendar.getInstance();
+        Calendar compare = Calendar.getInstance();
         Calendar revTime = Calendar.getInstance();
         revTime.setTime(mReviewDate);
 
         // Compare against today
-        if (sameDate(now, revTime)) {
+        if (sameDate(compare, revTime)) {
             return "today";
             //return mContext.getResources().getString(R.string.today);
         }
 
         // Compare against yesterday
-        now.add(Calendar.DAY_OF_MONTH, -1);
-        if (sameDate(now, revTime)) {
+        compare.add(Calendar.DAY_OF_MONTH, -1);
+        if (sameDate(compare, revTime)) {
             return "yesterday";
             //return mContext.getResources().getString(R.string.yesterday);
         }
 
+        /*
+            At this point we're going to need to format the string. Decide
+            upon the format based on how long old this review is.
+         */
+        String format;
+
+        // Compare against the last week
+        compare.add(Calendar.DAY_OF_MONTH, -5);
+        compare.set(Calendar.HOUR, 0);
+        compare.set(Calendar.MINUTE, 0);
+        if (compare.before(revTime)) {
+            // Only display the weekday
+            format = "EEEE";
+        } else {
+            // Display the weekday and date
+            format = "EEEE, MMM d";
+        }
+
         // Return the date on proper format
         //String strFormat = mContext.getResources().getString(R.string.format_date_today_sep);
-        SimpleDateFormat format = new SimpleDateFormat("EEEE, MMM d", Locale.getDefault());
-        return format.format(revTime.getTime());
+        SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.getDefault());
+        return dateFormat.format(revTime.getTime());
     }
 
 
     public boolean reviewedSameDate(LectureReviewItem other) {
-        Calendar mine = Calendar.getInstance();
-        Calendar now = Calendar.getInstance();
+        Calendar compare = Calendar.getInstance();
+        compare.setTime(other.mReviewDate);
 
+        Calendar mine = Calendar.getInstance();
         mine.setTime(mReviewDate);
-        return sameDate(mine, now);
+
+        return sameDate(mine, compare);
     }
 
     private boolean sameDate(Calendar cal1, Calendar cal2) {
