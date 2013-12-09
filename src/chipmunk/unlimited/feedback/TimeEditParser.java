@@ -63,7 +63,9 @@ public class TimeEditParser extends AsyncHttpResponseHandler {
 	 */
 	@Override 
 	public void onSuccess(String response) {
-        if (mContentType == CONTENT_TIMETABLE) {
+        if (response == null || response.length() == 0) {
+            onFailure(null, "No response received from TimeEdit");
+        } else if (mContentType == CONTENT_TIMETABLE) {
             Log.d("CSV?", response);
 
             List<LectureItem> list = parseTimeEditCSV(response);

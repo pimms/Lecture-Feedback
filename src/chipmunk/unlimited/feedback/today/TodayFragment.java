@@ -68,7 +68,7 @@ public class TodayFragment extends UpdateableFragment
 	@Override
 	public void onTimeTableParsingFailed(String errorMessage) {
 		Log.e(TAG, "Failed to get TimeEdit data: " + errorMessage);
-		onUpdateCompleted();
+		onTimeTableParsingComplete(null);
 	}
 	@Override
 	public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {

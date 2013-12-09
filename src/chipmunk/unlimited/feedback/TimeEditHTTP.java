@@ -45,7 +45,7 @@ public class TimeEditHTTP {
 		/* Calculate the bounding dates */
 		String endDate = dateFormat.format(calendar.getTime());
 
-        // Subtract the number of reviewable days 
+        // Subtract the number of reviewable days
 		calendar.add(Calendar.DAY_OF_YEAR, -LectureItem.REVIEWABLE_PERIOD_DAYS);
 		String startDate = dateFormat.format(calendar.getTime());
 		
