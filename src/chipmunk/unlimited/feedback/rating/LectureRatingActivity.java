@@ -288,7 +288,7 @@ public class LectureRatingActivity extends Activity
 		/* Set the text */
 		mLectureRatingView.setCourseText(courseName);
 		mLectureRatingView.setLecturerText(lecturer);
-		mLectureRatingView.setDateAndTimeText(mLectureItem.getPrettyDateString() + ", " + time);
+		mLectureRatingView.setDateAndTimeText(mLectureItem.getPrettyDateString(this) + ", " + time);
 	}
 
 

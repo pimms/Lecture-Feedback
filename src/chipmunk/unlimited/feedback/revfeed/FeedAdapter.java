@@ -347,7 +347,7 @@ public class FeedAdapter extends BaseAdapter  {
 
         if (mFeedState == Feed.STATE_DEFAULT) {
             // Set the text usual
-            tvDate.setText(lecture.getPrettyDateString());
+            tvDate.setText(lecture.getPrettyDateString(mContext));
             tvTime.setText(lecture.getTimeString());
         } else {
             tvDate.setText(null);

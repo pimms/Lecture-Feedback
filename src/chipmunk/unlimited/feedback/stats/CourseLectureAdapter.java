@@ -21,11 +21,13 @@ public class CourseLectureAdapter extends BaseAdapter implements GetLectureVotes
     private List<LectureVote> mVotes;
     private LayoutInflater mInflater;
     private String mCourse;
+    private Context mContext;
 
     public CourseLectureAdapter(Context context, String course) {
         mInflater = (LayoutInflater)context.getSystemService(
                                     Context.LAYOUT_INFLATER_SERVICE);
         mCourse = course;
+        mContext = context;
     }
 
     public void reloadItems(int first, int count) {
@@ -87,7 +89,7 @@ public class CourseLectureAdapter extends BaseAdapter implements GetLectureVotes
         TextView tvPos  = (TextView)view.findViewById(R.id.simple_thumb_text_view_positive);
 
         LectureVote vote = mVotes.get(position);
-        tvDate.setText(vote.getLectureItem().getPrettyDateString());
+        tvDate.setText(vote.getLectureItem().getPrettyDateString(mContext));
         tvTime.setText(vote.getLectureItem().getTimeString());
         tvLect.setText(vote.getLectureItem().getLecturer());
         tvPos.setText("" + vote.getPositiveVoteCount());

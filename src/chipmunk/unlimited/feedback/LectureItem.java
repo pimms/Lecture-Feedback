@@ -1,5 +1,6 @@
 package chipmunk.unlimited.feedback;
 
+import android.content.Context;
 import android.util.Log;
 
 import java.text.SimpleDateFormat;
@@ -71,7 +72,7 @@ public class LectureItem implements Comparable<LectureItem> {
      * The date on the form "Monday, 01 Jan" if the date is from
      * this year, "01 Jan, 2012" if it was from another year.
      */
-    public String getPrettyDateString() {
+    public String getPrettyDateString(Context context) {
         Calendar now = Calendar.getInstance();
 
         Calendar then = Calendar.getInstance();
@@ -79,14 +80,10 @@ public class LectureItem implements Comparable<LectureItem> {
         
         String format = "";
 
-        // TODO: Localize
-        // Find a way to retrieve the string format_date_pretty_old
-        // and format_date_pretty. The main issue is that in this
-        // scope, no Context is available.
         if (now.get(Calendar.YEAR) != then.get(Calendar.YEAR)) {
-            format = "MMM dd, yyyy";
+            format = context.getString(R.string.format_date_pretty_old);
         } else {
-        	format = "EEEE, MMM dd";
+        	format = context.getString(R.string.format_date_pretty);
         }
 
         SimpleDateFormat sdf = new SimpleDateFormat(format);

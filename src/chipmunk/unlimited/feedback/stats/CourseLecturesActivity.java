@@ -68,7 +68,7 @@ public class CourseLecturesActivity extends Activity implements OnItemClickListe
             // Open a FeedActivity displaying only the reviews
             // of the clicked lecture.
             String hash = vote.getLectureItem().getLectureHash();
-            String title = vote.getLectureItem().getPrettyDateString();
+            String title = vote.getLectureItem().getPrettyDateString(this);
 
             Intent intent = new Intent(this, FeedActivity.class);
             intent.putExtra(FeedActivity.PARAM_SINGLE_LECTURE, true);
