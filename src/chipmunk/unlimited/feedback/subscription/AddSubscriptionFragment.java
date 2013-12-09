@@ -1,18 +1,13 @@
 package chipmunk.unlimited.feedback.subscription;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -20,17 +15,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.sql.SQLException;
 
 import chipmunk.unlimited.feedback.R;
 import chipmunk.unlimited.feedback.TimeEditHTTP;
 import chipmunk.unlimited.feedback.TimeEditParser;
-import chipmunk.unlimited.feedback.R.id;
-import chipmunk.unlimited.feedback.R.layout;
 import chipmunk.unlimited.feedback.database.SubscriptionDatabase;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -144,9 +134,9 @@ public class AddSubscriptionFragment extends DialogFragment {
                         final String term = et.getText().toString();
 
                         //Send to network class
-                        TimeEditHTTP.search(term, new AsyncHttpResponseHandler(){
+                        TimeEditHTTP.search(term, new AsyncHttpResponseHandler() {
                             @Override
-                            public void onSuccess(String response){
+                            public void onSuccess(String response) {
                                 Log.d("DIALOG", "onSuccess starting");
 
                                 hideKeyboard(et);
@@ -156,7 +146,7 @@ public class AddSubscriptionFragment extends DialogFragment {
                                 final String[] names = new String[results.length];
 
                                 //Create separate (1D) array of names of classes/courses
-                                for(int i = 0; i < results.length; i++){
+                                for (int i = 0; i < results.length; i++) {
                                     names[i] = results[i][1];
                                 }
 
@@ -178,8 +168,8 @@ public class AddSubscriptionFragment extends DialogFragment {
                                         String higCode = split[0];
 
                                         String name = split[1];
-                                        for (int i=2; i<split.length; i++) {
-                                        	name += "," + split[i];
+                                        for (int i = 2; i < split.length; i++) {
+                                            name += "," + split[i];
                                         }
 
                                         datasource.addSubscription(results[position][0], higCode, name);
@@ -189,14 +179,15 @@ public class AddSubscriptionFragment extends DialogFragment {
                                     }
                                 });
 
-                                if(lv.getCount() == 0){
+                                if (lv.getCount() == 0) {
                                     aerror.setVisibility(View.VISIBLE);
                                     abutton.setVisibility(View.VISIBLE);
                                 }
 
                             }
+
                             @Override
-                            public void onFailure(Throwable e, String response){
+                            public void onFailure(Throwable e, String response) {
                                 String msg = getActivity().getResources().getString(
                                         R.string.frag_subadd_error);
                                 Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();

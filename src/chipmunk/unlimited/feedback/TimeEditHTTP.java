@@ -13,7 +13,7 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
 /**
- * @class TimeEditHTTP 
+ * @class TimeEditHTTP
  * Static class providing an API for TimeEdit
  * data retrieval.
  */

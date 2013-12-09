@@ -13,7 +13,7 @@ import au.com.bytecode.opencsv.CSVReader;
  * The TimeEdit HTML is full of errors, causing the w3c.dom-parser to fail.
  * As a result, scavenging the HTML for data is the only solution to
  * integrate TimeEdit communication.
- * 
+ *
  * This class is forked from TobbenTM's implementation
  * of a TimeEdit parser. Most of the code is poorly documented and hard to
  * follow, and should in case of severe modification needs be replaced entirely.
@@ -61,7 +61,6 @@ public class TimeEditParser extends AsyncHttpResponseHandler {
 	 */
 	@Override 
 	public void onSuccess(String response) {
-
         Log.d("CSV?", response);
 
         if (mCallback != null) {
@@ -75,6 +74,44 @@ public class TimeEditParser extends AsyncHttpResponseHandler {
 			mCallback.onTimeTableParsingFailed(response);
 		}
 	}
+
+
+    public static String[][] search(String html, String term){
+        //Log.d("PARSING", "Starting parser");
+        List<String> id = new ArrayList<String>();
+        List<String> name = new ArrayList<String>();
+        List<String> ids = new ArrayList<String>();
+        List<String> names = new ArrayList<String>();
+
+        //The reason for splitting at data-id="-1" is that there is no valuable data
+        // after it, and it would just cause problems.
+        //Still not bug-free though, and should be replaced with a better regex-based
+        // solution.
+        String[] split = html.split("data-id=\"-1\"");
+
+        ids.addAll(Arrays.asList(split[0].split("data-id=\"")));
+        ids.remove(0);
+        names.addAll(Arrays.asList(split[0].split("data-name=\"")));
+        names.remove(0);
+
+
+        for (String s : ids){
+            id.add(s.split("\"")[0]);
+        }
+        for (String s : names){
+            name.add(s.split("\"")[0]);
+        }
+
+        String[][] result = new String[id.size()][2];
+        Log.d("HIG.SEARCH.ARRAY", name.toString() + id.toString());
+
+        //Join the two arrays into one 2D array
+        for(int i=0; i < id.size(); i++){
+            result[i][0] = id.get(i);
+            result[i][1] = name.get(i);
+        }
+        return result;
+    }
 }
 
 

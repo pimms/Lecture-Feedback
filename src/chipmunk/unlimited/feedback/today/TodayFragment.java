@@ -11,13 +11,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 
 import chipmunk.unlimited.feedback.LectureItem;
 import chipmunk.unlimited.feedback.LectureReviewItem;
+import chipmunk.unlimited.feedback.TimeEditHTTP;
 import chipmunk.unlimited.feedback.UpdateableFragment;
 import chipmunk.unlimited.feedback.R;
-import chipmunk.unlimited.feedback.TimeEditHTTP;
 import chipmunk.unlimited.feedback.TimeEditParser;
 import chipmunk.unlimited.feedback.TimeEditParser.OnParseCompleteListener;
 import chipmunk.unlimited.feedback.database.ReviewedLectureDatabase;
