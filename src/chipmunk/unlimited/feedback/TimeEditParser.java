@@ -79,7 +79,6 @@ public class TimeEditParser extends AsyncHttpResponseHandler {
             }
         }
 	}
-	
 	@Override
 	public void onFailure(Throwable throwable, String response) {
 		if (mCallback != null) {
@@ -161,7 +160,6 @@ public class TimeEditParser extends AsyncHttpResponseHandler {
 
         return list;
     }
-
     /**
      *
      * @param csvLine
