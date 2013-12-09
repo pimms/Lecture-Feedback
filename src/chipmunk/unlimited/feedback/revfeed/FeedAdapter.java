@@ -103,28 +103,31 @@ public class FeedAdapter extends BaseAdapter implements GetLectureVotesAllCallba
         // Clear the previous list
         mListItemTypes.clear();
 
-        if (mFeedState == Feed.STATE_DEFAULT ||
+        if (mFeedState == Feed.STATE_COURSE ||
             mFeedState == Feed.STATE_LECTURE) {
-            defineItemOrderDefault();
-        } else if (mFeedState == Feed.STATE_COURSE) {
-            defineItemOrderLectureSeparator();
+            defineItemOrderWithoutSeparators();
+        } else if (mFeedState == Feed.STATE_DEFAULT) {
+            defineItemOrderWithSeparator();
         }
     }
-
-    private void defineItemOrderDefault() {
+    /**
+     * Only the reviews themselves will be displayed. The order
+     * is the exact same as they arrived in from the web API.
+     */
+    private void defineItemOrderWithoutSeparators() {
         // Don't add any separators
         for (int i=0; i<mReviewItems.size(); i++) {
             mListItemTypes.add(LIST_ITEM_TYPE_REVIEW);
         }
     }
-
-    private void defineItemOrderLectureSeparator() {
+    /**
+     * Reviews not reviewed on the same day will be separated
+     * by a separator.
+     */
+    private void defineItemOrderWithSeparator() {
         if (mReviewItems.size() == 0) {
             return;
         }
-
-        // Sort the items
-        Collections.sort(mReviewItems);
 
         // Add separators between each lecture
         mListItemTypes.add(LIST_ITEM_TYPE_LECTURE_SEPARATOR);
@@ -138,7 +141,7 @@ public class FeedAdapter extends BaseAdapter implements GetLectureVotesAllCallba
             prev = cur;
             cur = mReviewItems.get(i);
 
-            if (!cur.getLectureHash().equals(prev.getLectureHash())) {
+            if (!cur.reviewedSameDate(prev)) {
                 mListItemTypes.add(LIST_ITEM_TYPE_LECTURE_SEPARATOR);
                 numSep++;
             }
