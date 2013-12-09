@@ -7,6 +7,7 @@ import java.util.List;
 import android.util.Log;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import au.com.bytecode.opencsv.CSVReader;
 
 /**
  * The TimeEdit HTML is full of errors, causing the w3c.dom-parser to fail.
@@ -29,18 +30,13 @@ public class TimeEditParser extends AsyncHttpResponseHandler {
 		public void onTimeTableParsingComplete(List<LectureItem> items);
 		public void onTimeTableParsingFailed(String errorMessage);
 	}
-	
-	
+
 	/* The constants defines how the parser interprets
 	 * the received HTML.  
 	 */
 	public static final int CONTENT_TIMETABLE = 1;
-	
-	/* Returns the root node containing the time-table contents */
-	private static final String TIMETABLE_XPATH_ROOT = "//tbody[count(tr[@class='columnHeaders']) != 0]";
-	
+
 	private int mContentType = 1;
-	
 	private OnParseCompleteListener mCallback;
 
     /**
@@ -65,45 +61,12 @@ public class TimeEditParser extends AsyncHttpResponseHandler {
 	 */
 	@Override 
 	public void onSuccess(String response) {
-		if (mContentType == CONTENT_TIMETABLE) {
-			List<LectureItem> list = new ArrayList<LectureItem>();
-			
-			if (response != null) {
-                // Res will will be of size [n][5].
-                // It's contents are:
-                // INDEX    DESCRIPTION                     EXAMPLE
-                // [n][0]   The date of the lecture         "yyyy-MM-dd"
-                // [n][1]   The time of the lecture         "HH:mm - HH-mm"
-                // [n][2]   Course code and course name     "IMTxoxo, Heisann sveisann"
-                // [n][3]   The room of the lecture         "D101"
-                // [n][4]   The lecturer                    "McCallum"
 
-				String[][] res = parseTimeTable(response);
-				for (int i=1; i<res.length; i++) {
-					String[] arr = res[i];
+        Log.d("CSV?", response);
 
-                    // Split the course code and course name.
-                    // In case the course name contains any commas, rejoin them.
-					String[] split = arr[2].split(",");
-					String courseCode = split[0];
-					String courseName = split[1];
-					for (int j=2; j<split.length; j++) {
-						courseName += "," + split[j];
-					}
-					
-					// Remove the "Day " component of the date
-					arr[0] = arr[0].substring(4);
-					
-					// 								   date    time    name        id          room    lecturer
-					LectureItem item = new LectureItem(arr[0], arr[1], courseName, courseCode, arr[3], arr[4]);
-					list.add(item);
-				}
-			}
-			
-			if (mCallback != null) {
-				mCallback.onTimeTableParsingComplete(list);
-			}
-		}
+        if (mCallback != null) {
+            mCallback.onTimeTableParsingFailed("TimeEdit not implemented");
+        }
 	}
 	
 	@Override
@@ -112,205 +75,6 @@ public class TimeEditParser extends AsyncHttpResponseHandler {
 			mCallback.onTimeTableParsingFailed(response);
 		}
 	}
-	
-	
-	/**
-	 * Parse the HTML to retrieve time-table information.
-	 * 
-	 * @param html
-	 * TimeEdit page containing the time-table.
-	 * 
-	 * @return
-	 * Array on the form:
-	 * 	{ 	item0: [date, time, course name, room, lecturer], 
-	 * 		item1: [...], ...., itemN: [...] }
-	 */
-	public static String[][] parseTimeTable(String html){
-        String[] split1 = html
-                .replaceAll("<span class=\"tesprite tesprite-floatright tesprite-new\"></span>", "")
-                .split("/table");
-        String[] split2 = split1[0].split("changeDateLink headline leftRounded t .*\">");
-
-        String[][] results = new String[split2.length-1][6];
-        ArrayList<ArrayList<String>> master = new ArrayList<ArrayList<String>>();
-        String currentdate = "";
-
-        for(int i = 1; i < split2.length -1; i++){
-            currentdate = split2[i].split("</td>")[0].replaceAll(" Today", "");
-            String[] split3 = split2[i].split("</tr>");
-            master.add(dateEntry(currentdate));
-            for(int j = 1; j < split3.length -1; j++){
-                ArrayList<String> inner = new ArrayList<String>();
-                String[] data = tagData(split3[j]);
-                inner.add(currentdate);
-                for(String s : data){
-                    inner.add(s);
-                }
-                master.add(inner);
-            }
-        }
-        return dimensionalPortal(master);
-    }
-
-    public static String[][] parseTimeTable(String html, boolean room){
-        String[] split1 = html
-                .replaceAll("<span class=\"tesprite tesprite-floatright tesprite-new\"></span>", "")
-                .split("/table");
-        String[] split2 = split1[0].split("changeDateLink headline leftRounded t .*\">");
-        String startTime, endTime;
-
-        String[][] results = new String[split2.length-1][6];
-        ArrayList<ArrayList<String>> master = new ArrayList<ArrayList<String>>();
-        String currentdate = "";
-
-        for(int i = 1; i < split2.length -1; i++){
-            currentdate = split2[i].split("</td>")[0].replaceAll(" Today", "");
-            String[] split3 = split2[i].split("</tr>");
-            master.add(dateEntry(currentdate));
-            endTime = "0800";
-            for(int j = 1; j < split3.length -1; j++){
-                ArrayList<String> inner = new ArrayList<String>();
-                String[] data = tagData(split3[j]);
-                if(room){
-                    startTime = data[0].split("\n")[0].replace(":", "");
-                    if(
-                            Integer.parseInt(startTime) >= 815 &&
-                            Integer.parseInt(startTime) > Integer.parseInt(endTime)+16 &&
-                            Integer.parseInt(endTime) < 1600 ){
-                        master.add(clearEntry(currentdate, timeString(endTime, startTime)));
-                        Log.d("TIME", "Added clear entry: " + timeString(endTime, startTime));
-                    }
-                    endTime = data[0].split("\n")[2].replace(":", "");
-                }
-                inner.add(currentdate);
-                for(String s : data){
-                    inner.add(s);
-                }
-                Log.d("TIME", "Lecture time: \t\t" + data[1]);
-                master.add(inner);
-            }
-        }
-        return dimensionalPortal(master);
-    }
-
-    public static String[][] search(String html, String term){
-        //Log.d("PARSING", "Starting parser");
-        List<String> id = new ArrayList<String>();
-        List<String> name = new ArrayList<String>();
-        List<String> ids = new ArrayList<String>();
-        List<String> names = new ArrayList<String>();
-
-        //The reason for splitting at data-id="-1" is that there is no valuable data
-        // after it, and it would just cause problems.
-        //Still not bug-free though, and should be replaced with a better regex-based
-        // solution.
-        String[] split = html.split("data-id=\"-1\"");
-
-        ids.addAll(Arrays.asList(split[0].split("data-id=\"")));
-        ids.remove(0);
-        names.addAll(Arrays.asList(split[0].split("data-name=\"")));
-        names.remove(0);
-
-
-        for (String s : ids){
-            id.add(s.split("\"")[0]);
-        }
-        for (String s : names){
-            name.add(s.split("\"")[0]);
-        }
-
-        String[][] result = new String[id.size()][2];
-        Log.d("HIG.SEARCH.ARRAY", name.toString() + id.toString());
-
-        //Join the two arrays into one 2D array
-        for(int i=0; i < id.size(); i++){
-            result[i][0] = id.get(i);
-            result[i][1] = name.get(i);
-        }
-        return result;
-    }
-
-    private static String[] tagData(String html){
-        String[] split = html.replaceAll("(?m:</tr>|^[\\s]*)", "").split("[\\s]*<[^<]+?>");
-        List<String> tagdata = new ArrayList<String>();
-        //Log.d("TAG DATA \t", Arrays.toString(split));
-        for(int i = 4; i < split.length -4; i += 1){
-            if(i == 4)tagdata.add(split[i].replace(" ", "\n"));
-            if(i == 6 || i == 8 || i == 10 || i == 12) tagdata.add(split[i]);
-        }
-        String[] tagdata2 = new String[tagdata.size()];
-        tagdata2 = tagdata.toArray(tagdata2);
-        return tagdata2;
-    }
-
-    private static String[][] dimensionalPortal(ArrayList<ArrayList<String>> arraylist){
-    	/* TobbenTM is doing some weird stuff with empty
-    	 * strings to indicate a new date. 
-    	 * Filter out these here. 
-    	 */
-    	for (int i=0; i<arraylist.size(); i++) {
-	    	if (arraylist.get(i).get(2).length() >= 9 && arraylist.get(i).get(2).substring(0, 9).equals("HIGREADER")) {
-	    		arraylist.remove(i--);
-	    	}
-    	}
-    	
-    	/*
-    	 * All valid lectures will be on the form "IMTxxxx, Course Name".
-    	 * If count(split(name, ",")) < 2, the course name is illegal and
-    	 * may be filtered out. This will filter out "Demokratitid".
-    	 */
-    	for (int i=0; i<arraylist.size(); i++) {
-    		if (arraylist.get(i).get(2).split(",").length < 2) {
-    			arraylist.remove(i--);
-    		}
-    	}
-    	
-    	
-        final int size = arraylist.size();
-        String[][] sarr = new String[size][];
-        
-        for(int i = 0; i < size; i++) {
-        	/* TIME EDIT RETURNS THE LECTURES IN CHRONOLOGICAL
-			 * ORDER. The list is reversed here by retrieving from
-			 * the arrayList in reverse order.
-			 */
-            ArrayList<String> innerlist = arraylist.get(size - i - 1);
-            final int innerSize = innerlist.size();
-            sarr[i] = new String[innerSize];
-            for(int j = 0; j < innerSize; j++) {
-                sarr[i][j] = innerlist.get(j);
-            }
-        }
-        return sarr;
-    }
-
-    private static ArrayList<String> dateEntry(String date){
-        // wtf
-        ArrayList<String> arr = new ArrayList<String>();
-        arr.add(date);
-        arr.add("");
-        arr.add("HIGREADER.newDate");
-        arr.add("");
-        arr.add("");
-        arr.add("");
-        return arr;
-    }
-
-    private static ArrayList<String> clearEntry(String date, String time){
-        // wtf
-        ArrayList<String> arr = new ArrayList<String>();
-        arr.add(date);
-        arr.add(time);
-        arr.add("HIGREADER.clear");
-        arr.add("");
-        arr.add("");
-        arr.add("");
-        return arr;
-    }
-
-    private static String timeString(String start, String end){
-        return start.replaceFirst("([0-9]{2})", "$1:") + " - " + end.replaceFirst("([0-9]{2})", "$1:");
-    }
 }
 
 
