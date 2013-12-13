@@ -5,9 +5,9 @@ HiG Lecture Review is an application dedicated to allowing students of Høgskole
 
 
 ### Third party libraries and code
-- [Chris Banes' ActionBar-PullToRefresh](https://github.com/chrisbanes/ActionBar-PullToRefresh) library
-- [AsyncHTTP](http://loopj.com/android-async-http/) 
-- [HiG TimeEdit Reader](https://github.com/TobbenTM/HiG-TimeEdit-Reader)
+- [Chris Banes' ActionBar-PullToRefresh](https://github.com/chrisbanes/ActionBar-PullToRefresh) library *Library required.*
+- The [AsyncHTTP](http://loopj.com/android-async-http/) library. *Library required.*
+- [HiG TimeEdit Reader](https://github.com/TobbenTM/HiG-TimeEdit-Reader) 
 
 
 #### Licensing
