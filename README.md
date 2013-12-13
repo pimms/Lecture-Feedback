@@ -1,2 +1,14 @@
-Lecture-Feedback
+HiG Lecture Review
 ================
+
+HiG Lecture Review is an application dedicated to allowing students of Høgskolen i Gjøvik to anonymously review and add comments to a lecture.
+
+
+### Third party libraries and code
+- [Chris Banes' ActionBar-PullToRefresh](https://github.com/chrisbanes/ActionBar-PullToRefresh) library
+- [AsyncHTTP](http://loopj.com/android-async-http/) 
+- [HiG TimeEdit Reader](https://github.com/TobbenTM/HiG-TimeEdit-Reader)
+
+
+#### Licensing
+HiG Lecture Review is published under the GNU GPL v2.
