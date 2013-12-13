@@ -30,5 +30,4 @@
         <activity android:name=".stats.CourseLecturesActivity" android:screenOrientation="portrait"/>
         <activity android:name=".highscore.TopCourseActivity" android:screenOrientation="portrait"/>
     </application>
-
 </manifest>
