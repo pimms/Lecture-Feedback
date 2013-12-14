@@ -105,8 +105,8 @@
     <string name="frag_subadd_title">Search for courses</string>
     <string name="frag_subadd_search">Search</string>
     <string name="frag_subadd_no_res">No courses found</string>
-    <string name="frag_subadd_cancel">Retry</string>
-    <string name="frag_subadd_error">Unable to connect</string>
+    <string name="frag_subadd_cancel">Ok</string>
+    <string name="frag_subadd_error">No internet connection</string>
     <string name="frag_subadd_notext">Cannot search for that!</string>
     <string name="frag_subadd_invalid">Letters and numbers only, please</string>
 

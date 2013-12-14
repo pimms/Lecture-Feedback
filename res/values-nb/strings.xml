@@ -102,8 +102,8 @@
     <string name="frag_subadd_title">Søk opp fag</string>
     <string name="frag_subadd_search">Søk</string>
     <string name="frag_subadd_no_res">Ingen fag funnet</string>
-    <string name="frag_subadd_cancel">Prøv igjen</string>
-    <string name="frag_subadd_error">Klarte ikke koble til</string>
+    <string name="frag_subadd_cancel">Ok</string>
+    <string name="frag_subadd_error">Ingen internettilgang</string>
     <string name="frag_subadd_notext">Kan ikke søke på det!</string>
     <string name="frag_subadd_invalid">Kun tall og bokstaver, takk</string>
 
