@@ -66,8 +66,6 @@ public class TimeEditParser extends AsyncHttpResponseHandler {
         if (response == null || response.length() == 0) {
             onFailure(null, "No response received from TimeEdit");
         } else if (mContentType == CONTENT_TIMETABLE) {
-            Log.d("CSV?", response);
-
             List<LectureItem> list = parseTimeEditCSV(response);
 
             if (mCallback != null) {
@@ -88,7 +86,6 @@ public class TimeEditParser extends AsyncHttpResponseHandler {
 
 
     public static String[][] search(String html, String term){
-        //Log.d("PARSING", "Starting parser");
         List<String> id = new ArrayList<String>();
         List<String> name = new ArrayList<String>();
         List<String> ids = new ArrayList<String>();
@@ -114,7 +111,6 @@ public class TimeEditParser extends AsyncHttpResponseHandler {
         }
 
         String[][] result = new String[id.size()][2];
-        Log.d("HIG.SEARCH.ARRAY", name.toString() + id.toString());
 
         //Join the two arrays into one 2D array
         for(int i=0; i < id.size(); i++){
@@ -148,7 +144,6 @@ public class TimeEditParser extends AsyncHttpResponseHandler {
 
                 if (item != null) {
                     list.add(0, item);
-                    Log.d("ITEM", item.toString());
                 }
 
                 line = reader.readNext();
