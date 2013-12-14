@@ -108,8 +108,7 @@ public class DailyLectureAdapter extends BaseAdapter {
 	@Override
 	public boolean isEnabled(int position) {
         if (!mTutorial) {
-		    return mListItemTypes.get(position) == LIST_ITEM_TYPE_LECTURE
-                    && HttpClient.isInternetAvailable(mContext);
+		    return mListItemTypes.get(position) == LIST_ITEM_TYPE_LECTURE;
         }
 
         return false;
