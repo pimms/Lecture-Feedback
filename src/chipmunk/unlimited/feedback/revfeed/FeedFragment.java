@@ -89,7 +89,18 @@ public class FeedFragment extends UpdateableFragment
             mRefreshListView.onRefreshComplete();
             getPullToRefreshLayout().setRefreshing(false);
         } else {
-            mFeedAdapter.setReviewItems(items);
+            // If "items" is an empty list, something may have gone
+            // wrong while updating. We may not be connected to the
+            // internet. Only apply the new set of items to the adapter
+            // if the adapter is empty or items is NOT empty.
+            if (items.size() == 0) {
+                if (mFeedAdapter.getCount() == 0) {
+                    mFeedAdapter.setReviewItems(items);
+                }
+            } else {
+                mFeedAdapter.setReviewItems(items);
+            }
+
             onUpdateCompleted();
         }
 
