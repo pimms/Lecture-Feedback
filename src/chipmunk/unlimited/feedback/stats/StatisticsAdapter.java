@@ -12,6 +12,7 @@ import android.widget.TextView;
 import chipmunk.unlimited.feedback.R;
 import chipmunk.unlimited.feedback.database.SubscriptionDatabase;
 import chipmunk.unlimited.feedback.subscription.SubscriptionItem;
+import chipmunk.unlimited.feedback.webapi.HttpClient;
 import chipmunk.unlimited.feedback.webapi.WebAPI;
 import chipmunk.unlimited.feedback.webapi.WebAPI.*;
 
@@ -75,6 +76,14 @@ public class StatisticsAdapter extends BaseAdapter
 	public long getItemId(int position) {
 		return position;
 	}
+    @Override
+    public boolean areAllItemsEnabled() {
+        return false;
+    }
+    @Override
+    public boolean isEnabled(int position) {
+        return HttpClient.isInternetAvailable(mContext);
+    }
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parentGroup) {
