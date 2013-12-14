@@ -15,6 +15,13 @@
     <string name="activity_top_course_title">Toppfag</string>
     <string name="clone_successful_toast">Omtalen vil regnes som din</string>
     <string name="submit_dialog_wait_text">Laster opp...</string>
+    <string name="no_internet_dialog_title">Ingen nettilgang</string>
+    <string name="no_internet_dialog_message">Du er ikke tilkoblet internett.</string>
+    <string name="no_internet_tutorial_title">INGEN INTERNETTILGANG</string>
+    <string name="no_internet_tutorial_desc">
+        Du er ikke tilkoblet internett.
+        Skru på WiFi eller mobildata og prøv igjen.
+    </string>
 
     <!-- ABOUT -->
     <string name="about_title">Om</string>
