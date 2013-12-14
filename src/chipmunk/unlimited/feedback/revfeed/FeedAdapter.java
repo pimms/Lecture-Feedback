@@ -244,8 +244,7 @@ public class FeedAdapter extends BaseAdapter  {
     @Override
     public boolean isEnabled(int position) {
         if (!mTutorial) {
-            return mListItemTypes.get(position) != LIST_ITEM_TYPE_LECTURE_SEPARATOR
-                   && HttpClient.isInternetAvailable(mContext);
+            return mListItemTypes.get(position) != LIST_ITEM_TYPE_LECTURE_SEPARATOR;
         }
 
         return false;
