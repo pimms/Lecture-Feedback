@@ -2,7 +2,7 @@
 <resources>
 
     <!-- APPLICATION INFORMATION -->
-    <string name="app_name">HIG Lecture Review</string>
+    <string name="app_name">HiG Lecture Review</string>
     <string name="app_version">1.0 RC</string>
 
     <!-- GENERAL -->
@@ -19,6 +19,13 @@
     <string name="activity_top_course_title">Top courses</string>
     <string name="clone_successful_toast">This review will be treated as your own</string>
     <string name="submit_dialog_wait_text">Submitting...</string>
+    <string name="no_internet_dialog_title">No connection</string>
+    <string name="no_internet_dialog_message">You are not connected to the internet.</string>
+    <string name="no_internet_tutorial_title">NO INTERNET CONNECTION</string>
+    <string name="no_internet_tutorial_desc">
+        You are currently not connected to the internet.
+        Enable WiFi or Mobile Data and try again.
+    </string>
 
     <!-- ABOUT -->
     <string name="about_title">About</string>

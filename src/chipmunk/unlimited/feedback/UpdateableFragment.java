@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
+import chipmunk.unlimited.feedback.webapi.HttpClient;
 import uk.co.senab.actionbarpulltorefresh.library.*;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 

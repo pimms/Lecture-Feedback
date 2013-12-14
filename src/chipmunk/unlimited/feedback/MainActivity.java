@@ -25,6 +25,7 @@ import chipmunk.unlimited.feedback.subscription.AddSubscriptionFragment;
 import chipmunk.unlimited.feedback.subscription.SubscriptionFragment;
 import chipmunk.unlimited.feedback.subscription.SubscriptionProtocolListener;
 import chipmunk.unlimited.feedback.today.TodayFragment;
+import chipmunk.unlimited.feedback.webapi.HttpClient;
 
 
 public class MainActivity extends FragmentActivity implements
@@ -49,6 +50,7 @@ public class MainActivity extends FragmentActivity implements
 		setContentView(R.layout.activity_main_activity);
 
         new LaunchPrompt(this).onActivityCreate();
+        showNoInternetWarning();
 
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
@@ -175,9 +177,11 @@ public class MainActivity extends FragmentActivity implements
             mStatsFragment = (StatisticsFragment)mSectionsPagerAdapter.getItem(2);
         }
 
-        mTodayFragment.refreshContents();
-        mFeedFragment.refreshContents();
-        mStatsFragment.refreshContents();
+        if (HttpClient.isInternetAvailable(this)) {
+            mTodayFragment.refreshContents();
+            mFeedFragment.refreshContents();
+            mStatsFragment.refreshContents();
+        }
 	}
 
 
@@ -195,6 +199,16 @@ public class MainActivity extends FragmentActivity implements
         builder.setNegativeButton(r.getString(R.string.about_back), null);
 
         builder.show();
+    }
+
+    private void showNoInternetWarning() {
+        if (!HttpClient.isInternetAvailable(this)) {
+            new AlertDialog.Builder(this)
+                    .setTitle("No connection")
+                    .setMessage("You are not connected to the internet.")
+                    .setPositiveButton("Ok", null)
+                    .show();
+        }
     }
 
 
