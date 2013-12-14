@@ -150,7 +150,7 @@ public class AddSubscriptionFragment extends DialogFragment {
                                 pb.setVisibility(View.GONE);
 
                                 //Arrayadapter for populating the listview
-                                final ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_expandable_list_item_1, names);
+                                final ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, names);
                                 lv.setAdapter(adapter);
                                 lv.setVisibility(View.VISIBLE);
 

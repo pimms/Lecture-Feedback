@@ -8,9 +8,6 @@ import java.util.List;
 import java.util.Locale;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -135,9 +132,9 @@ public class DailyLectureAdapter extends BaseAdapter {
 	private View getLectureListItem(View convertView, LectureItem item) {
 		View vi = convertView;
 		if (vi == null || 
-			(vi != null && vi.getId() != R.layout.today_list_item_lecture))
+			(vi != null && vi.getId() != R.layout.list_item_lecture_today))
 		{
-			vi = mInflater.inflate(R.layout.today_list_item_lecture, null);
+			vi = mInflater.inflate(R.layout.list_item_lecture_today, null);
 		}
 		
 		TextView tvCourse = (TextView)vi.findViewById(R.id.today_text_view_course_name);

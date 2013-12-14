@@ -90,9 +90,8 @@
             android:id="@+id/feed_item_text_view_comment"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight=".8"
+            android:layout_weight=".5"
             android:layout_marginTop="5dp"
-            android:layout_marginLeft="5dp"
             android:maxLines="5"
             android:ellipsize="end"
             android:text="The course is excellent, and I am learning so much. Oh, it&apos;s so nice to be superdi duperdi smart from this super course. Oh my lawds. LET'S BE SMART FOREVER YOU GUYS OMTRSOUH EILU RHESOR SORIE HSOERH SOERH RHØEI RHøuhe roW RHEORIAEWJ ETI HESATI EOIHJOPIH OH ØOUH UIGB OIUG OU HOU" />
