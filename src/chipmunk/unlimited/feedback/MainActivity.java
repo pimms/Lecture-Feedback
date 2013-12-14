@@ -204,8 +204,8 @@ public class MainActivity extends FragmentActivity implements
     private void showNoInternetWarning() {
         if (!HttpClient.isInternetAvailable(this)) {
             new AlertDialog.Builder(this)
-                    .setTitle("No connection")
-                    .setMessage("You are not connected to the internet.")
+                    .setTitle(getString(R.string.no_internet_dialog_title))
+                    .setMessage(getString(R.string.no_internet_dialog_message))
                     .setPositiveButton("Ok", null)
                     .show();
         }
