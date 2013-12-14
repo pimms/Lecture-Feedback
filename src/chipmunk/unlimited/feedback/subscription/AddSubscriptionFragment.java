@@ -189,6 +189,7 @@ public class AddSubscriptionFragment extends DialogFragment {
                                         R.string.frag_subadd_error);
                                 Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
                                 Log.d("NET", e.toString());
+                                dismiss();
                             }
                         });
 
