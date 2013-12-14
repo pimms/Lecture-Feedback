@@ -114,4 +114,12 @@
     <string name="rating_prompt_never">Aldri spør igjen</string>
     <string name="rating_prompt_yes">Ja!</string>
 
+    <!-- Course-Lectures Activity -->
+    <string name="activity_courselectures_no_lec_title">
+        INGEN OMTALER
+    </string>
+    <string name="activity_courselectures_no_lec_desc">
+        Ingen forelesninger i dette faget har blitt omtalt.
+    </string>
+
 </resources>

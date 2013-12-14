@@ -117,4 +117,12 @@
     <string name="rating_prompt_never">Don\'t ask again</string>
     <string name="rating_prompt_yes">Yes!</string>
 
+    <!-- Course-Lectures Activity -->
+    <string name="activity_courselectures_no_lec_title">
+        NO REVIEWS
+    </string>
+    <string name="activity_courselectures_no_lec_desc">
+        No lectures in this course has been reviewed.
+    </string>
+
 </resources>
