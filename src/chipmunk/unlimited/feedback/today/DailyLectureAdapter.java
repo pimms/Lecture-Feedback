@@ -21,6 +21,7 @@ import chipmunk.unlimited.feedback.LectureItem;
 import chipmunk.unlimited.feedback.R;
 import chipmunk.unlimited.feedback.database.ReviewedLectureDatabase;
 import chipmunk.unlimited.feedback.database.SubscriptionDatabase;
+import chipmunk.unlimited.feedback.webapi.HttpClient;
 
 /**
  * @class DailyLectureAdapter
@@ -179,16 +180,15 @@ public class DailyLectureAdapter extends BaseAdapter {
         TextView tvDesc  = (TextView)convertView.findViewById(R.id.tutorial_text_view_desc);
         SubscriptionDatabase db = new SubscriptionDatabase(mContext);
 
-        if (db.getSubscriptionList().size() != 0) {
-            tvTitle.setText(mContext.getResources().getString(
-                    R.string.frag_today_tutorial_title_no_lectures));
-            tvDesc.setText(mContext.getResources().getString(
-                    R.string.frag_today_tutorial_desc_no_lectures));
+        if (!HttpClient.isInternetAvailable(mContext)) {
+            tvTitle.setText(mContext.getString(R.string.no_internet_tutorial_title));
+            tvDesc.setText(mContext.getString(R.string.no_internet_tutorial_desc));
+        } else if (db.getSubscriptionList().size() != 0) {
+            tvTitle.setText(mContext.getString(R.string.frag_today_tutorial_title_no_lectures));
+            tvDesc.setText(mContext.getString(R.string.frag_today_tutorial_desc_no_lectures));
         } else {
-            tvTitle.setText(mContext.getResources().getString(
-                    R.string.frag_today_tutorial_title_no_subs));
-            tvDesc.setText(mContext.getResources().getString(
-                    R.string.frag_today_tutorial_desc_no_subs));
+            tvTitle.setText(mContext.getString(R.string.frag_today_tutorial_title_no_subs));
+            tvDesc.setText(mContext.getString(R.string.frag_today_tutorial_desc_no_subs));
         }
 
         return convertView;
