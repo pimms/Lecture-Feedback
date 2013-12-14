@@ -53,7 +53,7 @@ public class TopCourseAdapter extends BaseAdapter
             return mCourseVotes.size();
         }
 
-        return 0;
+        return 1;
     }
     @Override
     public Object getItem(int i) {
@@ -68,7 +68,24 @@ public class TopCourseAdapter extends BaseAdapter
         return i;
     }
     @Override
+    public boolean areAllItemsEnabled() {
+        return false;
+    }
+    @Override
+    public boolean isEnabled(int i) {
+        return mCourseVotes != null;
+    }
+
+    @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
+        if (mCourseVotes == null) {
+            return getLoadingView(view);
+        }
+
+        return getCourseView(view, i);
+    }
+
+    private View getCourseView(View view, int i) {
         if (view == null || view.getId() != R.layout.list_item_course) {
             view = mInflater.inflate(R.layout.list_item_course, null);
         }
@@ -87,6 +104,14 @@ public class TopCourseAdapter extends BaseAdapter
         } else {
             tvPos.setText("" + vote.getPositiveVoteCount());
             tvNeg.setText("" + vote.getNegativeVoteCount());
+        }
+
+        return view;
+    }
+
+    private View getLoadingView(View view) {
+        if (view == null || view.getId() != R.layout.progressbar_view) {
+            view = mInflater.inflate(R.layout.progressbar_view, null);
         }
 
         return view;
