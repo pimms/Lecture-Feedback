@@ -1,6 +1,9 @@
 package chipmunk.unlimited.feedback.highscore;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import chipmunk.unlimited.feedback.R;
@@ -30,15 +32,15 @@ public class TopCourseAdapter extends BaseAdapter
 
 
     private LayoutInflater mInflater;
-    private Context mContext;
+    private Activity mActivity;
     private OnTopCourseAdapterUpdateListener mListener;
     private List<CourseVote> mCourseVotes;
     private boolean mLoadingMore;
 
 
-    public TopCourseAdapter(Context context) {
-        mContext = context;
-        mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    public TopCourseAdapter(Activity activity) {
+        mActivity = activity;
+        mInflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         reloadCourses();
     }
 
@@ -169,5 +171,21 @@ public class TopCourseAdapter extends BaseAdapter
         if (mListener != null) {
             mListener.onTopCourseAdapterUpdateComplete(this);
         }
+
+        displayNoInternetDialog(errorMessage);
+    }
+
+
+    private void displayNoInternetDialog(String errMsg) {
+        new AlertDialog.Builder(mActivity)
+            .setTitle(mActivity.getString(R.string.no_internet_dialog_title))
+            .setMessage(mActivity.getString(R.string.no_internet_dialog_message)
+                    + "\n\nError message:\n" + errMsg)
+            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface d, int i) {
+                    mActivity.finish();
+                }
+            }).show();
     }
 }
