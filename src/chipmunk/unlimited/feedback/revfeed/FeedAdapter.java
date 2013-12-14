@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import chipmunk.unlimited.feedback.database.SubscriptionDatabase;
+import chipmunk.unlimited.feedback.webapi.HttpClient;
 import chipmunk.unlimited.feedback.webapi.WebAPI.*;
 import chipmunk.unlimited.feedback.LectureReviewItem;
 import chipmunk.unlimited.feedback.R;
@@ -243,7 +244,8 @@ public class FeedAdapter extends BaseAdapter  {
     @Override
     public boolean isEnabled(int position) {
         if (!mTutorial) {
-            return mListItemTypes.get(position) != LIST_ITEM_TYPE_LECTURE_SEPARATOR;
+            return mListItemTypes.get(position) != LIST_ITEM_TYPE_LECTURE_SEPARATOR
+                   && HttpClient.isInternetAvailable(mContext);
         }
 
         return false;
@@ -364,7 +366,10 @@ public class FeedAdapter extends BaseAdapter  {
         TextView tvDesc  = (TextView)convertView.findViewById(R.id.tutorial_text_view_desc);
         SubscriptionDatabase db = new SubscriptionDatabase(mContext);
 
-        if (db.getSubscriptionList().size() != 0) {
+        if (!HttpClient.isInternetAvailable(mContext)) {
+            tvTitle.setText(mContext.getString(R.string.no_internet_tutorial_title));
+            tvDesc.setText(mContext.getString(R.string.no_internet_tutorial_desc));
+        } else if (db.getSubscriptionList().size() != 0) {
             tvTitle.setText(mContext.getResources().getString(
                     R.string.frag_feed_tutorial_title_no_items));
             tvDesc.setText(mContext.getResources().getString(
