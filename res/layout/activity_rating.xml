@@ -15,7 +15,8 @@
             android:background="@drawable/action_bar_extension"
             android:gravity="center"
             android:id="@+id/rating_text_view_clone_count"
-            android:text="@string/clone_count_singular"/>
+            android:text="@string/clone_count_singular"
+            android:visibility="gone"/>
 		<ScrollView 
 		    android:id="@+id/rating_scroll_content"
 		    android:layout_width="match_parent"
