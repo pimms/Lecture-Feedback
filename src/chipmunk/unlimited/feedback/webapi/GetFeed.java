@@ -99,6 +99,7 @@ class GetFeed extends WebAPICall {
             baseUrl += "&lastid=" + lastId;
         }
 
+        Log.v(TAG, "GetFeed -->");
         new AsyncHttpClient().get(baseUrl, this);
     }
 
@@ -144,6 +145,8 @@ class GetFeed extends WebAPICall {
 	
 	@Override
 	public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+        Log.v(TAG, "GetFeed <-- SUCCESS");
+
 		String response;
 		
 		try {
@@ -163,6 +166,8 @@ class GetFeed extends WebAPICall {
 	
 	@Override 
 	public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+        Log.v(TAG, "GetFeed <-- FAILURE");
+
 		String bodyString;
 		String errorMessage = "HTTP Error with code " + statusCode;
 		

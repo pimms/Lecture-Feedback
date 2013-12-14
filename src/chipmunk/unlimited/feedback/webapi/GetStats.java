@@ -1,5 +1,7 @@
 package chipmunk.unlimited.feedback.webapi;
 
+import android.util.Log;
+
 import com.loopj.android.http.AsyncHttpClient;
 
 import org.apache.http.Header;
@@ -38,6 +40,7 @@ class GetStats extends WebAPICall {
                                    String baseUrl,
                                    List<SubscriptionItem> subs) {
     	if (subs.size() == 0) {
+            Log.v(TAG, "GetStats course_votes <-- INSTANT SUCCESS");
     		callback.onGetCourseVotesSuccess(new ArrayList<CourseVote>());
     	} else {
 	        mAction = ACTION_COURSE_VOTES;
@@ -45,7 +48,8 @@ class GetStats extends WebAPICall {
 	
 	        baseUrl += "/getStats.php?action=course_votes";
 	        baseUrl += "&courses=" + getCourseCodeCSV(subs);
-	
+
+            Log.v(TAG, "GetStats course_votes -->");
 	        new AsyncHttpClient().get(baseUrl, this);
     	}
     }
@@ -64,6 +68,7 @@ class GetStats extends WebAPICall {
         baseUrl += "&first=" + first;
         baseUrl += "&count=" + count;
 
+        Log.v(TAG, "GetStats lecture_votes_all -->");
         new AsyncHttpClient().get(baseUrl, this);
     }
 
@@ -79,6 +84,7 @@ class GetStats extends WebAPICall {
         baseUrl += "&first=" + first;
         baseUrl += "&count=" + count;
 
+        Log.v(TAG, "GetStats top_courses -->");
         new AsyncHttpClient().get(baseUrl, this);
     }
 
@@ -110,6 +116,8 @@ class GetStats extends WebAPICall {
 
     @Override
     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+        Log.v(TAG, "GetStats <-- SUCCESS");
+
         String response;
 
         try {
@@ -126,9 +134,10 @@ class GetStats extends WebAPICall {
             handleResponseJson(jsonObject);
         }
     }
-
     @Override
     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+        Log.v(TAG, "GetStats <-- FAILURE");
+
         String bodyString;
         String errorMessage = "HTTP Error with code " + statusCode;
 

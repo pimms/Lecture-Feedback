@@ -7,12 +7,15 @@ import org.json.JSONObject;
 
 import android.content.Context;
 import android.provider.Settings.Secure;
+import android.util.Log;
+
 import chipmunk.unlimited.feedback.LectureReviewItem;
 import chipmunk.unlimited.feedback.webapi.WebAPI.PostReviewCallback;
 
 import com.loopj.android.http.AsyncHttpClient;
 
 class PostReview extends WebAPICall {
+    private static final String TAG = "PostReview";
 	private static final String CLIENT_HASH_SALT = "SpiceGurls";
 	
 	private Context mContext;
@@ -25,8 +28,9 @@ class PostReview extends WebAPICall {
 	}
 	
 	public void apiCall(String baseUrl, LectureReviewItem review) {
+        Log.v(TAG, "PostReview -->");
+
 		baseUrl += "/postReview.php";
-		
 		baseUrl += "?client_hash=" 	+ getClientHash();
 		baseUrl += "&course_name=" 	+ review.getCourseName();
 		baseUrl += "&course_code=" 	+ review.getCourseHigCode();
@@ -49,6 +53,8 @@ class PostReview extends WebAPICall {
 	
 	@Override
 	public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+        Log.v(TAG, "PostReview <-- SUCCESS");
+
 		String response;
 		
 		try {
@@ -72,6 +78,8 @@ class PostReview extends WebAPICall {
 	
 	@Override 
 	public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+        Log.v(TAG, "PostReview <-- FAILURE");
+        
 		String bodyString;
 		String errorMessage = "HTTP Error with code " + statusCode;
 		
