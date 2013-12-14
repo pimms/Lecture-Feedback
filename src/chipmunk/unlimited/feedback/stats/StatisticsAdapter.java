@@ -173,7 +173,6 @@ public class StatisticsAdapter extends BaseAdapter
 
     @Override
     public void onGetCourseVotesFailure(String errorMessage) {
-        mCourseVotes = null;
         Log.e(TAG, "Failed to get course votes: " + errorMessage);
 
         if (mListener != null) {
