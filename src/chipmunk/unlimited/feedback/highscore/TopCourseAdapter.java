@@ -177,15 +177,7 @@ public class TopCourseAdapter extends BaseAdapter
 
 
     private void displayNoInternetDialog(String errMsg) {
-        new AlertDialog.Builder(mActivity)
-            .setTitle(mActivity.getString(R.string.no_internet_dialog_title))
-            .setMessage(mActivity.getString(R.string.no_internet_dialog_message)
-                    + "\n\nError message:\n" + errMsg)
-            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface d, int i) {
-                    mActivity.finish();
-                }
-            }).show();
+        Log.e(TAG, "No connection: " + errMsg);
+        mActivity.finish();
     }
 }
