@@ -345,9 +345,12 @@ public class LectureRatingActivity extends Activity
 		}
 
 		EditText editText = (EditText)findViewById(R.id.rating_edit_text_comments);
-		editText.setText(comment);
-		//editText.setEnabled(false);
-		editText.setFocusable(false);
+        if (comment.length() == 0) {
+            editText.setVisibility(View.INVISIBLE);
+        } else {
+            editText.setText(comment);
+            editText.setFocusable(false);
+        }
 
 		Button submitButton = (Button)findViewById(R.id.rating_button_submit);
 		submitButton.setVisibility(View.INVISIBLE);

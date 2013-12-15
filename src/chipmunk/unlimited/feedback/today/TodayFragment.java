@@ -71,7 +71,7 @@ public class TodayFragment extends UpdateableFragment
 
         // If the adapter does not have any items, this is the first
         // refresh. Reload the list view with NULL to display the tutorial.
-        if (mListAdapter.getCount() == 0) {
+        if (mListAdapter != null && mListAdapter.getCount() == 0) {
             /* This will display the tutorial */
             onTimeTableParsingComplete(null);
         } else {
