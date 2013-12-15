@@ -18,7 +18,7 @@ public class LectureItem implements Comparable<LectureItem> {
     /**
      * How many days is a Lecture reviewable?
      */
-    public static final int REVIEWABLE_PERIOD_DAYS = 42;
+    public static final int REVIEWABLE_PERIOD_DAYS = 1;
 
 	protected Date mStartTime;
 	protected Date mEndTime;
