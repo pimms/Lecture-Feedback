@@ -85,11 +85,6 @@ public class MainActivity extends FragmentActivity implements
 					.setText(mSectionsPagerAdapter.getPageTitle(i))
 					.setTabListener(this));
 		}
-
-        /* If no subscriptions exists, display the add-subscription fragment */
-        if (!SubscriptionDatabase.hasAnySubscriptions(this)) {
-            showSubscriptionFragment();
-        }
 	}
 	@Override
 	protected void onResume() {
