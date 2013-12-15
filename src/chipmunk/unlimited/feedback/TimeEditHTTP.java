@@ -13,7 +13,7 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
 /**
- * @class TimeEditHTTP 
+ * @class TimeEditHTTP
  * Static class providing an API for TimeEdit
  * data retrieval.
  */
@@ -22,12 +22,14 @@ public class TimeEditHTTP {
 	 * Get the time-table for the passed subscriptions. The timetable covers
 	 * the weeks containing YESTERDAY and TODAY. If this method is called
 	 * on a Monday, last week and this entire week is returned from TimeEdit.
+     *
+     * The callback will receive the entire TimeEdit HTML on success.
 	 * 
 	 * @param subscriptions
 	 * List of subscriptions (rooms, courses, classes)
 	 * 
 	 * @param callback
-	 * The callback for the HTTP-connection.
+	 * The callback that will receive the TimeEdit HTML.
 	 */
 	public static void getTimeTable(List<SubscriptionItem> subscriptions, AsyncHttpResponseHandler callback) {
 		if (subscriptions.size() == 0 || callback == null) {
@@ -39,17 +41,12 @@ public class TimeEditHTTP {
 		
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyMMdd", Locale.getDefault());
 		Calendar calendar = Calendar.getInstance();
-		
-		// TobbenTM's parser is extremely unreliable when searching with a 
-		// narrow scope. Set the search parameters to include ONE WEEK AGO
-		// to ONE WEEK AHEAD.
-		calendar.add(Calendar.DAY_OF_YEAR, 7);
-		
+
 		/* Calculate the bounding dates */
 		String endDate = dateFormat.format(calendar.getTime());
-		
-		// Subtract 14 as we added 7 earlier
-		calendar.add(Calendar.DAY_OF_YEAR, -14);
+
+        // Subtract the number of reviewable days
+		calendar.add(Calendar.DAY_OF_YEAR, -LectureItem.REVIEWABLE_PERIOD_DAYS);
 		String startDate = dateFormat.format(calendar.getTime());
 		
 		/* Get the TimeEdit URL */
@@ -75,7 +72,7 @@ public class TimeEditHTTP {
 	 */
 	private static String getTimeEditTimeTableURL(List<SubscriptionItem>subscriptions, String startDate, String endDate) {
 		/* Generate the TimeEdit URL */
-		String webUrl = "https://web.timeedit.se/hig_no/db1/open/r.html?sid=3&h=t&p=";
+		String webUrl = "https://web.timeedit.se/hig_no/db1/open/r.csv?sid=3&h=t&p=";
 		
 		/* Add the start and end dates */
 		webUrl += startDate + ".x%2C" + endDate;
@@ -113,13 +110,19 @@ public class TimeEditHTTP {
 	}
 	
 	/**
-	 * Only search for courses (183)
-	  */
+     * Search TimeEdit for raw text.
+     *
+     * The callback will receive the entire TimeEdit HTML on success.
+     *
+     * @param term
+     * Raw text to search TimeEdit for.
+     *
+     * @param handler
+     * The callback that will receive TimeEdit HTML.
+	 */
 	 public static void search(String term, AsyncHttpResponseHandler handler){
         final int iType = 183;
-
         final String baseURL = "https://web.timeedit.se/hig_no/db1/timeedit/p/open/objects.html?max=15&partajax=t&l=en&sid=3&types=" + iType + "&search_text=";
-        //Log.d("HIG.SEARCH", "URL: " + baseURL + term.replaceAll(" ", "%20"));
         new AsyncHttpClient().get(baseURL + term.replaceAll(" ", "%20"), handler);
     }
 }

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import chipmunk.unlimited.feedback.database.SubscriptionDatabase;
+import chipmunk.unlimited.feedback.webapi.HttpClient;
 import chipmunk.unlimited.feedback.webapi.WebAPI.*;
 import chipmunk.unlimited.feedback.LectureReviewItem;
 import chipmunk.unlimited.feedback.R;
@@ -20,17 +22,33 @@ import android.widget.TextView;
  * @class FeedAdapter
  * Adapter class preparing LectureReviewItem objects
  * for display in a ListView.
+ *
+ * The feed adapter is tightly knit with the Feed-class, and
+ * alters it's behaviour based on the Feed's state.
+ *
+ * Feed.STATE_DEFAULT:
+ * Feed.STATE_SINGLE_LECTURE:
+ *      Only reviews will be displayed.
+ *
+ * Feed.STATE_SINGLE_COURSE:
+ *      ( CURRENTLY NOT USED )
+ *      Separators will be placed between the separate
+ *      lectures.
  */
-public class FeedAdapter extends BaseAdapter implements GetLectureVotesAllCallback {
+public class FeedAdapter extends BaseAdapter  {
     private static final String TAG = "FeedAdapter";
 
 	private static LayoutInflater sInflater;
+    private static final int LIST_ITEM_TYPE_UNDEFINED = 0;
     private static final int LIST_ITEM_TYPE_LECTURE_SEPARATOR = 1;
     private static final int LIST_ITEM_TYPE_REVIEW = 2;
 	
 	private List<LectureReviewItem> mReviewItems;
-    private List<LectureVote> mLectureVotes;
 	private int mFeedState = Feed.STATE_DEFAULT;
+    private Context mContext;
+
+    private boolean mTutorial;
+
 
     /**
      * To differentiate between Lecture-list items and
@@ -41,6 +59,8 @@ public class FeedAdapter extends BaseAdapter implements GetLectureVotesAllCallba
 
 	
 	public FeedAdapter(Context context) {
+        mContext = context;
+
 		sInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mListItemTypes = new ArrayList<Integer>();
 	}
@@ -53,9 +73,26 @@ public class FeedAdapter extends BaseAdapter implements GetLectureVotesAllCallba
 	public void setReviewItems(List<LectureReviewItem> reviewItems) {
 		mReviewItems = reviewItems;
 
-        defineItemOrder();
+        if (mReviewItems != null && mReviewItems.size() != 0) {
+            mTutorial = false;
+            defineItemOrder();
+            notifyDataSetChanged();
+        } else {
+            mTutorial = true;
+        }
+
         notifyDataSetChanged();
 	}
+
+    public void appendReviewItems(List<LectureReviewItem> appendItems) {
+        if (mReviewItems == null) {
+            setReviewItems(appendItems);
+        } else if (appendItems != null) {
+            mReviewItems.addAll(appendItems);
+            defineItemOrder();
+            notifyDataSetChanged();
+        }
+    }
 
 
     /**
@@ -66,28 +103,31 @@ public class FeedAdapter extends BaseAdapter implements GetLectureVotesAllCallba
         // Clear the previous list
         mListItemTypes.clear();
 
-        if (mFeedState == Feed.STATE_DEFAULT ||
+        if (mFeedState == Feed.STATE_COURSE ||
             mFeedState == Feed.STATE_LECTURE) {
-            defineItemOrderDefault();
-        } else if (mFeedState == Feed.STATE_COURSE) {
-            defineItemOrderLectureSeparator();
+            defineItemOrderWithoutSeparators();
+        } else if (mFeedState == Feed.STATE_DEFAULT) {
+            defineItemOrderWithSeparator();
         }
     }
-
-    private void defineItemOrderDefault() {
+    /**
+     * Only the reviews themselves will be displayed. The order
+     * is the exact same as they arrived in from the web API.
+     */
+    private void defineItemOrderWithoutSeparators() {
         // Don't add any separators
         for (int i=0; i<mReviewItems.size(); i++) {
             mListItemTypes.add(LIST_ITEM_TYPE_REVIEW);
         }
     }
-
-    private void defineItemOrderLectureSeparator() {
+    /**
+     * Reviews not reviewed on the same day will be separated
+     * by a separator.
+     */
+    private void defineItemOrderWithSeparator() {
         if (mReviewItems.size() == 0) {
             return;
         }
-
-        // Sort the items
-        Collections.sort(mReviewItems);
 
         // Add separators between each lecture
         mListItemTypes.add(LIST_ITEM_TYPE_LECTURE_SEPARATOR);
@@ -101,7 +141,7 @@ public class FeedAdapter extends BaseAdapter implements GetLectureVotesAllCallba
             prev = cur;
             cur = mReviewItems.get(i);
 
-            if (!cur.getLectureHash().equals(prev.getLectureHash())) {
+            if (!cur.reviewedSameDate(prev)) {
                 mListItemTypes.add(LIST_ITEM_TYPE_LECTURE_SEPARATOR);
                 numSep++;
             }
@@ -116,7 +156,11 @@ public class FeedAdapter extends BaseAdapter implements GetLectureVotesAllCallba
     }
 
     private int getItemType(int position) {
-        return mListItemTypes.get(position);
+        if (!mTutorial) {
+            return mListItemTypes.get(position);
+        }
+
+        return LIST_ITEM_TYPE_UNDEFINED;
     }
 
     private LectureReviewItem getReviewItem(int position) {
@@ -158,32 +202,18 @@ public class FeedAdapter extends BaseAdapter implements GetLectureVotesAllCallba
         return null;
     }
 
-    private LectureVote getLectureVoteForSeparator(int position) {
-        LectureVote lectureVote = null;
-
-        if (mListItemTypes.get(position) == LIST_ITEM_TYPE_LECTURE_SEPARATOR &&
-                mLectureVotes != null) {
-            int offset = 0;
-            for (int i=0; i<position; i++) {
-                if (mListItemTypes.get(i) == LIST_ITEM_TYPE_LECTURE_SEPARATOR) {
-                    offset++;
-                }
-            }
-
-            lectureVote = mLectureVotes.get(offset);
-        }
-
-        return lectureVote;
-    }
-
 
 	@Override
 	public int getCount() {
-		return mListItemTypes.size();
+        if (!mTutorial) {
+		    return mListItemTypes.size();
+        }
+
+        return 1;
 	}
 	@Override
 	public Object getItem(int position) {
-		if (mListItemTypes.get(position) == LIST_ITEM_TYPE_REVIEW) {
+		if (!mTutorial && mListItemTypes.get(position) == LIST_ITEM_TYPE_REVIEW) {
             return getReviewItem(position);
         }
 
@@ -193,6 +223,18 @@ public class FeedAdapter extends BaseAdapter implements GetLectureVotesAllCallba
 	public long getItemId(int position) {
 		return position;
 	}
+    /**
+     * @return
+     * The ID of the last LectureReviewItem in the list.
+     * A negative value is returned if the list is empty.
+     */
+    public int getLastReviewID() {
+        if (mReviewItems != null && mReviewItems.size() != 0) {
+            return mReviewItems.get(mReviewItems.size()-1).getId();
+        }
+
+        return -1;
+    }
 
 
     @Override
@@ -201,12 +243,20 @@ public class FeedAdapter extends BaseAdapter implements GetLectureVotesAllCallba
     }
     @Override
     public boolean isEnabled(int position) {
-        return mListItemTypes.get(position) != LIST_ITEM_TYPE_LECTURE_SEPARATOR;
+        if (!mTutorial) {
+            return mListItemTypes.get(position) != LIST_ITEM_TYPE_LECTURE_SEPARATOR;
+        }
+
+        return false;
     }
 
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+        if (mTutorial) {
+            return getTutorialView(convertView);
+        }
+
         int type = getItemType(position);
 
         if (type == LIST_ITEM_TYPE_REVIEW) {
@@ -221,29 +271,18 @@ public class FeedAdapter extends BaseAdapter implements GetLectureVotesAllCallba
 
     public View getLectureSeparatorView(int position, View convertView) {
         View vi = convertView;
-
-        if (vi == null || vi.getId() != R.layout.list_item_lecture_total) {
-            vi = sInflater.inflate(R.layout.list_item_lecture_total, null);
+        if (vi == null || vi.getId() != R.layout.list_item_separator) {
+            vi = LayoutInflater.from(mContext).inflate(R.layout.list_item_separator, null);
         }
 
-        TextView tvDate = (TextView)vi.findViewById(R.id.lecture_total_text_view_date);
-        TextView tvTime = (TextView)vi.findViewById(R.id.lecture_total_text_view_time);
-        TextView tvLecturer = (TextView)vi.findViewById(R.id.lecture_total_text_view_lecturer);
-        TextView tvPos  = (TextView)vi.findViewById(R.id.simple_thumb_text_view_positive);
-        TextView tvNeg  = (TextView)vi.findViewById(R.id.simple_thumb_text_view_negative);
+        TextView tv = (TextView)vi.findViewById(R.id.separator_text_view_title);
 
-        LectureReviewItem reviewItem = getLectureSeparatorItem(position);
-        tvDate.setText(reviewItem.getPrettyDateString());
-        tvTime.setText(reviewItem.getTimeString());
-        tvLecturer.setText(reviewItem.getLecturer());
+        LectureReviewItem review = getLectureSeparatorItem(position);
+        if (review != null) {
+            String prefix = mContext.getResources().getString(R.string.frag_feed_separator_prefix);
+            String relative = review.getRelativeReviewDateString(mContext);
 
-        LectureVote vote = getLectureVoteForSeparator(position);
-        if (vote != null) {
-            tvPos.setText("" + vote.getPositiveVoteCount());
-            tvPos.setText("" + vote.getNegativeVoteCount());
-        } else {
-            tvPos.setText("?");
-            tvNeg.setText("?");
+            tv.setText(prefix + ' ' + relative);
         }
 
         return vi;
@@ -256,16 +295,29 @@ public class FeedAdapter extends BaseAdapter implements GetLectureVotesAllCallba
             vi = sInflater.inflate(R.layout.list_item_review, null);
         }
 
-        TextView tvCourse = (TextView)vi.findViewById(R.id.feed_item_text_view_course);
+        TextView tvCourse   = (TextView)vi.findViewById(R.id.feed_item_text_view_course);
         TextView tvLecturer = (TextView)vi.findViewById(R.id.feed_item_text_view_lecturer);
         TextView tvPositive = (TextView)vi.findViewById(R.id.simple_thumb_text_view_positive);
         TextView tvNegative = (TextView)vi.findViewById(R.id.simple_thumb_text_view_negative);
-        TextView tvComment = (TextView)vi.findViewById(R.id.feed_item_text_view_comment);
+        TextView tvComment  = (TextView)vi.findViewById(R.id.feed_item_text_view_comment);
+        TextView tvClones   = (TextView)vi.findViewById(R.id.feed_item_text_view_clones);
 
         LectureReviewItem item = (LectureReviewItem)getItem(position);
         tvCourse.setText(item.getCourseName());
         tvLecturer.setText(item.getLecturer() + ", " + item.getRoom());
         tvComment.setText(item.getComment());
+
+        if (item.getCloneCount() != 0) {
+            String cloneText;
+            if (item.getCloneCount() == 1) {
+                cloneText = mContext.getResources().getString(R.string.clone_count_singular);
+            } else {
+                cloneText = mContext.getResources().getString(R.string.clone_count_plural);
+            }
+            tvClones.setText("" + item.getCloneCount() + " " + cloneText);
+        } else {
+            tvClones.setVisibility(View.GONE);
+        }
 
         boolean[] ratings = item.getRatings();
         int negative = 0;
@@ -296,7 +348,7 @@ public class FeedAdapter extends BaseAdapter implements GetLectureVotesAllCallba
 
         if (mFeedState == Feed.STATE_DEFAULT) {
             // Set the text usual
-            tvDate.setText(lecture.getPrettyDateString());
+            tvDate.setText(lecture.getPrettyDateString(mContext));
             tvTime.setText(lecture.getTimeString());
         } else {
             tvDate.setText(null);
@@ -304,16 +356,30 @@ public class FeedAdapter extends BaseAdapter implements GetLectureVotesAllCallba
         }
     }
 
+    private View getTutorialView(View convertView) {
+        if (convertView == null || convertView.getId() != R.layout.tutorial) {
+            convertView = sInflater.inflate(R.layout.tutorial, null);
+        }
 
+        TextView tvTitle = (TextView)convertView.findViewById(R.id.tutorial_text_view_title);
+        TextView tvDesc  = (TextView)convertView.findViewById(R.id.tutorial_text_view_desc);
+        SubscriptionDatabase db = new SubscriptionDatabase(mContext);
 
-    @Override
-    public void onGetLectureVotesAllSuccess(List<LectureVote> items) {
-        mLectureVotes = items;
-        notifyDataSetChanged();
-    }
-    @Override
-    public void onGetLectureVotesAllFailure(String errorMessage) {
-        mLectureVotes = null;
-        Log.e(TAG, "Failed to get lecture votes: " + errorMessage);
+        if (!HttpClient.isInternetAvailable(mContext)) {
+            tvTitle.setText(mContext.getString(R.string.no_internet_tutorial_title));
+            tvDesc.setText(mContext.getString(R.string.no_internet_tutorial_desc));
+        } else if (db.getSubscriptionList().size() != 0) {
+            tvTitle.setText(mContext.getResources().getString(
+                    R.string.frag_feed_tutorial_title_no_items));
+            tvDesc.setText(mContext.getResources().getString(
+                    R.string.frag_feed_tutorial_desc_no_items));
+        } else {
+            tvTitle.setText(mContext.getResources().getString(
+                    R.string.frag_feed_tutorial_title_no_subs));
+            tvDesc.setText(mContext.getResources().getString(
+                    R.string.frag_feed_tutorial_desc_no_subs));
+        }
+
+        return convertView;
     }
 }

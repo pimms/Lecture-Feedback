@@ -48,20 +48,23 @@ class GetFeed extends WebAPICall {
 	 * 
 	 * @param count
 	 * The maximum number of items to be returned.
+     *
+     * @param lastId
+     * All returned reviews will have a lower ID than this parameter.
+     * Set to negative value to ignore this parameter.
 	 */
 	public void apiCall(String baseUrl, 
-						List<SubscriptionItem> subscriptions,
-						int first, int count)
+						List<SubscriptionItem> subscriptions, int first, int count, int lastId)
 	{
 		if (subscriptions.size() == 0) {
-			mCallback.onGetFeedFailure("No subscriptions defined.");
+			mCallback.onGetFeedSuccess(null);
 			return;
 		}
 		
 		baseUrl += "/getFeed.php?";
 		baseUrl += "filter=" + createFilterString(subscriptions);
 
-        apiCall(baseUrl, first, count);
+        apiCall(baseUrl, first, count, lastId);
 	}
 
     /**
@@ -79,19 +82,24 @@ class GetFeed extends WebAPICall {
      * @param count
      * The maximum number of items to be returned.
      *
-     * @return
+     * @param lastId
+     * All returned reviews will have a lower ID than this parameter.
+     * Set to negative value to ignore this parameter.
      */
-    public void apiCall(String baseUrl, String lectureHash, int first, int count) {
+    public void apiCall(String baseUrl, String lectureHash, int first, int count, int lastId) {
         baseUrl += "/getFeed.php?hash=" + lectureHash;
-        apiCall(baseUrl, first, count);
+        apiCall(baseUrl, first, count, lastId);
     }
 
-    private void apiCall(String baseUrl, int first, int count) {
+    private void apiCall(String baseUrl, int first, int count, int lastId) {
         baseUrl += "&first=" + first;
         baseUrl += "&count=" + count;
 
-        Log.d(TAG, baseUrl);
+        if (lastId > 0) {
+            baseUrl += "&lastid=" + lastId;
+        }
 
+        Log.v(TAG, "GetFeed -->");
         new AsyncHttpClient().get(baseUrl, this);
     }
 
@@ -137,6 +145,8 @@ class GetFeed extends WebAPICall {
 	
 	@Override
 	public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+        Log.v(TAG, "GetFeed <-- SUCCESS");
+
 		String response;
 		
 		try {
@@ -156,6 +166,8 @@ class GetFeed extends WebAPICall {
 	
 	@Override 
 	public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+        Log.v(TAG, "GetFeed <-- FAILURE");
+
 		String bodyString;
 		String errorMessage = "HTTP Error with code " + statusCode;
 		
@@ -212,6 +224,7 @@ class GetFeed extends WebAPICall {
 		String room = jsonObject.getString("room");
 		String comment = jsonObject.getString("comment");
 		String strReviewTime = jsonObject.getString("review_time");
+        int cloneCount = jsonObject.getInt("clone_count");
 
         if (comment.equals("null")) {
             comment = "";
@@ -228,7 +241,7 @@ class GetFeed extends WebAPICall {
 		LectureReviewItem reviewItem = new LectureReviewItem(
 				date, time, courseName, courseCode, 
 				room, lecturer, ratings, 
-				comment, id, reviewDate);
+				comment, id, reviewDate, cloneCount);
 		return reviewItem;
 	}
 }

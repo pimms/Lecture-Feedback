@@ -24,11 +24,13 @@ class GetStats extends WebAPICall {
     private static final int ACTION_NONE = -1;
     private static final int ACTION_LECTURE_VOTES_ALL = 0;
     private static final int ACTION_COURSE_VOTES = 1;
+    private static final int ACTION_TOP_COURSES = 2;
 
 
     private int mAction = ACTION_NONE;
     private GetLectureVotesAllCallback mLectureVotesCallback;
     private GetCourseVotesCallback mCourseVotesCallback;
+    private GetTopCoursesCallback mTopCoursesCallback;
 
 
     /**
@@ -38,6 +40,7 @@ class GetStats extends WebAPICall {
                                    String baseUrl,
                                    List<SubscriptionItem> subs) {
     	if (subs.size() == 0) {
+            Log.v(TAG, "GetStats course_votes <-- INSTANT SUCCESS");
     		callback.onGetCourseVotesSuccess(new ArrayList<CourseVote>());
     	} else {
 	        mAction = ACTION_COURSE_VOTES;
@@ -45,7 +48,8 @@ class GetStats extends WebAPICall {
 	
 	        baseUrl += "/getStats.php?action=course_votes";
 	        baseUrl += "&courses=" + getCourseCodeCSV(subs);
-	
+
+            Log.v(TAG, "GetStats course_votes -->");
 	        new AsyncHttpClient().get(baseUrl, this);
     	}
     }
@@ -64,6 +68,23 @@ class GetStats extends WebAPICall {
         baseUrl += "&first=" + first;
         baseUrl += "&count=" + count;
 
+        Log.v(TAG, "GetStats lecture_votes_all -->");
+        new AsyncHttpClient().get(baseUrl, this);
+    }
+
+    /**
+     * Api call for the action "top_courses"
+     */
+    public void apiCallTopCourses(GetTopCoursesCallback callback,
+                                  String baseUrl, int first, int count) {
+        mAction = ACTION_TOP_COURSES;
+        mTopCoursesCallback = callback;
+
+        baseUrl += "/getStats.php?action=top_courses";
+        baseUrl += "&first=" + first;
+        baseUrl += "&count=" + count;
+
+        Log.v(TAG, "GetStats top_courses -->");
         new AsyncHttpClient().get(baseUrl, this);
     }
 
@@ -87,12 +108,16 @@ class GetStats extends WebAPICall {
             mCourseVotesCallback.onGetCourseVotesFailure(errorMessage);
         } else if (mAction == ACTION_LECTURE_VOTES_ALL) {
             mLectureVotesCallback.onGetLectureVotesAllFailure(errorMessage);
+        } else if (mAction == ACTION_TOP_COURSES) {
+            mTopCoursesCallback.onGetTopCoursesFailure(errorMessage);
         }
     }
 
 
     @Override
     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+        Log.v(TAG, "GetStats <-- SUCCESS");
+
         String response;
 
         try {
@@ -109,9 +134,10 @@ class GetStats extends WebAPICall {
             handleResponseJson(jsonObject);
         }
     }
-
     @Override
     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+        Log.v(TAG, "GetStats <-- FAILURE");
+
         String bodyString;
         String errorMessage = "HTTP Error with code " + statusCode;
 
@@ -134,6 +160,8 @@ class GetStats extends WebAPICall {
                 handleLectureVotesAllResponseJson(json);
             } else if (mAction == ACTION_COURSE_VOTES) {
                 handleCourseVotesResponseJson(json);
+            } else if (mAction == ACTION_TOP_COURSES) {
+                handleTopCoursesResponseJson(json);
             } else {
                 notifyCallbackBad("Internal error: no action defined");
             }
@@ -171,6 +199,21 @@ class GetStats extends WebAPICall {
         }
 
         mLectureVotesCallback.onGetLectureVotesAllSuccess(lectureVotes);
+    }
+
+    private void handleTopCoursesResponseJson(JSONObject json) throws JSONException {
+        ArrayList<CourseVote> courseVotes = new ArrayList<CourseVote>();
+
+        int itemCount = json.getInt("item_count");
+        JSONArray jsonItems = json.getJSONArray("items");
+
+        for (int i=0; i<itemCount; i++) {
+            JSONObject item = jsonItems.getJSONObject(i);
+            CourseVote vote = new CourseVote(item);
+            courseVotes.add(vote);
+        }
+
+        mTopCoursesCallback.onGetTopCoursesSuccess(courseVotes);
     }
 }
 

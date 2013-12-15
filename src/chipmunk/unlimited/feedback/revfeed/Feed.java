@@ -58,22 +58,46 @@ public class Feed implements WebAPI.GetFeedCallback {
     public int getState() {
         return mState;
     }
-
+    /**
+     * Set the current state to STATE_DEFAULT.
+     */
     public void setStateDefault() {
         mState = STATE_DEFAULT;
     }
-
+    /**
+     * Set the current state to STATE_SINGLE_COURSE.
+     * Only reviews from that course will be returned.
+     *
+     * @param subItem
+     * The course to be filtered.
+     */
     public void setStateCourse(SubscriptionItem subItem) {
         mState = STATE_COURSE;
         mSubItem = subItem;
     }
-
+    /**
+     * Set the current state to STATE_SINGLE_LECTURE.
+     * Only reviews from a single lecture will be included.
+     *
+     * @param hash
+     * The hash of the lecture to be filtered.
+     */
     public void setStateLecture(String hash) {
         mState = STATE_LECTURE;
         mLectureHash = hash;
     }
 
-
+    /**
+     * Update the current set of items based on the state. The FeedListener is
+     * notified via "onFeedUpdate()". If an error occurred, the passed
+     * ArrayList<..> will contain zero elements.
+     *
+     * @param first
+     * The number of items to ignore.
+     *
+     * @param count
+     * The maximum amount of items to be returned.
+     */
     public void update(int first, int count) {
         if (mState == STATE_DEFAULT) {
             updateDefault(first, count);
@@ -106,13 +130,49 @@ public class Feed implements WebAPI.GetFeedCallback {
         webApi.getFeed(this, mLectureHash, first, count);
     }
 
-
-    @Override
-    public void onGetFeedSuccess(List<LectureReviewItem> items) {
-        if (mCallback != null) {
-            mCallback.onFeedUpdate(items);
+    /**
+     * Load more items based on the current state. The FeedListener is
+     * notified via "onFeedUpdate()". If an error occurred, the passed
+     * ArrayList<..> will contain zero elements.
+     *
+     * @param lastId
+     * The ID of the last item in the previously returned set.
+     *
+     * @param count
+     * The maximum amount of items to be returned.
+     */
+    public void loadMore(int lastId, int count) {
+        if (mState == STATE_DEFAULT) {
+            loadMoreDefault(lastId, count);
+        } else if (mState == STATE_COURSE) {
+            loadMoreSingleCourse(lastId, count);
+        } else if (mState == STATE_LECTURE) {
+            loadMoreSingleLecture(lastId, count);
+        } else {
+            onGetFeedFailure("State not supported: " + mState);
         }
     }
+
+    private void loadMoreDefault(int lastId, int count) {
+        SubscriptionDatabase subDb = new SubscriptionDatabase(mContext);
+
+        WebAPI webApi = new WebAPI();
+        webApi.getFeed(this, subDb.getSubscriptionList(), 0, count, lastId);
+    }
+
+    private void loadMoreSingleCourse(int lastId, int count) {
+        ArrayList<SubscriptionItem> subs = new ArrayList<SubscriptionItem>();
+        subs.add(mSubItem);
+
+        WebAPI webApi = new WebAPI();
+        webApi.getFeed(this, subs, 0, count, lastId);
+    }
+
+    private void loadMoreSingleLecture(int lastId, int count) {
+        WebAPI webApi = new WebAPI();
+        webApi.getFeed(this, mLectureHash, 0, count, lastId);
+    }
+
 
     @Override
     public void onGetFeedFailure(String errorMessage) {
@@ -120,6 +180,12 @@ public class Feed implements WebAPI.GetFeedCallback {
 
         if (mCallback != null) {
             mCallback.onFeedUpdate(new ArrayList<LectureReviewItem>());
+        }
+    }
+    @Override
+    public void onGetFeedSuccess(List<LectureReviewItem> items) {
+        if (mCallback != null) {
+            mCallback.onFeedUpdate(items);
         }
     }
 }

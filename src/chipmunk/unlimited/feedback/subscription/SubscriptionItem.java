@@ -4,7 +4,6 @@ import android.widget.Toast;
 
 
 /**
- * @class SubscriptionItem
  * Contains the information required to identify
  * a subscription. 
  */

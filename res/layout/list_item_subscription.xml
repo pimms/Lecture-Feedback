@@ -1,41 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="match_parent"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
     android:layout_width="match_parent">
-
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent" >
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.8"
+        android:id="@+id/linearLayout">
 
         <TextView
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:id="@+id/sd_textName"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:gravity="center_vertical"
             android:padding="20dp"
-            android:textSize="22sp" />
+            android:text="earhaer jaher jaher jhaer jhaer jhaer jhaer jhaer jhaer jhaer jhaer jhaer jhaer jhaer jh"/>
 
-        </LinearLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_weight="0.2"
         android:clickable="true"
         android:layout_centerVertical="true"
-        android:layout_alignParentRight="true">
+        android:layout_alignParentRight="true"
+        android:layout_gravity="center">
 
 
         <ImageView
             android:id="@+id/cancel_img"
-            android:contentDescription="lololol"
             android:layout_gravity="center_vertical"
-            android:paddingRight="20dp"
+            android:paddingRight="5dp"
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content" />
-
+            android:layout_width="wrap_content"
+            android:background="@drawable/navigation_cancel"/>
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>

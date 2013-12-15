@@ -21,6 +21,9 @@ import chipmunk.unlimited.feedback.database.SubscriptionDatabase;
 
 /**
  * Created by Tobias on 02.09.13, forked by Joakim on 11.11.2013
+ *
+ * The code in this file is largely unchanged since the fork, and
+ * is bar compatibility changes marginally altered for improved functinality.
  */
 public class SubscriptionAdapter extends CursorAdapter {
 
@@ -53,7 +56,8 @@ public class SubscriptionAdapter extends CursorAdapter {
         img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(ctx, "Removed subscription '" + name + "'", Toast.LENGTH_LONG).show();
+                String msg = ctx.getResources().getString(R.string.frag_sub_toast_removed);
+                Toast.makeText(ctx, msg + "'" + name + "'", Toast.LENGTH_LONG).show();
                 deleteSub(id);
             }
         });

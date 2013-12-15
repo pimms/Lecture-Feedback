@@ -7,7 +7,7 @@
     <TextView
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:text="Dunno"
+        android:text="@string/frag_subadd_no_res"
         android:id="@+id/aerror_text"
         android:layout_gravity="center_horizontal"
         android:visibility="gone"
@@ -19,9 +19,8 @@
         android:layout_width="wrap_content"
         android:layout_gravity="center_horizontal"
         android:paddingTop="10dp"
-        android:text="Retry"
-        android:visibility="gone"
-        android:onClick="dismissAddSubscriptionFragment" />
+        android:text="Ok"
+        android:visibility="gone"/>
 
     <EditText
         android:id="@+id/add_edittext"
@@ -30,7 +29,6 @@
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
         android:singleLine="true"
-        android:hint="Add"
         android:imeOptions="actionDone" />
 
     <ProgressBar

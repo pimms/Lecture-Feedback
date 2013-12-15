@@ -49,6 +49,8 @@ class Vote extends WebAPICall {
                         int reviewId, String type) {
         assert(type.equals(VOTE_POSITIVE) || type.equals(VOTE_NEGATIVE));
 
+        Log.v(TAG, "Vote -->");
+
         baseUrl += "/vote.php";
         baseUrl += "?review_id=" + reviewId;
         baseUrl += "&type=" + type;
@@ -59,6 +61,8 @@ class Vote extends WebAPICall {
 
     @Override
     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+        Log.v(TAG, "Vote <-- SUCCESS");
+
         String response;
 
         try {
@@ -83,6 +87,8 @@ class Vote extends WebAPICall {
 
     @Override
     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+        Log.v(TAG, "Vote <-- FAILURE");
+
         String bodyString;
         String errorMessage = "HTTP Error with code " + statusCode;
 

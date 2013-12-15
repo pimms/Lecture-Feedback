@@ -1,5 +1,7 @@
 package chipmunk.unlimited.feedback;
 
+import java.io.IOException;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -7,15 +9,20 @@ import java.util.List;
 import android.util.Log;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import au.com.bytecode.opencsv.CSVReader;
 
 /**
- * @class TimeEditParser
- * Parser of TimeEdit HTML. The parsing is done using XPath and
- * DOM traversal.
- * 
- * This class is heavily based on TobbenTM's implementation
- * of a TimeEdit parser. The TimeEdit HTML is full of invalid
- * HTML, causing the w3c.dom-parser to fail. 
+ * The TimeEdit HTML is full of errors, causing the w3c.dom-parser to fail.
+ * As a result, scavenging the HTML for data is the only solution to
+ * integrate TimeEdit communication.
+ *
+ * This class is forked from TobbenTM's implementation
+ * of a TimeEdit parser. Most of the code is poorly documented and hard to
+ * follow, and should in case of severe modification needs be replaced entirely.
+ *
+ * The source of the fork:
+ * https://github.com/TobbenTM/HiG-TimeEdit-Reader/blob/645e939dee31c249c135ea5b216890fcd92f8537/java/com/tobbentm/higreader/TimeParser.java
+ *
  */
 public class TimeEditParser extends AsyncHttpResponseHandler {	
 	/**
@@ -25,21 +32,20 @@ public class TimeEditParser extends AsyncHttpResponseHandler {
 		public void onTimeTableParsingComplete(List<LectureItem> items);
 		public void onTimeTableParsingFailed(String errorMessage);
 	}
-	
-	
+
 	/* The constants defines how the parser interprets
 	 * the received HTML.  
 	 */
 	public static final int CONTENT_TIMETABLE = 1;
-	
-	/* Returns the root node containing the time-table contents */
-	private static final String TIMETABLE_XPATH_ROOT = "//tbody[count(tr[@class='columnHeaders']) != 0]";
-	
+
 	private int mContentType = 1;
-	
 	private OnParseCompleteListener mCallback;
-	
-	
+
+    /**
+     * @param contentType
+     * Definition of what the returned content type will be.
+     * Must be CONTENT_TIMETABLE.
+     */
 	public TimeEditParser(int contentType) {
 		mContentType = contentType;
 	}
@@ -51,131 +57,35 @@ public class TimeEditParser extends AsyncHttpResponseHandler {
 	
 	/**
 	 * The callback for successful HTTP requests.
-	 * @param response 	The contents of the webpage. Can be null.
+     *
+	 * @param response
+     * The contents of the webpage. Can be null.
 	 */
 	@Override 
 	public void onSuccess(String response) {
-		if (mContentType == CONTENT_TIMETABLE) {
-			List<LectureItem> list = new ArrayList<LectureItem>();
-			
-			if (response != null) {
-				String[][] res = parseTimeTable(response);
-				Log.d("ITEM", res.length + " items.");
-				for (int i=1; i<res.length; i++) {
-					String[] arr = res[i];
-					
-					String[] split = arr[2].split(",");
-					String courseCode = split[0];
-					String courseName = split[1];
-					for (int j=2; j<split.length; j++) {
-						courseName += "," + split[j];
-					}
-					
-					// Remove the "Day " component of the date
-					arr[0] = arr[0].substring(4);
-					
-					// 								   date    time    name        id          room    lecturer
-					LectureItem item = new LectureItem(arr[0], arr[1], courseName, courseCode, arr[3], arr[4]);
-					list.add(item);
-					//Log.d("parser", item.toString());
-				}
-			}
-			
-			if (mCallback != null) {
-				mCallback.onTimeTableParsingComplete(list);
-			}
-		}
+        if (response == null || response.length() == 0) {
+            onFailure(null, "No response received from TimeEdit");
+        } else if (mContentType == CONTENT_TIMETABLE) {
+            List<LectureItem> list = parseTimeEditCSV(response);
+
+            if (mCallback != null) {
+                if (list != null) {
+                    mCallback.onTimeTableParsingComplete(list);
+                } else {
+                    mCallback.onTimeTableParsingFailed("TimeEdit not implemented");
+                }
+            }
+        }
 	}
-	
 	@Override
 	public void onFailure(Throwable throwable, String response) {
 		if (mCallback != null) {
 			mCallback.onTimeTableParsingFailed(response);
 		}
 	}
-	
-	
-	/**
-	 * Parse the HTML to retrieve time-table information.
-	 * 
-	 * @param html
-	 * TimeEdit page containing the time-table.
-	 * 
-	 * @return
-	 * Array on the form:
-	 * 	{ 	item0: [date, time, course name, room, lecturer], 
-	 * 		item1: [...], ...., itemN: [...] }
-	 */
-	public static String[][] parseTimeTable(String html){
-        String[] split1 = html
-                .replaceAll("<span class=\"tesprite tesprite-floatright tesprite-new\"></span>", "")
-                .split("/table");
-        String[] split2 = split1[0].split("changeDateLink headline leftRounded t .*\">");
 
-        String[][] results = new String[split2.length-1][6];
-        ArrayList<ArrayList<String>> master = new ArrayList<ArrayList<String>>();
-        String currentdate = "";
-
-        for(int i = 1; i < split2.length -1; i++){
-            currentdate = split2[i].split("</td>")[0].replaceAll(" Today", "");
-            String[] split3 = split2[i].split("</tr>");
-            master.add(dateEntry(currentdate));
-            for(int j = 1; j < split3.length -1; j++){
-                ArrayList<String> inner = new ArrayList<String>();
-                String[] data = tagData(split3[j]);
-                inner.add(currentdate);
-                for(String s : data){
-                    inner.add(s);
-                }
-                master.add(inner);
-            }
-        }
-        return dimensionalPortal(master);
-    }
-
-    public static String[][] parseTimeTable(String html, boolean room){
-        String[] split1 = html
-                .replaceAll("<span class=\"tesprite tesprite-floatright tesprite-new\"></span>", "")
-                .split("/table");
-        String[] split2 = split1[0].split("changeDateLink headline leftRounded t .*\">");
-        String startTime, endTime;
-
-        String[][] results = new String[split2.length-1][6];
-        ArrayList<ArrayList<String>> master = new ArrayList<ArrayList<String>>();
-        String currentdate = "";
-
-        for(int i = 1; i < split2.length -1; i++){
-            currentdate = split2[i].split("</td>")[0].replaceAll(" Today", "");
-            String[] split3 = split2[i].split("</tr>");
-            master.add(dateEntry(currentdate));
-            endTime = "0800";
-            for(int j = 1; j < split3.length -1; j++){
-                ArrayList<String> inner = new ArrayList<String>();
-                String[] data = tagData(split3[j]);
-                if(room){
-                    startTime = data[0].split("\n")[0].replace(":", "");
-                    if(
-                            Integer.parseInt(startTime) >= 815 &&
-                            Integer.parseInt(startTime) > Integer.parseInt(endTime)+16 &&
-                            Integer.parseInt(endTime) < 1600 ){
-                        master.add(clearEntry(currentdate, timeString(endTime, startTime)));
-                        Log.d("TIME", "Added clear entry: " + timeString(endTime, startTime));
-                    }
-                    endTime = data[0].split("\n")[2].replace(":", "");
-                }
-                inner.add(currentdate);
-                for(String s : data){
-                    inner.add(s);
-                }
-                Log.d("TIME", "Lecture time: \t\t" + data[1]);
-                master.add(inner);
-            }
-        }
-        return dimensionalPortal(master);
-    }
 
     public static String[][] search(String html, String term){
-        //Log.d("PARSING", "Starting parser");
         List<String> id = new ArrayList<String>();
         List<String> name = new ArrayList<String>();
         List<String> ids = new ArrayList<String>();
@@ -201,7 +111,6 @@ public class TimeEditParser extends AsyncHttpResponseHandler {
         }
 
         String[][] result = new String[id.size()][2];
-        Log.d("HIG.SEARCH.ARRAY", name.toString() + id.toString());
 
         //Join the two arrays into one 2D array
         for(int i=0; i < id.size(); i++){
@@ -211,84 +120,102 @@ public class TimeEditParser extends AsyncHttpResponseHandler {
         return result;
     }
 
-    private static String[] tagData(String html){
-        String[] split = html.replaceAll("(?m:</tr>|^[\\s]*)", "").split("[\\s]*<[^<]+?>");
-        List<String> tagdata = new ArrayList<String>();
-        //Log.d("TAG DATA \t", Arrays.toString(split));
-        for(int i = 4; i < split.length -4; i += 1){
-            if(i == 4)tagdata.add(split[i].replace(" ", "\n"));
-            if(i == 6 || i == 8 || i == 10 || i == 12) tagdata.add(split[i]);
-        }
-        String[] tagdata2 = new String[tagdata.size()];
-        tagdata2 = tagdata.toArray(tagdata2);
-        return tagdata2;
-    }
+    /**
+     * Parse a TimeEdit CSV file and compile a set of LectureItem objects.
+     *
+     * @param rawCsv
+     * The FULL, NON-ALTERED TimeEdit CSV file.
+     *
+     * @return
+     * NULL on serious errors, list of compiled items otherwise.
+     */
+    private List<LectureItem> parseTimeEditCSV(String rawCsv) {
+        // Ignore the first 4 lines
+        rawCsv = rawCsv.split("\n", 5)[4];
 
-    private static String[][] dimensionalPortal(ArrayList<ArrayList<String>> arraylist){
-    	/* TobbenTM is doing some weird stuff with empty
-    	 * strings to indicate a new date. 
-    	 * Filter out these here. 
-    	 */
-    	for (int i=0; i<arraylist.size(); i++) {
-	    	if (arraylist.get(i).get(2).length() >= 9 && arraylist.get(i).get(2).substring(0, 9).equals("HIGREADER")) {
-	    		arraylist.remove(i--);
-	    	}
-    	}
-    	
-    	/*
-    	 * All valid lectures will be on the form "XXXyyyy, Course Name".
-    	 * If count(split(name, ",")) < 2, the course name is illegal and
-    	 * may be filtered out.
-    	 */
-    	for (int i=0; i<arraylist.size(); i++) {
-    		if (arraylist.get(i).get(2).split(",").length < 2) {
-    			arraylist.remove(i--);
-    		}
-    	}
-    	
-    	
-        final int size = arraylist.size();
-        String[][] sarr = new String[size][];
-        
-        for(int i = 0; i < size; i++) {
-        	/* TIME EDIT RETURNS THE LECTURES IN CHRONOLOGICAL
-			 * ORDER. The list is reversed here by retrieving from
-			 * the arrayList in reverse order.
-			 */
-            ArrayList<String> innerlist = arraylist.get(size - i - 1);
-            final int innerSize = innerlist.size();
-            sarr[i] = new String[innerSize];
-            for(int j = 0; j < innerSize; j++) {
-                sarr[i][j] = innerlist.get(j);
+        CSVReader reader = new CSVReader(new StringReader(rawCsv), ',', '"');
+        List<LectureItem> list = new ArrayList<LectureItem>();
+
+        try {
+            String line[] = reader.readNext();
+
+            while (line != null) {
+                LectureItem item = createLectureItemFromCSVLine(line);
+
+                if (item != null) {
+                    list.add(0, item);
+                }
+
+                line = reader.readNext();
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+
+        return list;
+    }
+    /**
+     *
+     * @param csvLine
+     * Array of items from a TimeEdit CSV file. The order of the elements
+     * must be:
+     *  INDEX   DESCRIPTION             EXAMPLE
+     *  0       The start date          2013-11-15
+     *  1       The start time          13:15
+     *  2       The end date            2013-11-15
+     *  3       The end time            14:00
+     *  4       The course data         IMT3672, Mobil utviklingsprosjekt
+     *  5       The room                D101
+     *  6       Staff member            Nowostawski
+     *
+     *  The array may contain extra values. If any of the values are null or
+     *  contains an empty string, NULL is returned.
+     *
+     * @return
+     * LectureItem, created from the contents of csvLine.
+     * If anything went wrong, NULL is returned.
+     */
+    LectureItem createLectureItemFromCSVLine(String csvLine[]) {
+        if (csvLine.length < 7) {
+            return null;
+        }
+
+        for (int i=0; i<7; i++) {
+            if (csvLine[i] == null || csvLine[i].length() <= 1) {
+                return null;
             }
         }
-        return sarr;
-    }
 
-    private static ArrayList<String> dateEntry(String date){
-        ArrayList<String> arr = new ArrayList<String>();
-        arr.add(date);
-        arr.add("");
-        arr.add("HIGREADER.newDate");
-        arr.add("");
-        arr.add("");
-        arr.add("");
-        return arr;
-    }
+        // Get the raw values
+        String startDate    = csvLine[0].trim();
+        String startTime    = csvLine[1].trim();
+        String endDate      = csvLine[2].trim();
+        String endTime      = csvLine[3].trim();
+        String courseData   = csvLine[4].trim();
+        String room         = csvLine[5].trim();
+        String lecturer     = csvLine[6].trim();
 
-    private static ArrayList<String> clearEntry(String date, String time){
-        ArrayList<String> arr = new ArrayList<String>();
-        arr.add(date);
-        arr.add(time);
-        arr.add("HIGREADER.clear");
-        arr.add("");
-        arr.add("");
-        arr.add("");
-        return arr;
-    }
+        // Ensure the lecture starts and ends on the same day
+        if (!startDate.equals(endDate)) {
+            return null;
+        }
 
-    private static String timeString(String start, String end){
-        return start.replaceFirst("([0-9]{2})", "$1:") + " - " + end.replaceFirst("([0-9]{2})", "$1:");
+        // Separate the course code and name
+        String courseSplit[] = courseData.split(",", 2);
+        if (courseSplit.length != 2) {
+            return null;
+        }
+
+        String courseCode = courseSplit[0];
+        String courseName = courseSplit[1];
+
+        // Join start and end time
+        String time = startTime + " - " + endTime;
+
+        LectureItem lectureItem = new LectureItem(
+                startDate, time, courseName, courseCode, room, lecturer);
+        return lectureItem;
     }
 }
 

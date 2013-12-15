@@ -1,7 +1,11 @@
 package chipmunk.unlimited.feedback;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
+import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
@@ -16,6 +20,7 @@ public class LectureReviewItem extends LectureItem {
 	private String mComment;
 	private int mId;
 	private Date mReviewDate;
+    private int mCloneCount;
 	
 	
 	/**
@@ -55,22 +60,22 @@ public class LectureReviewItem extends LectureItem {
 	
 	/**
 	 * @param date
-	 * See LectureItem.
+	 * @see @class LectureItem
 	 * 
 	 * @param time
-	 * See LectureItem.
+	 * @see @class LectureItem
 	 * 
 	 * @param name
-	 * See LectureItem.
+	 * @see @class LectureItem
 	 * 
 	 * @param higCode
-	 * See LectureItem
+	 * @see @class LectureItem
 	 * 
 	 * @param room
-	 * See LectureItem.
+	 * @see @class LectureItem
 	 * 
 	 * @param lecturer
-	 * See LectureItem.
+	 * @see @class LectureItem
 	 * 
 	 * @param ratings
 	 * Array containing five values, where false is
@@ -90,12 +95,13 @@ public class LectureReviewItem extends LectureItem {
 	 */
 	public LectureReviewItem(String date, String time, String name, String higCode, 
 							String room, String lecturer, boolean[] ratings, 
-							String comment, int id, Date reviewDate) {
+							String comment, int id, Date reviewDate, int cloneCount) {
 		super(date, time, name, higCode, room, lecturer);
 		mRatings = ratings;
 		mComment = comment;
 		mId = id;
 		mReviewDate = reviewDate;
+        mCloneCount = cloneCount;
 		
 		if (mRatings.length != ATTRIBUTE_COUNT) {
 			Log.e(TAG, "Invalid attribute count in LectureReviewItem(): " 
@@ -126,7 +132,8 @@ public class LectureReviewItem extends LectureItem {
 	 * for submit-instances.
 	 */
 	public LectureReviewItem(LectureItem lecture, boolean[] ratings,
-							String comment, int id, Date reviewDate) {
+							String comment, int id, Date reviewDate,
+                            int cloneCount) {
 		super(lecture.getDateString(), lecture.getTimeString(), 
 			lecture.getCourseName(), lecture.getCourseHigCode(), 
 			lecture.getRoom(), lecture.getLecturer());
@@ -135,17 +142,19 @@ public class LectureReviewItem extends LectureItem {
 		mComment = comment;
 		mId = id;
 		mReviewDate = reviewDate;
+        mCloneCount = cloneCount;
 		
 		if (mRatings.length != ATTRIBUTE_COUNT) {
 			Log.e(TAG, "Invalid attribute count in LectureReviewItem(): " 
 					+ mRatings.length + " received, " + ATTRIBUTE_COUNT + " expected.");
 		}
 	}
-	
+
+
+
 	public boolean[] getRatings() {
 		return mRatings;
 	}
-	
 	/**
 	 * Stringify the rating-array.
 	 * 
@@ -180,4 +189,87 @@ public class LectureReviewItem extends LectureItem {
 	public Date getReviewDate() {
 		return mReviewDate;
 	}
+
+    public int getCloneCount() {
+        return mCloneCount;
+    }
+    /**
+     * @return
+     * Returns a string based on the difference between the
+     * current date and the review date.
+     *
+     * Example returns:
+     *      "today"
+     *      "yesterday"
+     *      "Tuesday"
+     *      "Monday"
+     *      "Friday, Nov. 13th"
+     */
+    public String getRelativeReviewDateString(Context context) {
+        Calendar compare = Calendar.getInstance();
+        Calendar revTime = Calendar.getInstance();
+        revTime.setTime(mReviewDate);
+
+        // Compare against today
+        if (sameDate(compare, revTime)) {
+            return context.getResources().getString(R.string.today_l);
+        }
+
+        // Compare against yesterday
+        compare.add(Calendar.DAY_OF_MONTH, -1);
+        if (sameDate(compare, revTime)) {
+            return context.getResources().getString(R.string.yesterday_l);
+        }
+
+        /*
+            At this point we're going to need to format the string. Decide
+            upon the format based on how long old this review is.
+         */
+        String format;
+
+        // Compare against the last week
+        compare.add(Calendar.DAY_OF_MONTH, -5);
+        compare.set(Calendar.HOUR, 0);
+        compare.set(Calendar.MINUTE, 0);
+        if (compare.before(revTime)) {
+            // Only display the weekday
+            format = context.getResources().getString(R.string.format_date_only_day);
+        } else {
+            // Display the weekday and date
+            format = context.getResources().getString(R.string.format_date_pretty);
+        }
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.getDefault());
+        return dateFormat.format(revTime.getTime());
+    }
+
+
+    public boolean reviewedSameDate(LectureReviewItem other) {
+        Calendar compare = Calendar.getInstance();
+        compare.setTime(other.mReviewDate);
+
+        Calendar mine = Calendar.getInstance();
+        mine.setTime(mReviewDate);
+
+        return sameDate(mine, compare);
+    }
+
+    private boolean sameDate(Calendar cal1, Calendar cal2) {
+        int c1day, c1mon, c1yr;
+        int c2day, c2mon, c2yr;
+
+        // Get my values
+        c1day = cal1.get(Calendar.DAY_OF_MONTH);
+        c1mon = cal1.get(Calendar.MONTH);
+        c1yr = cal1.get(Calendar.YEAR);
+
+        // Get the other values
+        c2day = cal2.get(Calendar.DAY_OF_MONTH);
+        c2mon = cal2.get(Calendar.MONTH);
+        c2yr = cal2.get(Calendar.YEAR);
+
+        return (c1day == c2day &&
+                c1mon == c2mon &&
+                c1yr  == c2yr);
+    }
 }

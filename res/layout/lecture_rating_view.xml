@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-	android:layout_height="wrap_content">
+	android:layout_height="wrap_content"
+    android:orientation="vertical">
+
 	<LinearLayout 
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
 	    android:orientation="vertical" >
-	    
+
+
+
 	    <TextView 
 	        android:id="@+id/rating_text_view_course"
 	        android:layout_width="wrap_content"
@@ -24,12 +28,12 @@
 	        android:textSize="12sp"
 	        android:text="Frode Haug"/>
 	    <TextView 
-	        android:id="@+id/rating_text_view_time_room"
+	        android:id="@+id/rating_text_view_datetime"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_gravity="center"
 	        android:textSize="12sp"
-	        android:text="09:17 - 16:32, K105"/>
+	        android:text="12 Nov, 09:17 - 16:32"/>
 	    
     
     	<!-- The AttributeRatingViews will be programmatically
@@ -48,7 +52,7 @@
     	    android:layout_height="wrap_content"
     	    android:layout_marginTop="20dp"
     	    android:ems="10"
-    	    android:hint="Comments..."
+    	    android:hint="@string/comment_hint"
     	    android:inputType="textMultiLine" >
     	</EditText>
 
@@ -58,6 +62,6 @@
     	    android:layout_height="wrap_content"
     	    android:layout_gravity="center"
     	    android:layout_marginTop="25dp"
-    	    android:text="Submit" />
+    	    android:text="@string/submit_verb" />
     </LinearLayout>
 </LinearLayout>

@@ -39,7 +39,7 @@ public class SubscriptionDatabase extends DatabaseWrapper {
 	public static final String[] ALL_COLUMNS = {
 		COLUMN_ID, COLUMN_TE_CODE, COLUMN_HIG_CODE, COLUMN_NAME
 	};
-	
+
 	public static final String TABLE_CREATE = 
 			"CREATE TABLE IF NOT EXISTS "
 			+ TABLE_NAME + " ( "
@@ -49,17 +49,39 @@ public class SubscriptionDatabase extends DatabaseWrapper {
 			+ COLUMN_NAME + " TEXT NOT NULL "
 			+ ");";
 	
-	
+
+    static public boolean hasAnySubscriptions(Context context) {
+        SubscriptionDatabase db = new SubscriptionDatabase(context);
+        int subCount;
+
+        db.open();
+        Cursor cursor = db.getSubscriptionCursor();
+        subCount = cursor.getCount();
+        cursor.close();
+        db.close();
+
+        return subCount != 0;
+    }
+
+
 	public SubscriptionDatabase(Context context) {
 		super(context);
 	}
 
-	
+    /**
+     * @return
+     * Cursor referencing all the subscription items in
+     * the database.
+     */
 	public Cursor getSubscriptionCursor() {
 		return mDatabase.query(TABLE_NAME, ALL_COLUMNS, 
 							null, null, null, null, null);
 	}
-	
+
+    /**
+     * @return
+     * List containing all subscription items in the database.
+     */
 	public List<SubscriptionItem> getSubscriptionList() {
 		open();
 		
@@ -86,8 +108,21 @@ public class SubscriptionDatabase extends DatabaseWrapper {
 		
 		return list;
 	}
-	
-	
+
+    /**
+     * Add a subscription to the database.
+     *
+     * @param timeEditCode
+     * The code used by TimeEdit to identify the course.
+     * Example: "18347.183"
+     *
+     * @param higCode
+     * The HiG code of the course.
+     * Example: "IMT2020"
+     *
+     * @param name
+     * The actual name of the course.
+     */
 	public void addSubscription(String timeEditCode, String higCode, String name) {
 		open();
 		
@@ -105,7 +140,13 @@ public class SubscriptionDatabase extends DatabaseWrapper {
 			Log.e(TAG, "Failed to insert '" + name + "' into DB");
 		}
 	}
-	
+
+    /**
+     * Delete a subscription from the database
+     *
+     * @param id
+     * The unique index of the subscription item.
+     */
 	public void deleteSubscription(int id) {
 		mDatabase.delete(TABLE_NAME, COLUMN_ID+"="+id, null);
 	}

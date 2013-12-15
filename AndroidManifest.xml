@@ -8,7 +8,8 @@
         android:minSdkVersion="14"
         android:targetSdkVersion="18" />
     
-    <uses-permission android:name="android.permission.INTERNET" /> 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
         android:allowBackup="true"
@@ -17,16 +18,17 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".rating.LectureRatingActivity"></activity>
-        <activity android:name=".revfeed.FeedActivity"></activity>
-        <activity android:name=".stats.CourseLecturesActivity"> </activity>
+        <activity android:name=".rating.LectureRatingActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".revfeed.FeedActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".stats.CourseLecturesActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".highscore.TopCourseActivity" android:screenOrientation="portrait"/>
     </application>
-
 </manifest>
