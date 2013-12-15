@@ -67,8 +67,6 @@ public class TodayFragment extends UpdateableFragment
 	}
 	@Override
 	public void onTimeTableParsingFailed(String errorMessage) {
-		Log.e(TAG, "Failed to get TimeEdit data: " + errorMessage);
-
         // If the adapter does not have any items, this is the first
         // refresh. Reload the list view with NULL to display the tutorial.
         if (mListAdapter.getCount() == 0) {

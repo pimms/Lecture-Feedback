@@ -24,7 +24,7 @@ import au.com.bytecode.opencsv.CSVReader;
  * https://github.com/TobbenTM/HiG-TimeEdit-Reader/blob/645e939dee31c249c135ea5b216890fcd92f8537/java/com/tobbentm/higreader/TimeParser.java
  *
  */
-public class TimeEditParser extends AsyncHttpResponseHandler {	
+public class TimeEditParser extends AsyncHttpResponseHandler {
 	/**
 	 * Callback interface for the TimeEditParser class.
 	 */
@@ -32,6 +32,9 @@ public class TimeEditParser extends AsyncHttpResponseHandler {
 		public void onTimeTableParsingComplete(List<LectureItem> items);
 		public void onTimeTableParsingFailed(String errorMessage);
 	}
+
+
+    private static final String TAG = "TimeEditParser";
 
 	/* The constants defines how the parser interprets
 	 * the received HTML.  
@@ -66,6 +69,8 @@ public class TimeEditParser extends AsyncHttpResponseHandler {
         if (response == null || response.length() == 0) {
             onFailure(null, "No response received from TimeEdit");
         } else if (mContentType == CONTENT_TIMETABLE) {
+            Log.v(TAG, "TimeEdit <-- SUCCESS");
+
             List<LectureItem> list = parseTimeEditCSV(response);
 
             if (mCallback != null) {
@@ -79,6 +84,8 @@ public class TimeEditParser extends AsyncHttpResponseHandler {
 	}
 	@Override
 	public void onFailure(Throwable throwable, String response) {
+        Log.v(TAG, "TimeEdit <-- FAILURE");
+
 		if (mCallback != null) {
 			mCallback.onTimeTableParsingFailed(response);
 		}
