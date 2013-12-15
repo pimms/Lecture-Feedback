@@ -48,9 +48,9 @@
     <string name="action_subscriptions">Mine fag</string>
     <string name="action_about">Om</string>
 
-    <string name="main_tab_today">Dagen i dag</string>
-    <string name="main_tab_feed">Omtalelser</string>
-    <string name="main_tab_stats">Oversikt</string>
+    <string name="main_tab_today">Dagens forelesninger</string>
+    <string name="main_tab_feed">Omtaler</string>
+    <string name="main_tab_stats">Dine fag</string>
 
 
     <!-- Today Fragment -->
@@ -58,7 +58,8 @@
     <string name="frag_today_tutorial_title_no_lectures">INGEN NYLIGE FORELESNINGER</string>
 
     <string name="frag_today_tutorial_desc_no_subs">
-        Du har ikke lagt inn noen dag. Du kan legge inn fag ved å trykke på stjerneikonet.
+        Når du har lagt inn fagene dine, vil forelesninger fra de siste 24 timer vises her.
+        \n\nLegg til fag ved å trykke på stjerneikonet.
     </string>
     <string name="frag_today_tutorial_desc_no_lectures">
         Du har ingen nylige forelesninger. Nylige forelesninger vil dukke opp her.
@@ -70,8 +71,8 @@
     <string name="frag_feed_tutorial_title_no_items">INGEN OMTALER</string>
 
     <string name="frag_feed_tutorial_desc_no_subs">
-        Dine og andres omtaler av dine fag vil dukke opp her. Du kan legge til fag ved å
-        trykke på stjerneikonet.
+        Omtaler postet av medstudenter vil vises her.
+        \n\nLegg til fag ved å trykke på stjerneikonet.
     </string>
     <string name="frag_feed_tutorial_desc_no_items">
         Ingen av dine fag har en omtale.
@@ -79,7 +80,10 @@
 
     <!-- Stats Fragment -->
     <string name="frag_stats_tutorial_title_no_subs">INGEN FAG</string>
-    <string name="frag_stats_tutorial_desc_no_subs">Fag du legger til vil havne her.</string>
+    <string name="frag_stats_tutorial_desc_no_subs">
+        Fag du legger til vil vises her.
+        \n\nLegg til fag ved å trykke på stjerneikonet.
+    </string>
 
     <!-- Lecture Rating Activity -->
     <string name="rating_attr_overall">Generelt</string>
