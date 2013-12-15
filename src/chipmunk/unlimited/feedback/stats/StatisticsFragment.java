@@ -25,6 +25,9 @@ public class StatisticsFragment extends UpdateableFragment
 	}
     @Override
     public void onViewCreated(View view, Bundle bundle) {
+        cancelScheduledRefresh();
+        super.onViewCreated(view, bundle);
+
         mAdapter = new StatisticsAdapter(getActivity());
         mAdapter.setStatisticsAdapterUpdateListener(this);
 
@@ -33,7 +36,6 @@ public class StatisticsFragment extends UpdateableFragment
         listView.setOnItemClickListener(this);
 
         refreshContents();
-        super.onViewCreated(view, bundle);
     }
     @Override
     public void doRefresh() {

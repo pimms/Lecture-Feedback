@@ -30,6 +30,8 @@ import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
  */
 public abstract class UpdateableFragment extends ListFragment
         implements OnRefreshListener {
+    private static final String TAG = "UpdateableFragment";
+
     private boolean mInitialized;
     private boolean mScheduledUpdate;
 
@@ -70,8 +72,8 @@ public abstract class UpdateableFragment extends ListFragment
         mInitialized = true;
 
         if (mScheduledUpdate) {
-            doRefresh();
             mScheduledUpdate = false;
+            refreshContents();
         }
     }
     /**
@@ -84,6 +86,7 @@ public abstract class UpdateableFragment extends ListFragment
      */
     public final void refreshContents() {
         if (mInitialized) {
+            Log.v(TAG, "Updating class: " + getClass().getCanonicalName());
             doRefresh();
             mPtrLayout.setRefreshing(true);
         } else {
@@ -91,10 +94,17 @@ public abstract class UpdateableFragment extends ListFragment
         }
     }
     /**
+     * Invalidate any pre-initialization requests to update the Fragment.
+     */
+    public final void cancelScheduledRefresh() {
+        mScheduledUpdate = false;
+    }
+    /**
      * Called to indicate that the update finalized.
      * Will stop the "updating" animation in the top bar.
      */
     public final void onUpdateCompleted() {
+        Log.v(TAG, "Class updated: " + getClass().getCanonicalName());
         mPtrLayout.setRefreshing(false);
         mPtrLayout.setRefreshComplete();
     }

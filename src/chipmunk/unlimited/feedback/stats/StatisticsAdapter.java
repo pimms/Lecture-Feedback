@@ -36,7 +36,7 @@ public class StatisticsAdapter extends BaseAdapter
     private List<CourseVote> mCourseVotes;
 	private LayoutInflater mInflater;
 	private Context mContext;
-    private boolean mTutorial;
+    private boolean mTutorial = true;
 
     private StatisticsAdapterUpdateListener mListener;
 
@@ -54,10 +54,6 @@ public class StatisticsAdapter extends BaseAdapter
 
 	@Override
 	public int getCount() {
-		if (mSubscriptions == null) {
-			loadCourses();
-		}
-
         if (!mTutorial) {
             return mSubscriptions.size();
         }

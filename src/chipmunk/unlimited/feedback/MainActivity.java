@@ -88,7 +88,7 @@ public class MainActivity extends FragmentActivity implements
 
         /* If no subscriptions exists, display the add-subscription fragment */
         if (!SubscriptionDatabase.hasAnySubscriptions(this)) {
-            showSubscriptionFragment();
+            //showSubscriptionFragment();
         }
 	}
 	@Override
