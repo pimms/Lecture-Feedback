@@ -11,6 +11,12 @@ import com.loopj.android.http.ResponseHandlerInterface;
 
 
 public class HttpClient extends AsyncHttpClient {
+
+    public HttpClient() {
+        setTimeout(5);
+    }
+
+
     public static boolean isInternetAvailable(Context context) {
         ConnectivityManager cm =
                 (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
