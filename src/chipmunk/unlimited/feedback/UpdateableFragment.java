@@ -1,16 +1,11 @@
 package chipmunk.unlimited.feedback;
 
-import android.os.AsyncTask;
-import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import chipmunk.unlimited.feedback.webapi.HttpClient;
 import uk.co.senab.actionbarpulltorefresh.library.*;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
@@ -30,6 +25,7 @@ import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
  */
 public abstract class UpdateableFragment extends ListFragment
         implements OnRefreshListener {
+    public static final int REFRESH_TIMEOUT_SECONDS = 5;
     private static final String TAG = "UpdateableFragment";
 
     private boolean mInitialized;
@@ -37,6 +33,7 @@ public abstract class UpdateableFragment extends ListFragment
 
     private PullToRefreshLayout mPtrLayout;
 
+    private Handler mHandler;
 
 
     @Override
@@ -90,6 +87,8 @@ public abstract class UpdateableFragment extends ListFragment
             Log.v(TAG, "Updating class: " + getClass().getCanonicalName());
             doRefresh();
             mPtrLayout.setRefreshing(true);
+
+            startTimer();
         } else {
             mScheduledUpdate = true;
         }
@@ -108,11 +107,39 @@ public abstract class UpdateableFragment extends ListFragment
         Log.v(TAG, "Class updated: " + getClass().getCanonicalName());
         mPtrLayout.setRefreshing(false);
         mPtrLayout.setRefreshComplete();
+
+        cancelTimer();
     }
+
+
+    private void startTimer() {
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                onTimerCompleted(handler);
+            }
+        }, REFRESH_TIMEOUT_SECONDS * 1000);
+
+        mHandler = handler;
+    }
+
+    private void cancelTimer() {
+        mHandler = null;
+    }
+
+    private void onTimerCompleted(Handler handler) {
+        if (mHandler != null && mHandler == handler) {
+            Log.e(TAG, "ERROR ERROR ERROR ERROR ERROR");
+            doRefresh();
+        }
+    }
+
 
     /**
      * Abstract method that must be overidden by the subclass.
      */
     protected abstract void doRefresh();
+    //protected abstract void onRefreshTimeout();
 }
 
