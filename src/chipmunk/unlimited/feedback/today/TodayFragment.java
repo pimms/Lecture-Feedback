@@ -38,7 +38,7 @@ public class TodayFragment extends UpdateableFragment
 		return rootView;
 	}
     @Override
-    public void onActivityCreated(Bundle bundle) {
+    public void onViewCreated(View view, Bundle bundle) {
         mListView = getListView();
 
         mListAdapter = new DailyLectureAdapter(getActivity());
@@ -46,7 +46,7 @@ public class TodayFragment extends UpdateableFragment
         mListView.setOnItemClickListener(this);
 
         refreshContents();
-        super.onActivityCreated(bundle);
+        super.onViewCreated(view, bundle);
     }
     @Override
     protected void doRefresh() {

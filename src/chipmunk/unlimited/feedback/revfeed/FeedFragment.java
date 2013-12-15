@@ -37,7 +37,7 @@ public class FeedFragment extends UpdateableFragment
 		return rootView;
 	}
     @Override
-    public void onActivityCreated(Bundle bundle) {
+    public void onViewCreated(View view, Bundle bundle) {
         mRefreshListView = (ScrollToRefreshListView)getListView();
         mRefreshListView.setOnScrollToRefreshListener(this);
 
@@ -53,7 +53,7 @@ public class FeedFragment extends UpdateableFragment
         mRefreshListView.setAdapter(mFeedAdapter);
 
         refreshContents();
-        super.onActivityCreated(bundle);
+        super.onViewCreated(view, bundle);
     }
 
     public void setFeed(Feed feed) {
