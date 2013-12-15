@@ -37,12 +37,13 @@ public abstract class UpdateableFragment extends ListFragment
 
     private PullToRefreshLayout mPtrLayout;
 
+    
 
     @Override
-    public void onViewCreated(View view, Bundle bundle) {
-        super.onViewCreated(view, bundle);
+    public void onStart() {
+        super.onStart();
 
-        ViewGroup viewGroup = (ViewGroup)view;
+        ViewGroup viewGroup = (ViewGroup)getView();
         mPtrLayout = new PullToRefreshLayout(getActivity());
 
         ActionBarPullToRefresh.from(getActivity())
