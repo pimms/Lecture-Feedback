@@ -38,7 +38,7 @@ public abstract class UpdateableFragment extends ListFragment
 
     @Override
     public void onViewCreated(View view, Bundle bundle) {
-        super.onActivityCreated(bundle);
+        super.onViewCreated(view, bundle);
 
         ViewGroup viewGroup = (ViewGroup)view;
         mPtrLayout = new PullToRefreshLayout(getActivity());
