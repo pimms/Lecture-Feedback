@@ -22,10 +22,18 @@ import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
  *
  * If a subclass wishes to have their list view pulled,
  * it MUST have the id "android.R.id.list".
+ *
+ *
+ * Under unknown but common conditions, the AsyncHttp library hangs,
+ * and does call onSuccess() or onFailure() on the callback. The cause
+ * of the issue is unknown, but the current workaround is
+ * to start a timer when the Fragment begins updating. If the timer
+ * runs out before a response is received, the Fragment updates
+ * itself again.
  */
 public abstract class UpdateableFragment extends ListFragment
         implements OnRefreshListener {
-    public static final int REFRESH_TIMEOUT_SECONDS = 5;
+    public static final int REFRESH_TIMEOUT_SECONDS = 15;
     private static final String TAG = "UpdateableFragment";
 
     private boolean mInitialized;
@@ -130,7 +138,7 @@ public abstract class UpdateableFragment extends ListFragment
 
     private void onTimerCompleted(Handler handler) {
         if (mHandler != null && mHandler == handler) {
-            Log.e(TAG, "ERROR ERROR ERROR ERROR ERROR");
+            Log.d(TAG, "Recovering from AsyncHttp hangup");
             doRefresh();
         }
     }
@@ -140,6 +148,5 @@ public abstract class UpdateableFragment extends ListFragment
      * Abstract method that must be overidden by the subclass.
      */
     protected abstract void doRefresh();
-    //protected abstract void onRefreshTimeout();
 }
 
