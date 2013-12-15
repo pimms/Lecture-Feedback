@@ -50,7 +50,7 @@ class GetStats extends WebAPICall {
 	        baseUrl += "&courses=" + getCourseCodeCSV(subs);
 
             Log.v(TAG, "GetStats course_votes -->");
-	        new AsyncHttpClient().get(baseUrl, this);
+	        new HttpClient().get(baseUrl, this);
     	}
     }
 
@@ -69,7 +69,7 @@ class GetStats extends WebAPICall {
         baseUrl += "&count=" + count;
 
         Log.v(TAG, "GetStats lecture_votes_all -->");
-        new AsyncHttpClient().get(baseUrl, this);
+        new HttpClient().get(baseUrl, this);
     }
 
     /**
@@ -85,7 +85,7 @@ class GetStats extends WebAPICall {
         baseUrl += "&count=" + count;
 
         Log.v(TAG, "GetStats top_courses -->");
-        new AsyncHttpClient().get(baseUrl, this);
+        new HttpClient().get(baseUrl, this);
     }
 
 

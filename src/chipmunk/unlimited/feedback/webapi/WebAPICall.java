@@ -17,7 +17,7 @@ abstract class WebAPICall extends AsyncHttpResponseHandler {
 	
 	
 	/**
-	 * Dummy-placeholdre API call. 
+	 * Dummy-placeholdre API call.
 	 * 
 	 * @param baseUrl
 	 * URL on the form:

@@ -100,7 +100,7 @@ class GetFeed extends WebAPICall {
         }
 
         Log.v(TAG, "GetFeed -->");
-        new AsyncHttpClient().get(baseUrl, this);
+        new HttpClient().get(baseUrl, this);
     }
 
 

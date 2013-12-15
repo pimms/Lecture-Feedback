@@ -55,7 +55,7 @@ class Vote extends WebAPICall {
         baseUrl += "?review_id=" + reviewId;
         baseUrl += "&type=" + type;
 
-        (new AsyncHttpClient()).get(baseUrl, this);
+        (new HttpClient()).get(baseUrl, this);
     }
 
 

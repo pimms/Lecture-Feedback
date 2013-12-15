@@ -47,7 +47,7 @@ class PostReview extends WebAPICall {
 			baseUrl += "&comment=" + comment;
 		}
 		
-		new AsyncHttpClient().get(baseUrl, this);
+		new HttpClient().get(baseUrl, this);
 	}
 	
 	

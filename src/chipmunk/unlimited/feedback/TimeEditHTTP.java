@@ -8,8 +8,8 @@ import java.util.Locale;
 import android.util.Log;
 
 import chipmunk.unlimited.feedback.subscription.SubscriptionItem;
+import chipmunk.unlimited.feedback.webapi.HttpClient;
 
-import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
 /**
@@ -54,7 +54,7 @@ public class TimeEditHTTP {
 		
 		/* Retrieve the web content */
 		Log.d("HTTP", "TimeEdit URL: " + webUrl);
-		new AsyncHttpClient().get(webUrl, callback);
+		new HttpClient().get(webUrl, callback);
 	}
 	
 	
@@ -123,7 +123,7 @@ public class TimeEditHTTP {
 	 public static void search(String term, AsyncHttpResponseHandler handler){
         final int iType = 183;
         final String baseURL = "https://web.timeedit.se/hig_no/db1/timeedit/p/open/objects.html?max=15&partajax=t&l=en&sid=3&types=" + iType + "&search_text=";
-        new AsyncHttpClient().get(baseURL + term.replaceAll(" ", "%20"), handler);
+        new HttpClient().get(baseURL + term.replaceAll(" ", "%20"), handler);
     }
 }
 

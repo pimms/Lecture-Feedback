@@ -37,7 +37,7 @@ public abstract class UpdateableFragment extends ListFragment
 
     private PullToRefreshLayout mPtrLayout;
 
-    
+
 
     @Override
     public void onStart() {
